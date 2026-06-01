@@ -3,470 +3,559 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Lingkar Asuh Digital – Resonance Loop</title>
+    <title>Lingkar Asuh Digital · Resonance Loop Parenting</title>
+    <meta name="description" content="Microsite adaptif untuk orang tua: belajar dari gaya asuh digitalmu, dapatkan visual yang selalu berubah, dan temukan keseimbangan gawai anak.">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+            user-select: none; /* mencegah teks terblok, tapi tetap nyaman */
         }
 
         body {
-            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Inter', sans-serif;
-            background: var(--bg-gradient-start);
-            color: var(--text-primary);
-            line-height: 1.5;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, 'Poppins', sans-serif;
+            background: radial-gradient(circle at 10% 20%, #F9F3E2 0%, #E6DDCC 100%);
             min-height: 100vh;
-            padding: 1.5rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            padding: 1rem;
+            transition: background 0.5s ease;
         }
 
-        /* Variabel warna dinamis (diubah oleh JS) */
-        :root {
-            --bg-gradient-start: #1A6F6B;
-            --bg-gradient-end: #0E4A47;
-            --card-bg: rgba(255, 255, 255, 0.92);
-            --text-primary: #1E2A2A;
-            --text-light: #F9F3E2;
-            --accent: #E8B34B;
-            --accent-glow: #D65C2B;
-            --ring-color: rgba(232, 179, 75, 0.6);
-        }
-
-        body.warm-mode {
-            --bg-gradient-start: #D65C2B;
-            --bg-gradient-end: #A33F1A;
-            --accent: #F9E0A0;
-            --accent-glow: #FFB347;
-            --ring-color: rgba(255, 180, 70, 0.7);
-        }
-
-        body.calm-mode {
-            --bg-gradient-start: #1A6F6B;
-            --bg-gradient-end: #0E4A47;
-            --accent: #E8B34B;
-            --accent-glow: #D65C2B;
-        }
-
+        /* kontainer utama */
         .container {
-            max-width: 1200px;
-            width: 100%;
-            background: var(--card-bg);
-            backdrop-filter: blur(2px);
-            border-radius: 2.5rem;
-            box-shadow: 0 25px 45px rgba(0,0,0,0.2), 0 0 0 1px rgba(255,255,255,0.2) inset;
+            max-width: 650px;
+            margin: 0 auto;
+            border-radius: 2rem;
+            background: rgba(255, 255, 245, 0.85);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,215,150,0.5);
             overflow: hidden;
-            padding: 2rem 2rem 2.5rem;
+            padding: 1.5rem 1.8rem 2rem;
             transition: all 0.3s;
         }
 
-        /* Cincin fraktal / resonance ring */
-        .resonance-ring {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 1.5rem;
-            position: relative;
-            cursor: pointer;
-        }
-        .ring-canvas {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            box-shadow: 0 0 0 4px var(--accent), 0 0 0 8px var(--ring-color);
-            animation: pulseRing 2s infinite ease-out;
-            background: radial-gradient(circle, var(--accent) 0%, var(--accent-glow) 100%);
-            transition: all 0.2s;
-        }
-        @keyframes pulseRing {
-            0% { box-shadow: 0 0 0 4px var(--accent), 0 0 0 8px var(--ring-color); transform: scale(0.98);}
-            70% { box-shadow: 0 0 0 12px var(--accent), 0 0 0 20px rgba(232,179,75,0.2); transform: scale(1.02);}
-            100% { box-shadow: 0 0 0 4px var(--accent), 0 0 0 8px var(--ring-color); transform: scale(0.98);}
-        }
-
+        /* header */
         h1 {
-            font-size: 2.2rem;
-            text-align: center;
+            font-size: 1.9rem;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--accent), var(--accent-glow));
-            -webkit-background-clip: text;
+            background: linear-gradient(135deg, #1A6F6B, #E8B34B);
             background-clip: text;
+            -webkit-background-clip: text;
             color: transparent;
-            margin-bottom: 0.5rem;
+            letter-spacing: -0.3px;
+            display: inline-block;
+            margin-bottom: 0.25rem;
         }
         .sub {
-            text-align: center;
-            color: var(--text-primary);
-            opacity: 0.8;
-            margin-bottom: 2rem;
-            font-weight: 500;
-        }
-
-        .stats-bar {
-            display: flex;
-            justify-content: space-between;
-            background: rgba(0,0,0,0.05);
-            border-radius: 60px;
-            padding: 0.6rem 1.2rem;
-            margin-bottom: 2rem;
+            color: #5e5b4f;
+            border-left: 3px solid #D65C2B;
+            padding-left: 1rem;
+            margin: 0.5rem 0 1.2rem 0;
+            font-weight: 400;
             font-size: 0.9rem;
-            font-weight: 500;
-        }
-        .badge {
-            background: var(--accent);
-            color: #1E2A2A;
-            padding: 0.2rem 0.7rem;
-            border-radius: 30px;
         }
 
-        .grid-tips {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .tip-card {
-            background: rgba(255,255,240,0.9);
-            border-radius: 1.5rem;
+        /* RESONANCE CANVAS (lingkar fraktal adaptif) */
+        .resonance-box {
+            background: #f2ede0;
+            border-radius: 2rem;
             padding: 1.2rem;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
-            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 1rem 0 1.5rem;
+            box-shadow: inset 0 1px 4px rgba(0,0,0,0.05), 0 8px 20px rgba(0,0,0,0.1);
+            transition: box-shadow 0.2s;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: #1A2A2A10;
+            border-radius: 1.5rem;
             cursor: pointer;
-            border-left: 5px solid var(--accent);
+            transition: transform 0.1s ease;
         }
-        .tip-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+        canvas:active {
+            transform: scale(0.98);
         }
-        .tip-card h3 {
+        .caption-resonance {
+            text-align: center;
+            font-size: 0.75rem;
+            margin-top: 0.7rem;
+            color: #7b6e58;
+            font-weight: 500;
+        }
+
+        /* kartu rekomendasi */
+        .card {
+            background: white;
+            border-radius: 1.6rem;
+            padding: 1.2rem 1.4rem;
+            margin: 1.3rem 0;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+            border: 1px solid rgba(232,179,75,0.3);
+            transition: all 0.2s;
+        }
+        .card h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-            color: #1A3B3B;
+            color: #1A6F6B;
+            margin-bottom: 0.75rem;
         }
-        .tip-card p {
-            font-size: 0.9rem;
-            color: #2C3E3E;
+        .tip-text {
+            font-size: 1rem;
+            line-height: 1.45;
+            color: #2c2b26;
             margin-bottom: 1rem;
         }
-        .btn-setuju {
-            background: var(--accent);
+        .feedback-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        .feedback-buttons button {
+            background: #f3efe6;
             border: none;
             padding: 0.4rem 1rem;
-            border-radius: 40px;
-            font-weight: bold;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.8rem;
             cursor: pointer;
-            color: #1E2A2A;
-            transition: 0.1s linear;
+            transition: all 0.2s;
+            color: #4f4a3c;
         }
-        .btn-setuju:active {
-            transform: scale(0.96);
+        .feedback-buttons button.like:hover {
+            background: #1A6F6B;
+            color: white;
+            transform: scale(1.02);
+        }
+        .feedback-buttons button.dislike:hover {
+            background: #D65C2B;
+            color: white;
         }
 
-        .reward-area {
-            text-align: center;
-            margin: 2rem 0 1rem;
-            min-height: 70px;
-        }
-        .reward-bubble {
-            display: inline-block;
-            background: rgba(232,179,75,0.2);
-            backdrop-filter: blur(8px);
-            padding: 0.5rem 1.2rem;
-            border-radius: 60px;
-            animation: fadePop 0.4s ease;
+        /* timer & sesi */
+        .session-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            background: #ffffffb3;
+            padding: 0.7rem 1rem;
+            border-radius: 3rem;
+            margin: 0.5rem 0 0.8rem;
+            font-size: 0.8rem;
             font-weight: 500;
+            backdrop-filter: blur(4px);
         }
-        @keyframes fadePop {
-            0% { opacity: 0; transform: scale(0.8);}
-            80% { transform: scale(1.05);}
-            100% { opacity: 1; transform: scale(1);}
+        .timer {
+            font-family: monospace;
+            font-size: 1.2rem;
+            background: #1A6F6B20;
+            padding: 0.2rem 0.6rem;
+            border-radius: 2rem;
+            color: #1A6F6B;
         }
-
-        .footer-note {
-            font-size: 0.75rem;
-            text-align: center;
-            margin-top: 2rem;
-            opacity: 0.7;
-            border-top: 1px solid rgba(0,0,0,0.1);
-            padding-top: 1rem;
-        }
-        button {
+        .reset-pref {
             background: none;
             border: none;
+            text-decoration: underline;
+            color: #D65C2B;
+            font-size: 0.7rem;
+            cursor: pointer;
         }
-        @media (max-width: 640px) {
-            .container { padding: 1.2rem; }
-            h1 { font-size: 1.7rem; }
+
+        /* reward visual animasi */
+        .reward-toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #E8B34Bcc;
+            backdrop-filter: blur(12px);
+            color: #2d2b20;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            z-index: 1000;
+            pointer-events: none;
+            animation: fadeUp 1s ease forwards;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateX(-50%) translateY(10px);}
+            20% { opacity: 1; transform: translateX(-50%) translateY(0);}
+            80% { opacity: 1; }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px);}
+        }
+
+        /* peringatan etis istirahat */
+        .rest-modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #000000aa;
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            font-weight: 500;
+            animation: fade 0.3s;
+        }
+        .rest-card {
+            background: #FFFAF0;
+            max-width: 280px;
+            padding: 2rem 1.5rem;
+            border-radius: 2rem;
+            text-align: center;
+            box-shadow: 0 20px 30px black;
+        }
+        .rest-card button {
+            margin-top: 1rem;
+            background: #1A6F6B;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            font-weight: bold;
+        }
+
+        footer {
+            font-size: 0.65rem;
+            text-align: center;
+            margin-top: 1.8rem;
+            color: #8c826b;
+        }
+
+        button {
+            transition: all 0.1s ease;
+        }
+        @media (max-width: 500px) {
+            .container { padding: 1rem; }
+            h1 { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
+
 <div class="container" id="app">
-    <div class="resonance-ring" id="ringTrigger">
-        <div class="ring-canvas"></div>
-    </div>
     <h1>🌀 Lingkar Asuh Digital</h1>
-    <div class="sub">Setiap sentuhanmu menciptakan harmoni baru</div>
+    <div class="sub">Resonance Loop · visual yang mengenali gaya asuhmu</div>
 
-    <div class="stats-bar">
-        <span>🌱 Reso-points: <span id="pointCounter">0</span></span>
-        <span>🎨 Modus: <span id="modeLabel">Sejuk / Teal</span></span>
-        <span class="badge" id="favTipBadge">✨ Belum ada favorit</span>
+    <!-- Lingkar Fraktal interaktif -->
+    <div class="resonance-box">
+        <canvas id="resonanceCanvas" width="500" height="500" style="width:100%; height:auto; max-width:500px; margin:0 auto; display:block"></canvas>
+        <div class="caption-resonance">
+            ✨ Sentuh / klik lingkaran — lihat ia berubah sesuai preferensimu ✨
+        </div>
     </div>
 
-    <div class="grid-tips" id="tipsContainer">
-        <!-- tips akan di-generate via JS agar interaksi lebih terstruktur -->
+    <!-- Panel sesi dan preferensi -->
+    <div class="session-panel">
+        <span>🧘 Waktu dalam lingkaran</span>
+        <span class="timer" id="sessionTimer">00:00</span>
+        <button class="reset-pref" id="resetPrefBtn">↻ reset preferensi</button>
     </div>
 
-    <div class="reward-area" id="rewardArea"></div>
-
-    <div class="footer-note">
-        ⚡ Resonance Loop aktif • makin sering berinteraksi, makin personal • setiap 10 klik akan muncul pengingat sehat
+    <!-- Rekomendasi personal dinamis (akan berubah berdasarkan feedback) -->
+    <div class="card" id="tipCard">
+        <h3>📘 Saran asuh hari ini</h3>
+        <div class="tip-text" id="tipText">Mari luangkan 10 menit bermain bersama tanpa gawai. Kehangatan fisik adalah algoritma terbaik anak.</div>
+        <div class="feedback-buttons">
+            <button class="like" id="likeTip">👍 Membantu</button>
+            <button class="dislike" id="dislikeTip">👎 Kurang cocok</button>
+        </div>
     </div>
+
+    <!-- visual reward tambahan: motivasi interaktif -->
+    <div class="card" style="background: #FCF7E8;">
+        <h3>🎁 Hadiah resonansi</h3>
+        <div id="rewardMessage" style="font-size:0.9rem; color:#7A5B2E;">Setiap kali kamu memberi feedback, lingkaran bernyanyi. Semakin terlibat, semakin dalam koneksi kita.</div>
+    </div>
+    <footer>
+        ⚡ Lingkar Asuh Digital • beradaptasi dengan kebiasaanmu • batas sehat 15 menit
+    </footer>
 </div>
 
 <script>
-    // Data tips (digital parenting)
-    const tipsData = [
-        { id: 1, title: "📵 Zona Bebas Gawai", desc: "Matikan notifikasi saat makan malam bersama. Ciptakan ritual pelukan.", category: "batasan", emoji: "⏰" },
-        { id: 2, title: "🎨 Jadwal Kreatif", desc: "Ganti 30 menit screen time dengan menggambar atau bermain peran.", category: "alternatif", emoji: "🎭" },
-        { id: 3, title: "👨‍👩‍👧 Jadilah Role Model", desc: "Anak meniru kita. Tunjukkan kebiasaan digital sehat.", category: "keteladanan", emoji: "🌟" },
-        { id: 4, title: "😴 Rutinitas Tidur Tanpa Layar", desc: "Matikan gawai 1 jam sebelum tidur. Cerita pengantar tidur lebih manis.", category: "batasan", emoji: "🌙" }
+    // ------------------------ RESONANCE LOOP DIGITAL -------------------------
+    // Simulasi algoritma adaptif: membaca preferensi suka/tidak suka, durasi interaksi, 
+    // frekuensi klik canvas, dan menyesuaikan warna, fraktal, serta rekomendasi.
+    // Menggunakan localStorage sebagai memori jangka panjang.
+
+    // Data preferensi user
+    let userProfile = {
+        warmColorPref: 0.5,       // 0=dingin, 1=hangat, diupdate dari feedback
+        complexity: 0.5,          // tingkat kerumitan fraktal (respon terhadap durasi interaksi)
+        tipHistory: [],           // array indeks tip yg disukai
+        sessionStart: Date.now(),
+        totalInteractions: 0,
+        lastTipIndex: 0,
+        restWarningShown: false
+    };
+
+    // Koleksi tips parenting (9 tips, nanti dipersonalisasi)
+    const tipsPool = [
+        "Buat 'keranjang ponsel' keluarga saat makan malam. Semua orang ikut aturan yang sama.",
+        "Ajak anak menyusun jadilah screen time bersama. Rasa kepemilikan membuat mereka disiplin.",
+        "Ganti 30 menit gawai dengan bercerita atau bermain kartu. Dopamin alami lebih kuat.",
+        "Matikan notifikasi aplikasi game selama jam belajar. Lingkungan bebas goda.",
+        "Jadikan zona tidur bebas gawai. Telepon ditinggal di ruang keluarga.",
+        "Tunjukkan contoh: orang tua juga membaca buku fisik di depan anak.",
+        "Setelah 1 jam layar, ajak anak melompat atau regang 5 menit. Reset fokus.",
+        "Buat 'Koin Digital' – anak dapat 30 menit tambahan jika selesaikan PR atau tugas rumah.",
+        "Sabtu pagi tanpa gawai: ganti dengan jalan pagi dan sarapan bersama."
     ];
 
-    // State user preference
-    let points = 0;
-    let interactionHistory = []; // simpan id tips yang di-klik setuju
-    let mode = "calm"; // 'calm' atau 'warm'
-    let totalInteractions = 0;
-    let lastRewardTime = 0;
-
-    // DOM elements
-    const pointsSpan = document.getElementById("pointCounter");
-    const modeLabelSpan = document.getElementById("modeLabel");
-    const favTipBadge = document.getElementById("favTipBadge");
-    const tipsContainer = document.getElementById("tipsContainer");
-    const rewardArea = document.getElementById("rewardArea");
-    const ringDiv = document.getElementById("ringTrigger");
-
-    // Fungsi menampilkan reward visual (variable reward)
-    function showReward(message, variant = "default") {
-        const rewardDiv = document.createElement("div");
-        rewardDiv.className = "reward-bubble";
-        // Variasi reward berdasarkan interaksi
-        const rewardsList = [
-            "✨ +1 Resonansi!", "💖 Koneksi makin erat", "🌈 Lingkaran asuh menguat", 
-            "🧘 Orang tua hebat", "🎯 Tips tersimpan", "🕊️ Harmoni digital", 
-            "🍃 Napas lega", "🌟 Anak bahagia"
-        ];
-        let finalMessage = message;
-        if (!finalMessage) {
-            const randomIdx = Math.floor(Math.random() * rewardsList.length);
-            finalMessage = rewardsList[randomIdx];
-        }
-        rewardDiv.innerText = finalMessage;
-        rewardArea.innerHTML = "";
-        rewardArea.appendChild(rewardDiv);
-        setTimeout(() => {
-            if (rewardDiv.parentNode) rewardDiv.remove();
-        }, 1500);
-    }
-
-    // Efek klik pada cincin (ring) – stimulasi tambahan
-    function animateRingClick() {
-        const ring = document.querySelector(".ring-canvas");
-        ring.style.transform = "scale(0.9)";
-        setTimeout(() => { ring.style.transform = "scale(1)"; }, 150);
-        // variabel reward ring
-        showReward("🔔 Getaran resonansi ...", "ring");
-        // tambah poin kecil
-        addPoints(1, "ring");
-    }
-
-    // Tambah poin dan catat preferensi
-    function addPoints(amount, sourceId = null) {
-        points += amount;
-        pointsSpan.innerText = points;
-        if (sourceId && typeof sourceId === 'number') {
-            interactionHistory.push(sourceId);
-            // update algoritma preferensi tiap 4 interaksi
-            if (interactionHistory.length % 3 === 0) {
-                updatePersonalization();
-            }
-        }
-        // setiap 10 interaksi total, beri peringatan etis
-        totalInteractions++;
-        if (totalInteractions % 10 === 0) {
-            showReward("🧘‍♀️ Jeda sebentar ya, Bunda/Ayah. Napas dalam-dulu ❤️", "mindful");
-        }
-        // batas aman: reset poin tidak, hanya mengingatkan
-    }
-
-    // Algoritma membaca kecenderungan: kategori mana yang paling sering dipilih
-    function updatePersonalization() {
-        if (interactionHistory.length === 0) return;
-        // hitung frekuensi tiap kategori berdasarkan tipsData
-        const catCount = { batasan: 0, alternatif: 0, keteladanan: 0 };
-        interactionHistory.forEach(tipId => {
-            const tip = tipsData.find(t => t.id === tipId);
-            if (tip) catCount[tip.category] = (catCount[tip.category] || 0) + 1;
-        });
-        let maxCat = "batasan";
-        let maxVal = 0;
-        for (let [cat, val] of Object.entries(catCount)) {
-            if (val > maxVal) { maxVal = val; maxCat = cat; }
-        }
-        // Ubah mode warna berdasarkan preferensi kategori
-        // misal: batasan -> tenang (calm), alternatif/keteladanan -> hangat (warm)
-        let newMode = "calm";
-        if (maxCat === "alternatif" || maxCat === "keteladanan") newMode = "warm";
-        else newMode = "calm";
-
-        if (newMode !== mode) {
-            mode = newMode;
-            document.body.classList.remove("calm-mode", "warm-mode");
-            document.body.classList.add(mode === "calm" ? "calm-mode" : "warm-mode");
-            modeLabelSpan.innerText = mode === "calm" ? "Sejuk / Teal" : "Hangat / Oranye";
-            showReward(`🌿 Suasana berubah jadi ${mode === "calm" ? "teduh" : "hangat"} sesuai gayamu`, "mode");
-        }
-        // update badge favorit
-        const favoriteTipId = interactionHistory.length ? interactionHistory[interactionHistory.length-1] : null;
-        const favTip = tipsData.find(t => t.id === favoriteTipId);
-        if (favTip) {
-            favTipBadge.innerHTML = `❤️ Favorit: ${favTip.title.substring(0, 20)}`;
-        } else {
-            favTipBadge.innerHTML = "✨ Terus berinteraksi";
-        }
-        // efek adaptif pada ring: sedikit ubah animasi
-        const ringCanvas = document.querySelector(".ring-canvas");
-        if (mode === "warm") {
-            ringCanvas.style.animation = "pulseRing 1.5s infinite ease-out";
-        } else {
-            ringCanvas.style.animation = "pulseRing 2.2s infinite ease-out";
-        }
-    }
-
-    // Render tips card
-    function renderTips() {
-        tipsContainer.innerHTML = "";
-        tipsData.forEach(tip => {
-            const card = document.createElement("div");
-            card.className = "tip-card";
-            card.innerHTML = `
-                <h3>${tip.emoji} ${tip.title}</h3>
-                <p>${tip.desc}</p>
-                <button class="btn-setuju" data-id="${tip.id}">✅ Terapkan & +2 poin</button>
-            `;
-            tipsContainer.appendChild(card);
-        });
-        // tambah event listener ke semua tombol
-        document.querySelectorAll(".btn-setuju").forEach(btn => {
-            btn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                const tipId = parseInt(btn.getAttribute("data-id"));
-                handleTipInteraction(tipId);
-            });
-        });
-        // tambahkan hover effect untuk setiap card (reward mikro)
-        document.querySelectorAll(".tip-card").forEach(card => {
-            card.addEventListener("mouseenter", () => {
-                // subtle reward saat hover lama? tapi cukup mikro
-                const randomGlow = Math.random() > 0.7 ? "✨" : "";
-                if (randomGlow) {
-                    showReward("🔍 Ada yang menarik perhatianmu?", "hover");
-                }
-            });
-        });
-    }
-
-    function handleTipInteraction(tipId) {
-        const tip = tipsData.find(t => t.id === tipId);
-        if (!tip) return;
-        // tambah poin
-        addPoints(2, tipId);
-        // reward dengan pesan spesifik
-        const rewardMessages = [
-            `👍 Hebat! "${tip.title}" siap diterapkan.`,
-            `🧡 ${tip.emoji} Langkah kecil, kebaikan besar.`,
-            `⭐️ +2 resonansi, keluarga makin harmonis.`,
-            `🎉 Klik lagi untuk memperkuat kebiasaan.`
-        ];
-        const randomMsg = rewardMessages[Math.floor(Math.random() * rewardMessages.length)];
-        showReward(randomMsg);
-        // efek visual pada card yang di klik
-        const targetBtn = document.querySelector(`.btn-setuju[data-id='${tipId}']`);
-        if (targetBtn) {
-            targetBtn.style.transform = "scale(0.95)";
-            setTimeout(() => { if(targetBtn) targetBtn.style.transform = "scale(1)"; }, 150);
-        }
-        // tambahkan "variable reward" tambahan: kadang muncul efek cincin melayang
-        if (Math.random() > 0.6) {
-            const fakeRing = document.createElement("div");
-            fakeRing.style.position = "fixed";
-            fakeRing.style.width = "40px";
-            fakeRing.style.height = "40px";
-            fakeRing.style.borderRadius = "50%";
-            fakeRing.style.border = `2px solid ${getComputedStyle(document.body).getPropertyValue('--accent').trim()}`;
-            fakeRing.style.left = (Math.random() * window.innerWidth - 20) + "px";
-            fakeRing.style.top = (Math.random() * window.innerHeight - 20) + "px";
-            fakeRing.style.pointerEvents = "none";
-            fakeRing.style.animation = "fadePop 0.6s ease-out forwards";
-            document.body.appendChild(fakeRing);
-            setTimeout(() => fakeRing.remove(), 600);
-        }
-    }
-
-    // Load data dari localStorage untuk mempertahankan profil antar sesi
+    // Data riwayat feedback (simulasi bandit)
+    let tipScores = new Array(tipsPool.length).fill(0);  // skor preferensi
+    // inisialisasi dari localStorage
     function loadProfile() {
-        const savedPoints = localStorage.getItem("resonancePoints");
-        const savedHistory = localStorage.getItem("resonanceHistory");
-        const savedMode = localStorage.getItem("resonanceMode");
-        const savedTotal = localStorage.getItem("resonanceTotal");
-        if (savedPoints) points = parseInt(savedPoints) || 0;
-        if (savedHistory) interactionHistory = JSON.parse(savedHistory);
-        if (savedMode) {
-            mode = savedMode;
-            document.body.classList.add(mode === "calm" ? "calm-mode" : "warm-mode");
-            modeLabelSpan.innerText = mode === "calm" ? "Sejuk / Teal" : "Hangat / Oranye";
+        const saved = localStorage.getItem("lingkar_asuh_profile");
+        if(saved) {
+            try {
+                const p = JSON.parse(saved);
+                userProfile.warmColorPref = p.warmColorPref ?? 0.5;
+                userProfile.complexity = p.complexity ?? 0.5;
+                userProfile.totalInteractions = p.totalInteractions ?? 0;
+                tipScores = p.tipScores ?? tipScores;
+                userProfile.lastTipIndex = p.lastTipIndex ?? 0;
+            } catch(e) {}
         }
-        if (savedTotal) totalInteractions = parseInt(savedTotal) || 0;
-        pointsSpan.innerText = points;
-        updatePersonalization(); // sinkronkan badge dan warna
+        // pastikan durasi sesi baru
+        userProfile.sessionStart = Date.now();
+        userProfile.restWarningShown = false;
     }
+
     function saveProfile() {
-        localStorage.setItem("resonancePoints", points);
-        localStorage.setItem("resonanceHistory", JSON.stringify(interactionHistory));
-        localStorage.setItem("resonanceMode", mode);
-        localStorage.setItem("resonanceTotal", totalInteractions);
+        const toStore = {
+            warmColorPref: userProfile.warmColorPref,
+            complexity: userProfile.complexity,
+            totalInteractions: userProfile.totalInteractions,
+            tipScores: tipScores,
+            lastTipIndex: userProfile.lastTipIndex
+        };
+        localStorage.setItem("lingkar_asuh_profile", JSON.stringify(toStore));
     }
 
-    // Auto save tiap perubahan
-    setInterval(() => { saveProfile(); }, 2000);
-    window.addEventListener("beforeunload", () => { saveProfile(); });
-
-    // Event ring klik + bonus harian
-    ringDiv.addEventListener("click", () => {
-        animateRingClick();
-        // jika poin sudah banyak, bisa beri reward berlapis
-        if (points % 7 === 0 && points > 0) {
-            showReward("🎁 Bonus Lingkar! +3 resonansi karena konsisten", "bonus");
-            addPoints(3);
+    // Memilih tip berdasarkan skor (softmax / probabilitas)
+    function selectTipByPreference() {
+        // tambah sedikit eksplorasi (epsilon 0.1)
+        if(Math.random() < 0.1) {
+            const rand = Math.floor(Math.random() * tipsPool.length);
+            userProfile.lastTipIndex = rand;
+            return rand;
         }
+        // pilih indeks dengan skor tertinggi
+        let best = 0;
+        for(let i=1; i<tipScores.length; i++) {
+            if(tipScores[i] > tipScores[best]) best = i;
+        }
+        userProfile.lastTipIndex = best;
+        return best;
+    }
+
+    function updateTipUI() {
+        const idx = selectTipByPreference();
+        document.getElementById("tipText").innerText = tipsPool[idx];
+        // berdasarkan feedback sebelumnya, warna adaptasi juga terpengaruh
+        // kita bisa modifikasi juga canvas
+        drawResonance();
+    }
+
+    // memberikan feedback (like/dislike) yang mengupdate skor & memicu reward dopamin
+    function giveFeedback(isLike) {
+        const currentIdx = userProfile.lastTipIndex;
+        let delta = isLike ? 1.2 : -0.8;
+        tipScores[currentIdx] = Math.min(5, Math.max(-2, tipScores[currentIdx] + delta));
+        // update preferensi warna: jika suka, cenderung ke hangat? sebaliknya ke dingin (efek kecil)
+        if(isLike) {
+            userProfile.warmColorPref = Math.min(1, userProfile.warmColorPref + 0.05);
+        } else {
+            userProfile.warmColorPref = Math.max(0, userProfile.warmColorPref - 0.04);
+        }
+        // tingkat kerumitan naik jika sering interaksi (totalInteractions)
+        userProfile.totalInteractions += 1;
+        userProfile.complexity = Math.min(0.95, userProfile.complexity + 0.02);
+        saveProfile();
+        // TAMPILKAN REWARD VISUAL (dopamin kilau)
+        showRewardToast(isLike ? "✨ Selaras! Lingkaran merespon. +Resonansi ✨" : "🌱 Terima kasih, aku belajar lebih baik. Coba saran lain.");
+        drawResonance();  // update canvas langsung dengan gaya baru
+        // refresh tip mungkin
+        updateTipUI();
+        // cek apakah perlu rekomendasi tambahan
+    }
+
+    function showRewardToast(msg) {
+        const toast = document.createElement('div');
+        toast.className = 'reward-toast';
+        toast.innerText = msg;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 1200);
+        // efek tambahan: getaran ringan (haptic) jika device support
+        if(navigator.vibrate) navigator.vibrate(50);
+    }
+
+    // ------------------------- CANVAS RESONANCE (FRAKTAL DINAMIS) -----------------
+    const canvas = document.getElementById('resonanceCanvas');
+    let ctx = canvas.getContext('2d');
+    let animFrame = null;
+    let timeOffset = 0;
+    let lastTimestamp = 0;
+
+    function resizeCanvas() {
+        const container = canvas.parentElement;
+        const size = Math.min(container.clientWidth, 500);
+        canvas.width = size;
+        canvas.height = size;
+        drawResonance();
+    }
+    window.addEventListener('resize', resizeCanvas);
+
+    function drawResonance() {
+        if(!ctx) return;
+        const w = canvas.width, h = canvas.height;
+        if(w === 0) return;
+        ctx.clearRect(0,0,w,h);
+        const centerX = w/2, centerY = h/2;
+        const maxRadius = Math.min(w,h)*0.42;
+        // Warna berdasarkan preferensi hangat/dingin (warmColorPref 0-1)
+        const rBase = 26 + Math.floor(userProfile.warmColorPref * 80);   // 26 -> 106
+        const gBase = 111 - Math.floor(userProfile.warmColorPref * 40);  // 111 -> 71
+        const bBase = 107 - Math.floor(userProfile.warmColorPref * 50);   // 107 -> 57
+        const color1 = `rgb(${rBase}, ${gBase}, ${bBase})`;
+        const color2 = `rgb(${180 + Math.floor(userProfile.warmColorPref*75)}, ${140 - Math.floor(userProfile.warmColorPref*30)}, ${60 + Math.floor(userProfile.warmColorPref*40)})`;
+        
+        // Jumlah lapisan berubah dengan complexity & interaksi (3 sampai 12)
+        const layers = Math.floor(3 + userProfile.complexity * 9);
+        for(let i=0; i<layers; i++) {
+            const t = i/layers;
+            const radius = maxRadius * (0.3 + t*0.7);
+            // efek gerak halus dari timeOffset (ms)
+            const phase = (Date.now() * 0.002) + i * 1.2;
+            const pulse = 1 + Math.sin(phase) * 0.04 * userProfile.complexity;
+            const rFinal = radius * pulse;
+            // gradien atau solid dengan pattern anyaman
+            const grad = ctx.createLinearGradient(centerX - rFinal, centerY - rFinal, centerX + rFinal, centerY + rFinal);
+            grad.addColorStop(0, color1);
+            grad.addColorStop(1, color2);
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, rFinal, 0, Math.PI*2);
+            ctx.fillStyle = grad;
+            ctx.fill();
+            // motif anyaman / batik: garis radial putus-putus
+            ctx.save();
+            ctx.globalCompositeOperation = 'lighter';
+            ctx.beginPath();
+            const strokeCount = Math.floor(8 + userProfile.complexity * 12);
+            for(let s=0; s<strokeCount; s++) {
+                const angle = (s / strokeCount) * Math.PI * 2 + (Date.now() * 0.0015);
+                const x1 = centerX + (rFinal - 8) * Math.cos(angle);
+                const y1 = centerY + (rFinal - 8) * Math.sin(angle);
+                const x2 = centerX + (rFinal + 4) * Math.cos(angle + 0.1);
+                const y2 = centerY + (rFinal + 4) * Math.sin(angle + 0.1);
+                ctx.beginPath();
+                ctx.moveTo(x1,y1);
+                ctx.lineTo(x2,y2);
+                ctx.lineWidth = 2 + (userProfile.complexity * 3);
+                ctx.strokeStyle = `rgba(255,215,140,0.7)`;
+                ctx.stroke();
+            }
+            ctx.restore();
+        }
+        // titik tengah simbol tangan & hati tipis
+        ctx.font = `${Math.floor(w*0.12)}px "Segoe UI Emoji"`;
+        ctx.fillStyle = "#FFE3B0";
+        ctx.shadowBlur = 8;
+        ctx.fillText("👨‍👩‍👧", centerX-22, centerY+12);
+        ctx.fillText("❤️", centerX+8, centerY-8);
+        ctx.shadowBlur = 0;
+    }
+
+    // animasi loop untuk efek bergerak subtle (agar mata terus tertarik)
+    function animateResonance() {
+        drawResonance();
+        requestAnimationFrame(animateResonance);
+    }
+    animateResonance();
+
+    // interaksi canvas: klik memberi reward kecil & menambah complexity (menstimulasi)
+    canvas.addEventListener('click', (e) => {
+        userProfile.totalInteractions += 1;
+        userProfile.complexity = Math.min(0.95, userProfile.complexity + 0.015);
+        saveProfile();
+        showRewardToast("🌀 Kamu menyentuh lingkaran — resonansi makin dalam!");
+        drawResonance();
+        // sedikit mengubah preferensi warna (random asyik)
+        userProfile.warmColorPref = Math.min(1, Math.max(0, userProfile.warmColorPref + (Math.random()*0.06 - 0.02)));
+        saveProfile();
     });
 
-    // Inisialisasi
-    renderTips();
+    // timer sesi & batasan etis (15 menit = 900 detik)
+    let sessionInterval;
+    function updateSessionTimer() {
+        const elapsedSec = Math.floor((Date.now() - userProfile.sessionStart) / 1000);
+        const mins = Math.floor(elapsedSec / 60);
+        const secs = elapsedSec % 60;
+        document.getElementById('sessionTimer').innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+        if(elapsedSec >= 900 && !userProfile.restWarningShown) {
+            userProfile.restWarningShown = true;
+            showRestModal();
+        }
+    }
+    function showRestModal() {
+        const modalDiv = document.createElement('div');
+        modalDiv.className = 'rest-modal';
+        modalDiv.innerHTML = `
+            <div class="rest-card">
+                🌿 <strong>Waktunya jeda</strong> 🌿<br/>
+                Anda telah berada di Lingkar Asuh selama 15 menit. <br/>
+                Istirahat sejenak, tarik napas, peluk anak Anda.<br/>
+                <button id="restCloseBtn">Lanjut dengan kesadaran</button>
+            </div>
+        `;
+        document.body.appendChild(modalDiv);
+        document.getElementById('restCloseBtn').onclick = () => {
+            modalDiv.remove();
+            // reset timer sesi? tidak, hanya memberi peringatan sekali
+            showRewardToast("Terima kasih telah mindful. Gunakan waktu bersama buah hati.");
+        };
+    }
+
+    // reset preferensi
+    document.getElementById('resetPrefBtn').addEventListener('click', () => {
+        localStorage.removeItem("lingkar_asuh_profile");
+        userProfile = {
+            warmColorPref: 0.5,
+            complexity: 0.5,
+            tipHistory: [],
+            sessionStart: Date.now(),
+            totalInteractions: 0,
+            lastTipIndex: 0,
+            restWarningShown: false
+        };
+        tipScores.fill(0);
+        saveProfile();
+        updateTipUI();
+        drawResonance();
+        showRewardToast("↻ Preferensi direset. Lingkaran kembali ke pelukan awal.");
+    });
+
+    // event feedback
+    document.getElementById('likeTip').addEventListener('click', () => giveFeedback(true));
+    document.getElementById('dislikeTip').addEventListener('click', () => giveFeedback(false));
+
+    // inisialisasi
     loadProfile();
-    // Set default body mode
-    document.body.classList.add("calm-mode");
-    if (mode === "warm") document.body.classList.add("warm-mode");
-    else document.body.classList.add("calm-mode");
-    modeLabelSpan.innerText = mode === "calm" ? "Sejuk / Teal" : "Hangat / Oranye";
-    // Hapus double class
-    if(mode === "warm") document.body.classList.remove("calm-mode");
-    else document.body.classList.remove("warm-mode");
+    resizeCanvas();
+    updateTipUI();
+    drawResonance();
+    sessionInterval = setInterval(updateSessionTimer, 1000);
+    // jaga agar saat keluar profile tersimpan
+    window.addEventListener('beforeunload', () => {
+        saveProfile();
+    });
 </script>
 </body>
 </html>
