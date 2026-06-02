@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Peta Perlindungan Anak Banten + Digital Parenting</title>
+    <!-- Leaflet CSS + JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Quicksand (ceria) + Inter untuk parenting -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #FEF7E6 0%, #FFF0DF 100%);
+            font-family: 'Quicksand', 'Inter', sans-serif;
+            padding-bottom: 70px;
+        }
+
+        /* Header (atas) */
+        .app-header {
+            background: linear-gradient(135deg, #FF9F4A, #FFB347);
+            padding: 18px 20px 14px;
+            text-align: center;
+            color: white;
+            border-bottom-left-radius: 32px;
+            border-bottom-right-radius: 32px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 15;
+        }
+        .app-header h1 {
+            font-size: 1.7rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-shadow: 2px 2px 0 #C13B00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .app-header p {
+            font-size: 0.75rem;
+            background: rgba(0,0,0,0.2);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            margin-top: 6px;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 16px 16px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Hidden class for tabs */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .page.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        /* Map container */
+        .map-container {
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+            border: 3px solid #FFD966;
+            margin-bottom: 20px;
+        }
+        #mapid {
+            height: 350px;
+            width: 100%;
+            background: #FFFAF0;
+        }
+
+        /* Panic & Share buttons */
+        .action-row {
+            display: flex;
+            gap: 14px;
+            margin: 10px 0 5px;
+            flex-wrap: wrap;
+        }
+        .btn-panic, .btn-share {
+            flex: 1;
+            border: none;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 800;
+            border-radius: 60px;
+            padding: 14px 16px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: transform 0.05s linear, box-shadow 0.1s;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+        }
+        .btn-panic:active, .btn-share:active {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 rgba(0,0,0,0.2);
+        }
+        .btn-panic {
+            background: #E63946;
+            color: white;
+        }
+        .btn-share {
+            background: #25D366;
+            color: white;
+        }
+        .info-loc {
+            text-align: center;
+            font-size: 0.7rem;
+            background: #FFF2D7;
+            padding: 8px;
+            border-radius: 30px;
+            margin: 12px 0 0;
+            color: #B45309;
+            font-weight: 600;
+        }
+
+        /* Tab Peta: daftar kab/kota grid */
+        .kabupaten-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 14px;
+            margin-top: 16px;
+        }
+        .kab-card {
+            background: white;
+            border-radius: 28px;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+            border: 1px solid #FFE0A3;
+        }
+        .kab-card h3 {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #C13B00;
+            margin-bottom: 8px;
+        }
+        .kab-card button {
+            background: #FF9F4A;
+            border: none;
+            border-radius: 40px;
+            padding: 8px 12px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            width: 100%;
+            justify-content: center;
+        }
+        .kab-card button:active { transform: scale(0.97); }
+
+        /* SOP & Rujukan styling */
+        .sop-card, .rujukan-card {
+            background: white;
+            border-radius: 32px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+            border-left: 12px solid #FF9F4A;
+        }
+        .totelala {
+            background: #F9D371;
+            border-radius: 36px;
+            padding: 16px;
+            text-align: center;
+            font-weight: 800;
+            margin: 20px 0;
+        }
+        .totelala span {
+            background: #E63946;
+            color: white;
+            border-radius: 50px;
+            padding: 6px 14px;
+            display: inline-block;
+            margin: 4px;
+        }
+        .lembaga-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .lembaga-badge {
+            background: #FFE2B5;
+            border-radius: 60px;
+            padding: 6px 16px;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+        .btn-darurat {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #FF7043;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: white;
+            font-weight: 800;
+            margin: 5px;
+            box-shadow: 0 3px 0 #B23C1A;
+        }
+
+        /* Digital Parenting (Resonansi Keluarga) - diintegrasikan */
+        .parenting-container {
+            background: rgba(255, 255, 250, 0.95);
+            border-radius: 32px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .role-tabs {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: center;
+            margin: 1rem 0 1.2rem;
+            flex-wrap: wrap;
+        }
+        .role-tab {
+            background: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Inter', sans-serif;
+            color: #2D3E3B;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        .role-tab.active {
+            background: #1A6F6B;
+            color: white;
+        }
+        .habit-item {
+            background: white;
+            border-radius: 28px;
+            padding: 0.9rem 1.2rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            border: 1px solid #FFE6CD;
+        }
+        .habit-text {
+            font-weight: 500;
+            font-size: 0.9rem;
+            flex: 1;
+            color: #2D3E3B;
+        }
+        .habit-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        .btn-yes, .btn-no {
+            border: none;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .btn-yes { background: #1A6F6B; color: white; }
+        .btn-yes.active { background: #0E4F4C; box-shadow: 0 0 0 2px #E8B34B; }
+        .btn-no { background: #E9ECEB; color: #5B6E6A; }
+        .btn-no.active { background: #C9CFCC; color: #2D3E3B; box-shadow: 0 0 0 2px #D65C2B; }
+        .score-summary {
+            background: #FEF5E8;
+            border-radius: 32px;
+            padding: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+            gap: 12px;
+            margin: 1rem 0;
+        }
+        .score-card { background: white; border-radius: 28px; padding: 6px; flex: 1; }
+        .score-number { font-weight: 800; font-size: 1.5rem; color: #1A6F6B; }
+        .total-family {
+            background: linear-gradient(115deg, #1A6F6B10, #D65C2B10);
+            border-radius: 32px;
+            padding: 1rem;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        .total-score { font-size: 2rem; font-weight: 800; color: #D65C2B; }
+        .insight-box {
+            background: white;
+            border-radius: 32px;
+            padding: 1rem;
+            border-left: 8px solid #E8B34B;
+            margin-top: 1rem;
+        }
+        .reset-btn {
+            background: #EDE5D6;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 40px;
+            font-weight: 600;
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+        .glow { animation: glowPop 0.5s ease; }
+        @keyframes glowPop {
+            0% { transform: scale(1); background-color: #FFF3E0; }
+            70% { transform: scale(1.01); box-shadow: 0 0 0 6px rgba(232,179,75,0.3); }
+            100% { transform: scale(1); }
+        }
+
+        /* Bottom Navigation Fixed */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #FFFFFFF2;
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 8px 12px 14px;
+            border-top: 1px solid #FFD58C;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+            z-index: 20;
+            max-width: 600px;
+            margin: 0 auto;
+            border-radius: 32px 32px 0 0;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 0.7rem;
+            color: #A1612C;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 30px;
+        }
+        .nav-item i { font-size: 1.4rem; }
+        .nav-item.active { color: #E63946; background: #FFF0E0; }
+        footer {
+            text-align: center;
+            font-size: 0.65rem;
+            padding: 16px;
+            color: #A15100;
+            margin-top: 16px;
+        }
+        @media (max-width: 480px) {
+            .app-header h1 { font-size: 1.3rem; }
+            .kabupaten-grid { grid-template-columns: 1fr 1fr; }
+            .habit-item { flex-direction: column; align-items: stretch; }
+            .habit-buttons { justify-content: flex-end; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-header">
+    <h1><i class="fas fa-map-marked-alt"></i> PETA PERLINDUNGAN ANAK BANTEN</h1>
+    <p><i class="fas fa-child"></i> #SahabatAnakBanten | Digital Parenting + Perlindungan</p>
+</div>
+
+<div class="main-content">
+    <!-- Halaman Beranda (Home) : Peta + Panic Button + Share -->
+    <div id="homePage" class="page active">
+        <div class="map-container">
+            <div id="mapid"></div>
+        </div>
+        <div class="action-row">
+            <button id="panicButton" class="btn-panic"><i class="fas fa-exclamation-triangle"></i> PANIC BUTTON</button>
+            <button id="shareWaButton" class="btn-share"><i class="fab fa-whatsapp"></i> SHARE LOKASI</button>
+        </div>
+        <div class="info-loc" id="locationStatus">
+            <i class="fas fa-info-circle"></i> Klik Panic Button → Titik merah di lokasimu | Tap marker ibukota
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px;">
+            <span style="background:#FFE0B5; border-radius: 40px; padding: 4px 12px; font-size:0.7rem;">🏙️ Kota Cilegon</span>
+            <span style="background:#FFE0B5; border-radius: 40px; padding: 4px 12px; font-size:0.7rem;">🏙️ Kota Serang</span>
+            <span style="background:#FFE0B5; border-radius: 40px; padding: 4px 12px; font-size:0.7rem;">🏙️ Kab. Serang</span>
+            <span style="background:#FFE0B5; border-radius: 40px; padding: 4px 12px; font-size:0.7rem;">🏙️ Kab. Tangerang</span>
+            <span style="background:#FFE0B5; border-radius: 40px; padding: 4px 12px; font-size:0.7rem;">🏙️ Kota Tangerang</span>
+            <span style="background:#FFE0B5; border-radius: 40px; padding: 4px 12px; font-size:0.7rem;">🏙️ Kota Tangsel</span>
+            <span style="background:#FFE0B5; border-radius: 40px; padding: 4px 12px; font-size:0.7rem;">🏙️ Kab. Pandeglang</span>
+            <span style="background:#FFE0B5; border-radius: 40px; padding: 4px 12px; font-size:0.7rem;">🏙️ Kab. Lebak</span>
+        </div>
+    </div>
+
+    <!-- Halaman Peta (Daftar Kab/Kota dengan tombol lembaga) -->
+    <div id="petaPage" class="page">
+        <h2 style="font-size:1.4rem; margin-bottom: 8px;"><i class="fas fa-city"></i> 8 Kabupaten/Kota Banten</h2>
+        <p style="margin-bottom: 12px;">Klik tombol di bawah untuk menghubungi lembaga perlindungan anak setempat (UPTD PPA / Layanan Darurat).</p>
+        <div id="kabupatenList" class="kabupaten-grid"></div>
+        <div class="info-loc" style="margin-top: 20px;">
+            <i class="fas fa-phone-alt"></i> Setiap kabupaten memiliki nomor layanan pendampingan khusus
+        </div>
+    </div>
+
+    <!-- Halaman SOP & Panduan -->
+    <div id="sopPage" class="page">
+        <div class="sop-card">
+            <h3><i class="fas fa-hands-helping"></i> Langkah & SOP Keselamatan Anak</h3>
+            <p><strong>Jika mengalami kekerasan (fisik, seksual, bullying):</strong></p>
+            <ul style="margin-left: 20px; margin-top: 8px;">
+                <li>1️⃣ Jangan diam! Kamu berhak dilindungi.</li>
+                <li>2️⃣ Segera menuju tempat aman (rumah, kantor desa, sekolah).</li>
+                <li>3️⃣ Lakukan <strong>TOTELALA</strong> dan laporkan ke orang dewasa terpercaya.</li>
+                <li>4️⃣ Catat kejadian dan minta pendampingan ke lembaga rujukan.</li>
+            </ul>
+        </div>
+        <div class="totelala">
+            <i class="fas fa-bullhorn"></i> TOTELALA <i class="fas fa-running"></i><br>
+            <span>Tolak</span> <span>Teriak</span> <span>Lari</span> <span>Lapor</span>
+            <div style="font-size:0.85rem; margin-top: 8px;">✨ Berani tolak, teriak minta tolong, lari ke keramaian, dan lapor ke pihak berwenang ✨</div>
+        </div>
+        <div class="sop-card">
+            <h3><i class="fas fa-shield-alt"></i> Lembaga Rujukan Provinsi Banten</h3>
+            <div class="lembaga-list">
+                <span class="lembaga-badge">Komnas Perlindungan Anak</span>
+                <span class="lembaga-badge">UPTD PPA</span>
+                <span class="lembaga-badge">Unit PPA Polres/Polda</span>
+                <span class="lembaga-badge">PATBM</span>
+                <span class="lembaga-badge">Forum Anak Daerah</span>
+            </div>
+            <p>Hubungi <strong>Hotline Sahabat Anak 129</strong> atau WA <strong>0811-1129-129</strong> untuk pendampingan cepat.</p>
+        </div>
+    </div>
+
+    <!-- Halaman Rujukan (kontak lengkap) -->
+    <div id="rujukanPage" class="page">
+        <div class="rujukan-card">
+            <h3><i class="fas fa-phone-volume"></i> Nomor Darurat & Layanan 24 Jam</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0;">
+                <a href="tel:129" class="btn-darurat"><i class="fas fa-phone-alt"></i> 129 (Hotline Anak)</a>
+                <a href="https://wa.me/628111129129?text=Halo%2C%20saya%20membutuhkan%20bantuan%20perlindungan%20anak%20di%20Banten." target="_blank" class="btn-darurat" style="background:#128C7E;"><i class="fab fa-whatsapp"></i> WA 08111129129</a>
+            </div>
+            <hr style="margin: 16px 0;">
+            <h4>Lembaga Rujukan Nasional & Daerah</h4>
+            <ul style="margin-left: 20px;">
+                <li><strong>Komnas Perlindungan Anak</strong> - Pengaduan Nasional: 021-31901586</li>
+                <li><strong>UPTD PPA Provinsi Banten</strong> - Layanan terpadu</li>
+                <li><strong>Unit PPA Polres Tangerang Selatan</strong> - Call 110</li>
+                <li><strong>PATBM</strong> - kontak kelurahan setempat</li>
+                <li><strong>Forum Anak Banten</strong> - Edukasi sebaya</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Halaman Digital Parenting (Resonansi Keluarga) -->
+    <div id="parentingPage" class="page">
+        <div class="parenting-container">
+            <div style="text-align: center; margin-bottom: 8px;">
+                <i class="fas fa-circle-nodes" style="font-size: 2rem; color: #D65C2B;"></i>
+                <h3 style="margin-top: 4px;">Resonansi Keluarga</h3>
+                <p style="font-size: 0.75rem;">lingkar asuh digital · pilih kebiasaan baik bersama</p>
+            </div>
+            <div class="role-tabs" id="parentingRoleTabs">
+                <button class="role-tab" data-role="ayah"><i class="fas fa-user"></i> Ayah</button>
+                <button class="role-tab" data-role="bunda"><i class="fas fa-heart"></i> Bunda</button>
+                <button class="role-tab" data-role="anak"><i class="fas fa-child"></i> Anak</button>
+            </div>
+            <div id="habitsList" class="habits-container"></div>
+            <div class="score-summary" id="scoreSummary">
+                <div class="score-card"><i class="fas fa-user"></i><div class="score-number" id="ayahScore">0</div><div>/7</div></div>
+                <div class="score-card"><i class="fas fa-heart"></i><div class="score-number" id="bundaScore">0</div><div>/7</div></div>
+                <div class="score-card"><i class="fas fa-child"></i><div class="score-number" id="anakScore">0</div><div>/7</div></div>
+            </div>
+            <div class="total-family">
+                <div style="font-weight:600;">🌟 Total Kebiasaan Baik Keluarga</div>
+                <div class="total-score" id="totalFamilyScore">0</div>
+                <div style="font-size:0.7rem;">dari 21 kebiasaan</div>
+            </div>
+            <div class="insight-box" id="insightBox">
+                <div class="insight-title"><i class="fas fa-brain"></i> Insight Keluarga</div>
+                <p id="insightText">Pilih kebiasaan yang sudah dilakukan. Semakin lengkap, semakin personal rekomendasi.</p>
+            </div>
+            <button class="reset-btn" id="resetParentingBtn"><i class="fas fa-undo-alt"></i> Reset Semua Pilihan</button>
+        </div>
+    </div>
+
+    <!-- Halaman Akun (tentang) -->
+    <div id="akunPage" class="page">
+        <div class="rujukan-card">
+            <h3><i class="fas fa-heart"></i> Tentang Aplikasi</h3>
+            <p>Aplikasi ini membantu anak dan keluarga di Banten mengakses peta perlindungan, panic button, serta membangun kebiasaan digital yang sehat.</p>
+            <p><strong>Fitur Unggulan:</strong><br>📍 Peta interaktif 8 kab/kota<br>🚨 Panic Button (titik merah lokasi HP)<br>📲 Share lokasi via WA ke 08111129129<br>📞 Nomor darurat & lembaga pendampingan<br>🧠 Digital Parenting (Resonansi Keluarga)</p>
+            <div style="text-align: center; margin-top: 20px;">
+                <i class="fas fa-shield-alt" style="font-size: 40px; color:#FF9F4A;"></i>
+                <p style="margin-top: 12px;">Dipersembahkan dengan penuh cinta dari <strong>Komnas Perlindungan Anak Provinsi Banten</strong></p>
+            </div>
+        </div>
+        <footer style="background: none; padding: 10px;">© 2026 - Sahabat Anak Banten | Digital Parenting Terintegrasi</footer>
+    </div>
+</div>
+
+<!-- Bottom Navigation -->
+<div class="bottom-nav">
+    <button class="nav-item active" data-tab="home"><i class="fas fa-home"></i><span>Beranda</span></button>
+    <button class="nav-item" data-tab="peta"><i class="fas fa-map"></i><span>Peta</span></button>
+    <button class="nav-item" data-tab="sop"><i class="fas fa-book-open"></i><span>SOP</span></button>
+    <button class="nav-item" data-tab="rujukan"><i class="fas fa-address-book"></i><span>Rujukan</span></button>
+    <button class="nav-item" data-tab="parenting"><i class="fas fa-chalkboard-user"></i><span>Parenting</span></button>
+    <button class="nav-item" data-tab="akun"><i class="fas fa-user"></i><span>Akun</span></button>
+</div>
+
+<script>
+    // ======================== DATA 8 KABUPATEN/KOTA UNTUK PETA & KONTAK ========================
+    const cities = [
+        { name: "Kota Serang", lat: -6.1188, lng: 106.1502, desc: "Ibu Kota Provinsi" },
+        { name: "Kab. Serang", lat: -6.2580, lng: 106.2190, desc: "Ibukota Ciruas" },
+        { name: "Kota Cilegon", lat: -6.0121, lng: 106.0250, desc: "Kota Industri" },
+        { name: "Kab. Pandeglang", lat: -6.3140, lng: 106.1050, desc: "Ibukota Pandeglang" },
+        { name: "Kab. Lebak", lat: -6.5190, lng: 106.2490, desc: "Ibukota Rangkasbitung" },
+        { name: "Kab. Tangerang", lat: -6.2660, lng: 106.4610, desc: "Ibukota Tigaraksa" },
+        { name: "Kota Tangerang", lat: -6.1780, lng: 106.6310, desc: "Kota Tangerang" },
+        { name: "Kota Tangerang Selatan", lat: -6.2830, lng: 106.7170, desc: "Tangsel" }
+    ];
+    const kontakPerKab = {
+        "Kota Serang": { wa: "628123456789", tel: "0254-123456", lembaga: "UPTD PPA Kota Serang" },
+        "Kab. Serang": { wa: "628123456790", tel: "0254-654321", lembaga: "UPTD PPA Kab. Serang" },
+        "Kota Cilegon": { wa: "628123456791", tel: "0254-111222", lembaga: "UPTD PPA Cilegon" },
+        "Kab. Pandeglang": { wa: "628123456792", tel: "0253-333444", lembaga: "UPTD PPA Pandeglang" },
+        "Kab. Lebak": { wa: "628123456793", tel: "0252-555666", lembaga: "UPTD PPA Lebak" },
+        "Kab. Tangerang": { wa: "628123456794", tel: "021-5566778", lembaga: "UPTD PPA Kab. Tangerang" },
+        "Kota Tangerang": { wa: "628123456795", tel: "021-5566779", lembaga: "UPTD PPA Kota Tangerang" },
+        "Kota Tangerang Selatan": { wa: "628123456796", tel: "021-7564321", lembaga: "UPTD PPA Tangsel" }
+    };
+
+    // =========================== INISIALISASI PETA (Beranda) ==========================
+    let map = L.map('mapid').setView([-6.3, 106.2], 9.5);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> & CartoDB',
+        subdomains: 'abcd',
+        maxZoom: 18
+    }).addTo(map);
+    cities.forEach(city => {
+        const customIcon = L.divIcon({
+            html: `<div style="background:#FFB347; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border:2px solid white;"><i class="fas fa-landmark" style="color:#5D2E00; font-size:14px;"></i></div>`,
+            iconSize: [32,32], popupAnchor: [0,-16]
+        });
+        L.marker([city.lat, city.lng], { icon: customIcon }).addTo(map)
+            .bindPopup(`<b>${city.name}</b><br>${city.desc}<br><i class="fas fa-phone-alt"></i> Layanan: ${kontakPerKab[city.name]?.lembaga || "UPTD PPA"}`);
+    });
+    map.fitBounds(L.latLngBounds(cities.map(c => [c.lat, c.lng])).pad(0.2));
+
+    // Panic Button & Share Location
+    let userLocationMarker = null;
+    let lastKnownLocation = null;
+    const WA_NATIONAL = '628111129129';
+    function showToastMessage(msg) {
+        const statusDiv = document.getElementById('locationStatus');
+        if(statusDiv) statusDiv.innerHTML = `<i class="fas fa-info-circle"></i> ${msg}`;
+        setTimeout(() => { if(statusDiv) statusDiv.innerHTML = `<i class="fas fa-info-circle"></i> Klik Panic Button → Titik merah di lokasimu | Tap marker ibukota`; }, 3500);
+    }
+    async function getLocation(options) {
+        return new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, options));
+    }
+    document.getElementById('panicButton')?.addEventListener('click', async () => {
+        const btn = document.getElementById('panicButton');
+        btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Mengambil lokasi...';
+        btn.disabled = true;
+        if (!navigator.geolocation) { alert("GPS tidak didukung."); btn.disabled=false; return; }
+        try {
+            const pos = await getLocation({ enableHighAccuracy: true, timeout: 10000 });
+            const { latitude: lat, longitude: lng } = pos.coords;
+            if (userLocationMarker) map.removeLayer(userLocationMarker);
+            userLocationMarker = L.circleMarker([lat, lng], { color: "#E63946", fillColor: "#FF4D4D", fillOpacity: 0.9, radius: 16, weight: 3 }).addTo(map);
+            userLocationMarker.bindPopup("<b style='color:#E63946'>🚨 LOKASI DARURAT</b><br>Tekan SHARE untuk mengirim lokasi.").openPopup();
+            map.flyTo([lat, lng], 13);
+            lastKnownLocation = { lat, lng };
+            showToastMessage("✅ Titik merah muncul! Gunakan SHARE jika perlu.");
+        } catch(err) { alert("Gagal ambil lokasi. Periksa izin GPS."); }
+        btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> PANIC BUTTON';
+        btn.disabled = false;
+    });
+    document.getElementById('shareWaButton')?.addEventListener('click', async () => {
+        const shareBtn = document.getElementById('shareWaButton');
+        shareBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Mengambil lokasi...';
+        shareBtn.disabled = true;
+        let lat = lastKnownLocation?.lat, lng = lastKnownLocation?.lng;
+        if (!lat && navigator.geolocation) {
+            try { const pos = await getLocation({ timeout: 8000 }); lat = pos.coords.latitude; lng = pos.coords.longitude; lastKnownLocation = { lat, lng }; } catch(e) {}
+        }
+        let message = `Halo Tim Perlindungan Anak Banten, saya butuh bantuan! 🙏\n\n`;
+        if(lat && lng) message += `📍 Lokasi: https://www.google.com/maps?q=${lat},${lng}\n(Lat:${lat}, Lng:${lng})\n\n`;
+        else message += `📍 (Lokasi tidak dapat diakses otomatis) Saya memerlukan pendampingan.\n\n`;
+        message += `Saya menggunakan Peta Perlindungan Anak Banten. Mohon panduan. #SahabatAnakBanten`;
+        window.open(`https://wa.me/${WA_NATIONAL}?text=${encodeURIComponent(message)}`, '_blank');
+        shareBtn.innerHTML = '<i class="fab fa-whatsapp"></i> SHARE LOKASI';
+        shareBtn.disabled = false;
+        showToastMessage("Pesan darurat dibuka di WhatsApp.");
+    });
+
+    // ======================== TAB PETA: Daftar Kab/Kota dengan tombol kontak ========================
+    const kabContainer = document.getElementById('kabupatenList');
+    if(kabContainer) {
+        cities.forEach(city => {
+            const kontak = kontakPerKab[city.name];
+            const card = document.createElement('div'); card.className = 'kab-card';
+            card.innerHTML = `<h3><i class="fas fa-map-marker-alt"></i> ${city.name}</h3>
+            <button class="contact-lembaga" data-wa="${kontak.wa}" data-lembaga="${kontak.lembaga}" data-name="${city.name}"><i class="fab fa-whatsapp"></i> Hubungi Lembaga</button>`;
+            kabContainer.appendChild(card);
+        });
+        document.querySelectorAll('.contact-lembaga').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const wa = btn.getAttribute('data-wa');
+                const name = btn.getAttribute('data-name');
+                const pesan = `Halo, saya dari ${name}. Saya membutuhkan bantuan perlindungan anak. Mohon arahkan. Terima kasih.`;
+                window.open(`https://wa.me/${wa}?text=${encodeURIComponent(pesan)}`, '_blank');
+            });
+        });
+    }
+
+    // ======================== DIGITAL PARENTING (Resonansi Keluarga) ========================
+    const habitsLibrary = {
+        ayah: ["Mengajak anak bermain tanpa gawai minimal 30 menit", "Menyepakati jadwal penggunaan gadget bersama", "Tidak membawa ponsel ke meja makan", "Memberi contoh membaca buku di depan anak", "Mendampingi anak saat menonton konten digital", "Membuat aturan 'jam tidur tanpa layar'", "Aktif bertanya tentang aktivitas online anak"],
+        bunda: ["Menciptakan zona bebas gadget di ruang keluarga", "Mengajak anak memasak tanpa interupsi notifikasi", "Mendiskusikan batasan screen time", "Memberi pujian saat anak bermain fisik", "Memeriksa aplikasi yang diinstall anak", "Menjadwalkan quality time tanpa teknologi", "Menjadi pendengar aktif saat anak bercerita"],
+        anak: ["Mematikan notifikasi HP saat belajar", "Meminta izin orang tua sebelum unduh aplikasi", "Mengajak orang tua bermain board game", "Tidak menggunakan gadget saat makan bersama", "Membantu orang tua mengatur timer gawai", "Memberitahu orang tua jika ada konten tidak pantas", "Menaruh ponsel di keranjang digital sebelum tidur"]
+    };
+    let habitsStatus = { ayah: new Array(7).fill(false), bunda: new Array(7).fill(false), anak: new Array(7).fill(false) };
+    let currentParentRole = "ayah";
+    function loadParentingData() {
+        const saved = localStorage.getItem("resonansi_keluarga_banten");
+        if(saved) { try { const p = JSON.parse(saved); if(p.habitsStatus) habitsStatus = p.habitsStatus; } catch(e){} }
+        updateAllScores();
+        renderHabitsList();
+    }
+    function saveParentingData() { localStorage.setItem("resonansi_keluarga_banten", JSON.stringify({ habitsStatus })); }
+    function getScore(role) { return habitsStatus[role].filter(v=>v===true).length; }
+    function updateAllScores() {
+        document.getElementById("ayahScore").innerText = getScore("ayah");
+        document.getElementById("bundaScore").innerText = getScore("bunda");
+        document.getElementById("anakScore").innerText = getScore("anak");
+        const total = getScore("ayah")+getScore("bunda")+getScore("anak");
+        document.getElementById("totalFamilyScore").innerText = total;
+        let insight = "";
+        if(total===21) insight="🎉 Luar biasa! Keluarga Anda telah menerapkan semua kebiasaan baik. Pertahankan!";
+        else if(total>=15) insight="✨ Keluarga sangat sadar digital! Fokus pada kebiasaan yang belum.";
+        else if(total>=8) insight="🌱 Bagus, sudah setengah jalan! Ajak diskusi kebiasaan yang masih 'Belum'.";
+        else if(total>=3) insight="💪 Awal yang baik! Mulai dari kebiasaan sederhana seperti makan tanpa gawai.";
+        else insight="👋 Selamat datang! Pilih 'Sudah' pada kebiasaan yang telah dilakukan keluarga.";
+        document.getElementById("insightText").innerHTML = insight;
+        document.querySelector(".total-score")?.classList.add("glow");
+        setTimeout(()=>document.querySelector(".total-score")?.classList.remove("glow"),500);
+    }
+    function setHabitStatus(role, idx, val) {
+        if(habitsStatus[role][idx] !== val) {
+            habitsStatus[role][idx] = val;
+            saveParentingData();
+            updateAllScores();
+            renderHabitsList();
+        }
+    }
+    function renderHabitsList() {
+        const container = document.getElementById("habitsList");
+        if(!container) return;
+        const habitsArray = habitsLibrary[currentParentRole];
+        const statusArray = habitsStatus[currentParentRole];
+        let html = `<div style="margin-bottom:0.8rem; font-weight:600;"><i class="fas fa-list-check"></i> 7 Kebiasaan untuk ${currentParentRole === 'ayah' ? 'Ayah' : currentParentRole === 'bunda' ? 'Bunda' : 'Anak'}</div>`;
+        for(let i=0;i<habitsArray.length;i++) {
+            const isDone = statusArray[i];
+            html += `<div class="habit-item" data-idx="${i}">
+                        <div class="habit-text">${habitsArray[i]}</div>
+                        <div class="habit-buttons">
+                            <button class="btn-yes ${isDone ? 'active' : ''}" data-choice="yes" data-idx="${i}"><i class="fas fa-check-circle"></i> Sudah</button>
+                            <button class="btn-no ${!isDone ? 'active' : ''}" data-choice="no" data-idx="${i}"><i class="fas fa-times-circle"></i> Belum</button>
+                        </div>
+                     </div>`;
+        }
+        container.innerHTML = html;
+        container.querySelectorAll('.habit-item').forEach(item => {
+            const idx = parseInt(item.dataset.idx);
+            item.querySelector('.btn-yes')?.addEventListener('click', () => { setHabitStatus(currentParentRole, idx, true); item.classList.add('glow'); setTimeout(()=>item.classList.remove('glow'),300); });
+            item.querySelector('.btn-no')?.addEventListener('click', () => { setHabitStatus(currentParentRole, idx, false); item.classList.add('glow'); setTimeout(()=>item.classList.remove('glow'),300); });
+        });
+    }
+    function switchParentRole(role) {
+        currentParentRole = role;
+        document.querySelectorAll('#parentingRoleTabs .role-tab').forEach(tab => {
+            if(tab.getAttribute('data-role')===role) tab.classList.add('active');
+            else tab.classList.remove('active');
+        });
+        renderHabitsList();
+    }
+    document.querySelectorAll('#parentingRoleTabs .role-tab').forEach(btn => {
+        btn.addEventListener('click', () => switchParentRole(btn.getAttribute('data-role')));
+    });
+    document.getElementById("resetParentingBtn")?.addEventListener('click', () => {
+        if(confirm("Reset semua pilihan kebiasaan?")) {
+            habitsStatus = { ayah: new Array(7).fill(false), bunda: new Array(7).fill(false), anak: new Array(7).fill(false) };
+            saveParentingData();
+            updateAllScores();
+            renderHabitsList();
+        }
+    });
+    loadParentingData();
+    switchParentRole("ayah");
+
+    // ======================== BOTTOM NAVIGATION (Tab Switching) ========================
+    const pages = {
+        home: document.getElementById('homePage'),
+        peta: document.getElementById('petaPage'),
+        sop: document.getElementById('sopPage'),
+        rujukan: document.getElementById('rujukanPage'),
+        parenting: document.getElementById('parentingPage'),
+        akun: document.getElementById('akunPage')
+    };
+    const navBtns = document.querySelectorAll('.nav-item');
+    function switchTab(tabId) {
+        Object.keys(pages).forEach(id => { if(pages[id]) pages[id].classList.remove('active'); });
+        if(pages[tabId]) pages[tabId].classList.add('active');
+        navBtns.forEach(btn => {
+            btn.classList.remove('active');
+            if(btn.getAttribute('data-tab') === tabId) btn.classList.add('active');
+        });
+        if(tabId === 'home' && map) setTimeout(() => map.invalidateSize(), 200);
+        if(tabId === 'parenting') { updateAllScores(); renderHabitsList(); }
+    }
+    navBtns.forEach(btn => { btn.addEventListener('click', () => switchTab(btn.getAttribute('data-tab'))); });
+    setTimeout(() => map.invalidateSize(), 300);
+</script>
+</body>
+</html>
