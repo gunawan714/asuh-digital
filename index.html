@@ -2,9 +2,10 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Rumah Resonansi · Keluarga Digital Seimbang</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>Resonansi Keluarga · Asesmen Digital Parenting</title>
+    <!-- Font & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -12,428 +13,514 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            background: linear-gradient(145deg, #F9F3E2 0%, #FFF5E8 100%);
-            font-family: 'Inter', 'Plus Jakarta Sans', sans-serif;
-            color: #2D3E3B;
-            padding: 1.5rem;
+            background: linear-gradient(135deg, #F9F3E2 0%, #FEE9D6 100%);
+            font-family: 'Inter', sans-serif;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .app-container {
-            max-width: 1200px;
+
+        /* Main card */
+        .app-card {
+            max-width: 650px;
+            width: 100%;
             margin: 0 auto;
-            background: rgba(255, 255, 245, 0.9);
+            background: rgba(255, 255, 245, 0.96);
             backdrop-filter: blur(2px);
             border-radius: 48px;
-            padding: 1.8rem;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.3s ease;
         }
-        .resonance-header {
+
+        .header {
+            background: #1A6F6B;
+            padding: 1.8rem 1.5rem;
             text-align: center;
-            margin-bottom: 2rem;
+            color: white;
         }
-        .logo {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            background: #E8B34B20;
-            padding: 0.5rem 1.2rem;
-            border-radius: 100px;
-        }
-        .logo i { font-size: 2rem; color: #D65C2B; }
-        h1 {
-            font-size: 1.9rem;
+
+        .header h1 {
+            font-size: 1.8rem;
             font-weight: 700;
-            background: linear-gradient(135deg, #1A6F6B, #D65C2B);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .role-selector {
+            letter-spacing: -0.5px;
             display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 1rem;
+            gap: 12px;
             flex-wrap: wrap;
-            margin: 2rem 0 1rem;
         }
-        .role-btn {
-            background: white;
-            border: none;
-            padding: 0.8rem 1.6rem;
-            border-radius: 60px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            transition: all 0.2s;
+
+        .header h1 i {
+            font-size: 2rem;
+            color: #E8B34B;
         }
-        .role-btn.active {
-            background: #1A6F6B;
-            color: white;
-        }
-        .resonance-card {
-            background: white;
-            border-radius: 36px;
-            padding: 1.8rem;
-            margin: 1.5rem 0;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
-        }
-        .tips-container {
-            background: #FEF8EE;
-            padding: 1.5rem;
-            border-radius: 28px;
-            border-left: 6px solid #D65C2B;
-        }
-        .action-btn {
-            background: #D65C2B;
-            border: none;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-weight: 600;
-            margin-top: 1rem;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .family-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-        .family-card {
-            background: #FFFFFFCC;
-            backdrop-filter: blur(4px);
-            padding: 1rem;
-            border-radius: 28px;
-            text-align: center;
-            border: 1px solid #FFE5C4;
-        }
-        .progress-badge {
-            background: #1A6F6B20;
-            padding: 4px 10px;
-            border-radius: 40px;
-            display: inline-block;
+
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
             margin-top: 8px;
-            font-size: 0.8rem;
         }
-        .participated {
-            color: #1A6F6B;
-            font-size: 0.7rem;
-            margin-top: 6px;
+
+        .progress-container {
+            padding: 1rem 1.5rem;
+            background: #FFF4E6;
+            border-bottom: 1px solid #FFE0B5;
         }
-        .family-insight {
-            background: linear-gradient(115deg, #E8F0ED, #FFF2E2);
-            border-radius: 32px;
-            padding: 1.5rem;
-            margin: 1.8rem 0;
-            text-align: center;
+
+        .step-info {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #5B6E6A;
+            margin-bottom: 8px;
         }
-        .btn-family {
-            background: #1A6F6B;
-            color: white;
-            padding: 12px 28px;
+
+        .progress-bar-bg {
+            background: #E0D6C8;
+            border-radius: 40px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #D65C2B;
+            width: 0%;
+            height: 100%;
+            border-radius: 40px;
+            transition: width 0.3s ease;
+        }
+
+        .content {
+            padding: 1.8rem 1.5rem;
+        }
+
+        .role-badge {
+            background: #F0E3D0;
+            display: inline-block;
+            padding: 6px 16px;
             border-radius: 60px;
-            border: none;
-            font-weight: 700;
-            margin: 0.5rem;
-            cursor: pointer;
-        }
-        .btn-reset {
-            background: #E8B34B;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            font-size: 0.9rem;
             color: #2D3E3B;
         }
-        .glow {
-            animation: softGlow 0.6s ease;
+
+        .role-badge i {
+            margin-right: 6px;
+            color: #D65C2B;
         }
-        @keyframes softGlow {
-            0% { box-shadow: 0 0 0 0 #E8B34B; }
-            70% { box-shadow: 0 0 0 12px rgba(232,179,75,0.3); }
+
+        .question-item {
+            background: #FFFFFF;
+            border-radius: 28px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            border: 1px solid #FFEFDD;
+            transition: all 0.2s;
         }
+
+        .question-text {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: #2D3E3B;
+            line-height: 1.4;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-choice {
+            flex: 1;
+            padding: 10px 0;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #F4F0EA;
+            color: #4A5C58;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-choice.active-sudah {
+            background: #1A6F6B;
+            color: white;
+            box-shadow: 0 4px 10px rgba(26,111,107,0.3);
+        }
+
+        .btn-choice.active-belum {
+            background: #D65C2B;
+            color: white;
+            box-shadow: 0 4px 10px rgba(214,92,43,0.25);
+        }
+
+        .btn-choice i {
+            font-size: 1rem;
+        }
+
+        .btn-next {
+            background: #D65C2B;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 60px;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-top: 1.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-next:disabled {
+            background: #CBBBA8;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn-reset {
+            background: transparent;
+            border: 1px solid #D65C2B;
+            color: #D65C2B;
+            margin-top: 12px;
+        }
+
+        .result-container {
+            background: #FEF8EE;
+            border-radius: 28px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .score-circle {
+            background: #1A6F6B;
+            width: 100px;
+            height: 100px;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-weight: 800;
+            font-size: 2.2rem;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+        }
+
+        .insight-text {
+            line-height: 1.5;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .detail-breakdown {
+            background: #FFF;
+            border-radius: 24px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .family-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #F0E3D0;
+        }
+
+        @media (max-width: 500px) {
+            .app-card {
+                border-radius: 32px;
+            }
+            .content {
+                padding: 1.2rem;
+            }
+            .question-text {
+                font-size: 0.95rem;
+            }
+        }
+
         footer {
             text-align: center;
-            margin-top: 2rem;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
+            padding: 1rem;
+            color: #9E8D78;
+            border-top: 1px solid #F0E3D0;
         }
-        @media (max-width: 640px) {
-            body { padding: 1rem; }
-            .app-container { padding: 1rem; }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
-<div class="app-container" id="app">
-    <div class="resonance-header">
-        <div class="logo"><i class="fas fa-circle-nodes"></i><h1>Rumah Resonansi</h1></div>
-        <p class="sub">lingkar asuh digital · ayah, bunda, anak membangun kebiasaan bersama</p>
+<div class="app-card" id="app">
+    <div class="header">
+        <h1><i class="fas fa-circle-nodes"></i> Resonansi Keluarga</h1>
+        <p>Asesmen Digital Parenting · Ayah, Bunda & Anak</p>
     </div>
 
-    <div class="role-selector">
-        <button class="role-btn" data-role="ayah"><i class="fas fa-user-check"></i> Ayah</button>
-        <button class="role-btn" data-role="bunda"><i class="fas fa-hands-helping"></i> Bunda</button>
-        <button class="role-btn" data-role="anak"><i class="fas fa-child"></i> Anak</button>
+    <div class="progress-container" id="progressArea">
+        <div class="step-info">
+            <span id="stepLabel">Langkah 1 dari 3</span>
+            <span id="roleName">Ayah</span>
+        </div>
+        <div class="progress-bar-bg"><div class="progress-fill" id="progressFill"></div></div>
     </div>
 
-    <div class="resonance-card" id="resonanceCard">
-        <div class="greeting" id="dynamicGreeting"><i class="fas fa-leaf"></i> <span>Halo Keluarga!</span></div>
-        <div class="tips-container">
-            <div class="tips-text" id="dynamicTip">Pilih peran dan mulai kebiasaan baik bersama.</div>
-            <button class="action-btn" id="actionRewardBtn"><i class="fas fa-check-circle"></i> Saya sudah lakukan ini</button>
-            <div id="rewardMessage" class="reward-feedback" style="margin-top:0.8rem; font-size:0.9rem;"></div>
-        </div>
+    <div class="content" id="mainContent">
+        <!-- Dynamic content will be injected -->
     </div>
-
-    <!-- Status partisipasi keluarga -->
-    <div class="family-grid">
-        <div class="family-card" id="ayahCard">
-            <i class="fas fa-fist-raised"></i><h3>Ayah</h3>
-            <div class="progress-badge" id="ayahCount">0 poin</div>
-            <div class="participated" id="ayahStatus">⚪ belum beraksi</div>
-        </div>
-        <div class="family-card" id="bundaCard">
-            <i class="fas fa-heart"></i><h3>Bunda</h3>
-            <div class="progress-badge" id="bundaCount">0 poin</div>
-            <div class="participated" id="bundaStatus">⚪ belum beraksi</div>
-        </div>
-        <div class="family-card" id="anakCard">
-            <i class="fas fa-smile"></i><h3>Anak</h3>
-            <div class="progress-badge" id="anakCount">0 poin</div>
-            <div class="participated" id="anakStatus">⚪ belum beraksi</div>
-        </div>
-    </div>
-
-    <!-- Bagian akumulasi skor & insight keluarga -->
-    <div class="family-insight" id="familyInsightArea">
-        <i class="fas fa-chalkboard-user" style="font-size:2rem; color:#D65C2B;"></i>
-        <h3 style="margin: 0.5rem 0;">✨ Evaluasi Keluarga ✨</h3>
-        <div id="familyScoreDisplay"><strong>Total skor keluarga: 0</strong><br>(setiap klik = 1 kebiasaan positif)</div>
-        <button id="calculateFamilyBtn" class="btn-family"><i class="fas fa-chart-simple"></i> Lihat Rekomendasi Parenting</button>
-        <div id="familyAdvice" style="margin-top: 1rem; font-size: 1rem; line-height: 1.4; background: white; border-radius: 28px; padding: 1rem; text-align: left; display: none;">
-            <!-- Insight dinamis akan muncul di sini -->
-        </div>
-        <button id="resetFamilyBtn" class="btn-family btn-reset"><i class="fas fa-undo-alt"></i> Reset Semua Data Keluarga</button>
-    </div>
-    <footer><i class="fas fa-mobile-alt"></i> Resonance Loop · makin sering digunakan, makin personal rekomendasi untuk keluarga Anda</footer>
+    <footer>
+        <i class="fas fa-mobile-alt"></i> Setiap pilihan membantu keluarga menemukan keseimbangan digital
+    </footer>
 </div>
 
 <script>
-    // ======================= STATE & RESONANCE LOOP =======================
-    let state = {
-        activeRole: "ayah",
-        interactionCount: { ayah: 0, bunda: 0, anak: 0 },
-        lastTipGiven: {},
-        preferredCategories: { ayah: "kontrol", bunda: "komunikasi", anak: "kreatif" }
-    };
-
-    const tipsLibrary = {
+    // ----- DATA PERNYATAAN UNTUK SETIAP PERAN -----
+    const questionsData = {
         ayah: [
-            "Ajak anak bermain board game tanpa gawai 30 menit. Ayah jadi role model!",
-            "Buat 'kontrak digital' keluarga: berapa lama main game di akhir pekan.",
-            "Pasang ponsel di ruang tamu saat jam belajar anak.",
-            "Ceritakan pengalaman ayah saat kecil tanpa gadget."
+            "Saya membatasi waktu layar anak maksimal 2 jam per hari.",
+            "Saya bermain atau bercengkerama dengan anak tanpa gadget setiap hari.",
+            "Saya memberi contoh dengan tidak menggunakan ponsel saat makan malam.",
+            "Saya dan anak membuat kesepakatan penggunaan gawai bersama."
         ],
         bunda: [
-            "Ajak anak memasak bersama tanpa ponsel di dapur.",
-            "Buat jurnal kebahagiaan digital: tulis 1 hal menyenangkan tanpa layar.",
-            "Jadi detektif gadget: diskusikan aplikasi favorit anak dan batasi waktu.",
-            "Pujilah anak saat memilih bermain di luar daripada scrolling."
+            "Saya mendampingi anak saat menggunakan internet untuk belajar.",
+            "Saya mengajak anak melakukan aktivitas fisik di luar rumah tanpa layar.",
+            "Saya menetapkan 'zona bebas gadget' di kamar tidur anak.",
+            "Saya rutin berdiskusi dengan anak tentang konten digital yang sehat."
         ],
         anak: [
-            "Ajakin orang tua main ular tangga — lebih seru dari YouTube!",
-            "Bantu orang tua matikan notifikasi HP saat makan malam.",
-            "Tantangan 1 jam nonton, 1 jam baca buku. Yuk lakukan!",
-            "Ajarkan ayah/bunda satu lagu baru tanpa lihat layar."
+            "Saya mematikan notifikasi HP saat belajar atau tidur.",
+            "Saya bermain di luar atau membaca buku tanpa minta gawai.",
+            "Saya memberi tahu orang tua jika melihat hal yang aneh di internet.",
+            "Saya membantu mengingatkan orang tua untuk tidak terlalu lama main HP."
         ]
     };
 
-    function loadState() {
-        const saved = localStorage.getItem("resonance_parenting_v2");
-        if (saved) {
-            try {
-                const parsed = JSON.parse(saved);
-                state.interactionCount = parsed.interactionCount || { ayah:0, bunda:0, anak:0 };
-                state.preferredCategories = parsed.preferredCategories || { ayah:"kontrol", bunda:"komunikasi", anak:"kreatif" };
-                state.activeRole = parsed.activeRole || "ayah";
-                state.lastTipGiven = parsed.lastTipGiven || {};
-            } catch(e) {}
-        }
-        updateUI();
-    }
+    // State aplikasi
+    let currentRoleIndex = 0;      // 0: ayah, 1: bunda, 2: anak
+    const roles = ["ayah", "bunda", "anak"];
+    // Menyimpan jawaban: { ayah: [boolean], bunda: [boolean], anak: [boolean] }
+    let answers = {
+        ayah: new Array(questionsData.ayah.length).fill(null),
+        bunda: new Array(questionsData.bunda.length).fill(null),
+        anak: new Array(questionsData.anak.length).fill(null)
+    };
 
-    function persistState() {
-        const toStore = {
-            interactionCount: state.interactionCount,
-            preferredCategories: state.preferredCategories,
-            activeRole: state.activeRole,
-            lastTipGiven: state.lastTipGiven
-        };
-        localStorage.setItem("resonance_parenting_v2", JSON.stringify(toStore));
-    }
+    // Fungsi untuk merender tampilan kuesioner peran saat ini
+    function renderCurrentRole() {
+        const roleKey = roles[currentRoleIndex];
+        const questions = questionsData[roleKey];
+        const currentAnswers = answers[roleKey];
+        const roleDisplayName = roleKey === "ayah" ? "Ayah" : (roleKey === "bunda" ? "Bunda" : "Anak");
+        const stepNumber = currentRoleIndex + 1;
 
-    function getAdaptiveTip(role) {
-        let tips = tipsLibrary[role] || tipsLibrary.ayah;
-        let last = state.lastTipGiven[role] ?? -1;
-        let interaction = state.interactionCount[role] || 0;
-        let newIdx;
-        if (interaction % 3 === 0 && interaction > 0 && state.preferredCategories[role]) {
-            let keyword = state.preferredCategories[role];
-            let filtered = tips.filter(t => t.toLowerCase().includes(keyword.toLowerCase()));
-            if (filtered.length) {
-                let rand = Math.floor(Math.random() * filtered.length);
-                newIdx = tips.indexOf(filtered[rand]);
-            } else {
-                do { newIdx = Math.floor(Math.random() * tips.length); } while(newIdx === last && tips.length>1);
-            }
-        } else {
-            do { newIdx = Math.floor(Math.random() * tips.length); } while(newIdx === last && tips.length>1);
-        }
-        state.lastTipGiven[role] = newIdx;
-        persistState();
-        return tips[newIdx];
-    }
+        // Update progress bar & label
+        document.getElementById("stepLabel").innerText = `Langkah ${stepNumber} dari 3`;
+        document.getElementById("roleName").innerHTML = `<i class="fas ${roleKey === 'ayah' ? 'fa-user-check' : (roleKey === 'bunda' ? 'fa-hands-helping' : 'fa-child')}"></i> ${roleDisplayName}`;
+        const progressPercent = (stepNumber / 3) * 100;
+        document.getElementById("progressFill").style.width = `${progressPercent}%`;
 
-    function updateUI() {
-        const role = state.activeRole;
-        document.querySelectorAll('.role-btn').forEach(btn => {
-            if(btn.getAttribute('data-role') === role) btn.classList.add('active');
-            else btn.classList.remove('active');
-        });
-        const greetMap = { ayah: "Ayah, panutan digital keluarga ✨", bunda: "Bunda, sentuhan hangatmu mengatur keseimbangan 🕊️", anak: "Anak hebat, agen perubahan positif! 🌟" };
-        document.querySelector("#dynamicGreeting span").innerText = greetMap[role] || "Keluarga bahagia";
-        document.getElementById("dynamicTip").innerText = getAdaptiveTip(role);
-        // Update jumlah poin per role
-        document.getElementById("ayahCount").innerText = state.interactionCount.ayah + " poin";
-        document.getElementById("bundaCount").innerText = state.interactionCount.bunda + " poin";
-        document.getElementById("anakCount").innerText = state.interactionCount.anak + " poin";
-        // Status partisipasi (sudah pernah klik atau belum)
-        document.getElementById("ayahStatus").innerHTML = state.interactionCount.ayah > 0 ? "✅ sudah beraksi" : "⚪ belum beraksi";
-        document.getElementById("bundaStatus").innerHTML = state.interactionCount.bunda > 0 ? "✅ sudah beraksi" : "⚪ belum beraksi";
-        document.getElementById("anakStatus").innerHTML = state.interactionCount.anak > 0 ? "✅ sudah beraksi" : "⚪ belum beraksi";
-        // Total skor sementara di bagian bawah
-        let total = state.interactionCount.ayah + state.interactionCount.bunda + state.interactionCount.anak;
-        document.getElementById("familyScoreDisplay").innerHTML = `<strong>Total skor keluarga: ${total}</strong><br>(setiap klik = 1 kebiasaan positif)`;
-    }
-
-    function giveReward() {
-        const role = state.activeRole;
-        state.interactionCount[role]++;
-        // Update preferensi sederhana
-        if(role === "ayah" && state.interactionCount[role] % 4 === 0) state.preferredCategories.ayah = "kontrol";
-        if(role === "bunda" && state.interactionCount[role] % 3 === 0) state.preferredCategories.bunda = "komunikasi";
-        if(role === "anak" && state.interactionCount[role] % 2 === 0) state.preferredCategories.anak = "kreatif";
-        persistState();
-        const card = document.getElementById("resonanceCard");
-        card.classList.add("glow");
-        setTimeout(() => card.classList.remove("glow"), 600);
-        const rewardDiv = document.getElementById("rewardMessage");
-        const rewards = ["✨ +1 kebiasaan baik! Dopamin keluarga meningkat ✨","🎉 Hebat! Algoritma makin memahami keluarga Anda","💖 Resonance bertambah! Coba lihat rekomendasi keluarga","🌟 Setiap langkah kecil membangun lingkungan digital sehat"];
-        rewardDiv.innerHTML = `<i class="fas fa-star"></i> ${rewards[Math.floor(Math.random()*rewards.length)]}`;
-        setTimeout(() => rewardDiv.innerHTML = "", 2500);
-        updateUI();
-    }
-
-    // ========== FITUR AKUMULASI SKOR & INSIGHT KELUARGA ==========
-    function getFamilyInsight() {
-        const ayahPoin = state.interactionCount.ayah;
-        const bundaPoin = state.interactionCount.bunda;
-        const anakPoin = state.interactionCount.anak;
-        const total = ayahPoin + bundaPoin + anakPoin;
-        let advice = "";
-        let judul = "";
-
-        if (total === 0) {
-            judul = "🌱 Mulai petualangan digital parenting";
-            advice = "Belum ada kebiasaan yang tercatat. Ajak Ayah, Bunda, dan Anak masing-masing klik 'Saya sudah lakukan ini' pada tips yang relevan. Setiap klik membangun resonansi positif!";
-        } else {
-            // Analisis keseimbangan
-            const allActive = (ayahPoin > 0 && bundaPoin > 0 && anakPoin > 0);
-            const dominan = (ayahPoin > bundaPoin && ayahPoin > anakPoin) ? "ayah" : (bundaPoin > anakPoin ? "bunda" : (anakPoin > 0 ? "anak" : "seimbang"));
-            
-            if (allActive) {
-                judul = "🎉 Keluarga Seimbang! Luar biasa!";
-                advice = "Ayah, Bunda, dan Anak sama-sama berkontribusi membangun kebiasaan digital sehat. Rekomendasi: adakan 'Family Screen-Free Night' setiap Jumat. Lakukan aktivasi resonansi dengan saling memberi apresiasi. ";
-                if (total > 10) advice += "Dengan skor keluarga di atas 10, Anda sudah membangun fondasi kuat. Pertahankan dengan rutin mengecek mikro-tips di sini!";
-                else advice += "Terus tingkatkan kuantitas kebiasaan kecil setiap hari — semakin sering, ikatan keluarga makin erat.";
-            } else {
-                judul = "📊 Potensi Penguatan Keluarga";
-                let kurang = [];
-                if (ayahPoin === 0) kurang.push("Ayah");
-                if (bundaPoin === 0) kurang.push("Bunda");
-                if (anakPoin === 0) kurang.push("Anak");
-                advice = `Masih ada yang belum aktif: ${kurang.join(", ")}. Ajak mereka memilih peran dan melakukan aksi sederhana. `;
-                if (dominan === "ayah") advice += "Ayah sudah cukup aktif. Coba Ayah mengajak anak dan bunda melakukan kebiasaan bersama seperti makan malam tanpa gawai.";
-                else if (dominan === "bunda") advice += "Bunda menjadi motor perubahan. Libatkan Ayah untuk memberi teladan aturan penggunaan gawai.";
-                else if (dominan === "anak") advice += "Anak luar biasa! Orang tua bisa mengikuti semangat anak dengan membuat tantangan keluarga '1 jam kreatif tanpa layar'.";
-                advice += " Saran utama: Mulai dengan satu kebiasaan baru setiap minggu dan catat di sini.";
-            }
-            // Tambahan rekomendasi berdasarkan total skor
-            if (total >= 8 && total < 15) {
-                advice += " Skor keluarga cukup baik. Tingkatkan dengan aktivitas kolaboratif: memasak bersama atau bercerita tanpa gadget.";
-            } else if (total >= 15) {
-                advice += " Skor keluarga sangat tinggi! Kalian panutan digital parenting. Bagikan pengalaman ke keluarga lain untuk memperkuat komunitas.";
-            }
-        }
-        return { judul, advice };
-    }
-
-    function showFamilyReport() {
-        const insightDiv = document.getElementById("familyAdvice");
-        const { judul, advice } = getFamilyInsight();
-        const totalSkor = state.interactionCount.ayah + state.interactionCount.bunda + state.interactionCount.anak;
-        const htmlContent = `
-            <div style="display:flex; flex-direction:column; gap:12px;">
-                <h4><i class="fas fa-hand-sparkles"></i> ${judul}</h4>
-                <p><strong>🏆 Akumulasi Skor Keluarga : ${totalSkor} poin</strong><br>
-                👨 Ayah: ${state.interactionCount.ayah} poin &nbsp;| 👩 Bunda: ${state.interactionCount.bunda} poin &nbsp;| 🧒 Anak: ${state.interactionCount.anak} poin</p>
-                <div style="background:#E8F0ED; padding:12px; border-radius:24px;">
-                    <i class="fas fa-lightbulb"></i> <strong>Rekomendasi Digital Parenting:</strong><br> ${advice}
+        // Bangun HTML
+        let html = `<div class="role-badge"><i class="fas fa-pen-fancy"></i> ${roleDisplayName}, jawab jujur ya</div>`;
+        questions.forEach((q, idx) => {
+            const selectedVal = currentAnswers[idx];
+            let sudahActive = (selectedVal === true) ? 'active-sudah' : '';
+            let belumActive = (selectedVal === false) ? 'active-belum' : '';
+            html += `
+                <div class="question-item" data-qidx="${idx}">
+                    <div class="question-text">${q}</div>
+                    <div class="button-group">
+                        <button class="btn-choice ${sudahActive}" data-choice="sudah" data-qidx="${idx}">
+                            <i class="fas fa-check-circle"></i> SUDAH
+                        </button>
+                        <button class="btn-choice ${belumActive}" data-choice="belum" data-qidx="${idx}">
+                            <i class="fas fa-times-circle"></i> BELUM
+                        </button>
+                    </div>
                 </div>
-                <small style="color:#5B6E6A;">*Insight ini dihasilkan berdasarkan pilihan dan interaksi unik keluarga Anda. Semakin sering menggunakan, semakin personal saran yang muncul.</small>
-            </div>
-        `;
-        insightDiv.innerHTML = htmlContent;
-        insightDiv.style.display = "block";
-        insightDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }
-
-    function resetAllData() {
-        if(confirm("Reset seluruh data keluarga? Semua poin dan preferensi akan dihapus.")) {
-            state.interactionCount = { ayah: 0, bunda: 0, anak: 0 };
-            state.preferredCategories = { ayah: "kontrol", bunda: "komunikasi", anak: "kreatif" };
-            state.lastTipGiven = {};
-            state.activeRole = "ayah";
-            persistState();
-            updateUI();
-            document.getElementById("familyAdvice").style.display = "none";
-            document.getElementById("rewardMessage").innerHTML = "";
-            // efek glow pada container
-            document.querySelector(".family-insight").classList.add("glow");
-            setTimeout(() => document.querySelector(".family-insight").classList.remove("glow"), 500);
+            `;
+        });
+        // Tombol lanjut
+        const allAnswered = currentAnswers.every(v => v !== null);
+        html += `<button class="btn-next" id="nextBtn" ${!allAnswered ? 'disabled' : ''}>
+                    <i class="fas fa-arrow-right"></i> ${currentRoleIndex === 2 ? 'Lihat Hasil Keluarga' : 'Simpan & Lanjut'}
+                 </button>`;
+        if (currentRoleIndex > 0 || (currentRoleIndex === 0 && Object.values(answers).some(r => r.some(v=>v!==null)))) {
+            // tambah tombol reset opsional? nanti di bagian hasil saja
         }
-    }
+        document.getElementById("mainContent").innerHTML = html;
 
-    // Event binding
-    function bindEvents() {
-        document.querySelectorAll('.role-btn').forEach(btn => {
+        // Attach event listeners untuk tombol pilihan
+        document.querySelectorAll('.btn-choice').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const role = btn.getAttribute('data-role');
-                state.activeRole = role;
-                persistState();
-                updateUI();
-                document.getElementById("rewardMessage").innerHTML = "";
+                const qIdx = parseInt(btn.getAttribute('data-qidx'));
+                const choice = btn.getAttribute('data-choice');
+                const isSudah = (choice === 'sudah');
+                // update state answers
+                answers[roleKey][qIdx] = isSudah;
+                // re-render untuk update visual tombol aktif
+                renderCurrentRole();
             });
         });
-        document.getElementById("actionRewardBtn").addEventListener("click", () => giveReward());
-        document.getElementById("calculateFamilyBtn").addEventListener("click", () => showFamilyReport());
-        document.getElementById("resetFamilyBtn").addEventListener("click", () => resetAllData());
+
+        // Tombol lanjut
+        const nextBtn = document.getElementById('nextBtn');
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                // Pastikan semua sudah dijawab (tapi tombol disabled jika belum, tetap cek)
+                const currentAns = answers[roleKey];
+                if (currentAns.every(v => v !== null)) {
+                    if (currentRoleIndex === 2) {
+                        // Tampilkan hasil akhir
+                        showFinalResult();
+                    } else {
+                        // Pindah ke role berikutnya
+                        currentRoleIndex++;
+                        renderCurrentRole();
+                    }
+                } else {
+                    alert("Harap jawab semua pernyataan dengan SUDAH atau BELUM terlebih dahulu.");
+                }
+            });
+        }
     }
 
-    loadState();
-    bindEvents();
-    updateUI();
+    // Fungsi hitung skor total dan breakdown
+    function computeScores() {
+        let totalCorrect = 0;
+        let totalMax = 0;
+        let perRoleScore = { ayah: 0, bunda: 0, anak: 0 };
+        let perRoleMax = { ayah: questionsData.ayah.length, bunda: questionsData.bunda.length, anak: questionsData.anak.length };
+        
+        for (let role of roles) {
+            let roleAnswers = answers[role];
+            let roleScore = 0;
+            for (let i = 0; i < roleAnswers.length; i++) {
+                if (roleAnswers[i] === true) roleScore++;
+            }
+            perRoleScore[role] = roleScore;
+            totalCorrect += roleScore;
+            totalMax += perRoleMax[role];
+        }
+        return { totalCorrect, totalMax, perRoleScore, perRoleMax };
+    }
+
+    // Generate insight berdasarkan skor dan pola jawaban
+    function generateInsight(totalScore, maxScore, perRoleScore) {
+        const percentage = (totalScore / maxScore) * 100;
+        let insightMain = "";
+        let recommendation = "";
+
+        if (percentage >= 75) {
+            insightMain = "🌟 Luar biasa! Keluarga Anda sudah memiliki fondasi digital parenting yang kuat. Anak merasa diperhatikan dan batasan teknologi berjalan sehat.";
+            recommendation = "💡 Pertahankan kebiasaan baik ini. Coba adakan 'Family Digital Day' seminggu sekali tanpa gawai sama sekali, dan ajak anak berbagi cerita tentang dunia online mereka.";
+        } else if (percentage >= 50) {
+            insightMain = "🌱 Keluarga Anda di jalur yang baik, tetapi masih ada ruang untuk meningkatkan konsistensi. Beberapa kebiasaan digital perlu diperkuat bersama.";
+            recommendation = "💡 Mulai dari satu komitmen kecil: misalnya '15 menit quality time tanpa layar sebelum tidur'. Libatkan anak membuat aturan main gadget.";
+        } else if (percentage >= 25) {
+            insightMain = "⚠️ Keluarga Anda menghadapi tantangan signifikan dalam keseimbangan digital. Tidak apa-apa, ini awal perubahan positif.";
+            recommendation = "💡 Prioritaskan 2-3 kebiasaan sederhana: jadwalkan makan malam tanpa HP, dan diskusikan dengan anak tentang durasi bermain game. Libatkan Ayah & Bunda secara bergantian.";
+        } else {
+            insightMain = "🛡️ Keluarga Anda sangat membutuhkan intervensi ramah dalam digital parenting. Jangan khawatir, banyak keluarga yang memulai dari sini.";
+            recommendation = "💡 Mulai dengan 'zona bebas gadget' di meja makan selama 30 menit setiap hari. Gunakan timer visual untuk anak. Ayah dan Bunda harus menjadi teladan pertama.";
+        }
+
+        // Tambahan spesifik per peran
+        let roleAdvice = "";
+        if (perRoleScore.ayah < (questionsData.ayah.length / 2)) roleAdvice += "👨‍👧 Ayah: coba tingkatkan keteladanan dalam membatasi gawai. ";
+        if (perRoleScore.bunda < (questionsData.bunda.length / 2)) roleAdvice += "👩‍👦 Bunda: diskusi rutin tentang konten digital sangat membantu. ";
+        if (perRoleScore.anak < (questionsData.anak.length / 2)) roleAdvice += "🧒 Anak: ajak orang tua membuat jadibelajar-bermain bersama! ";
+
+        return { insightMain, recommendation, roleAdvice };
+    }
+
+    function showFinalResult() {
+        const { totalCorrect, totalMax, perRoleScore } = computeScores();
+        const { insightMain, recommendation, roleAdvice } = generateInsight(totalCorrect, totalMax, perRoleScore);
+        
+        const roleNames = { ayah: "Ayah", bunda: "Bunda", anak: "Anak" };
+        let breakdownHtml = `<div class="detail-breakdown"><h4 style="margin-bottom:12px;"><i class="fas fa-chart-simple"></i> Skor per Peran</h4>`;
+        for (let role of roles) {
+            let score = perRoleScore[role];
+            let maxQ = questionsData[role].length;
+            let percent = Math.round((score/maxQ)*100);
+            breakdownHtml += `
+                <div class="family-row">
+                    <span><i class="fas ${role === 'ayah' ? 'fa-user' : (role === 'bunda' ? 'fa-female' : 'fa-child')}"></i> ${roleNames[role]}</span>
+                    <span><strong>${score}/${maxQ}</strong> (${percent}%)</span>
+                </div>
+            `;
+        }
+        breakdownHtml += `</div>`;
+
+        const totalPercent = Math.round((totalCorrect/totalMax)*100);
+        const resultHtml = `
+            <div class="result-container">
+                <div class="score-circle">
+                    ${totalCorrect}/${totalMax}
+                </div>
+                <div style="text-align:center; font-weight:600; margin-bottom:4px;">Skor Keluarga: ${totalPercent}%</div>
+                <div class="insight-text">
+                    <p>${insightMain}</p>
+                    <p style="margin-top:12px; background:#FFF0E0; padding:10px; border-radius:24px;">${recommendation}</p>
+                    ${roleAdvice ? `<p style="margin-top:12px;"><i class="fas fa-lightbulb"></i> ${roleAdvice}</p>` : ''}
+                </div>
+                ${breakdownHtml}
+                <button class="btn-next" id="resetAllBtn" style="background:#1A6F6B; margin-top:20px;">
+                    <i class="fas fa-sync-alt"></i> Mulai Asesmen Ulang
+                </button>
+            </div>
+        `;
+
+        document.getElementById("mainContent").innerHTML = resultHtml;
+        // Sembunyikan progress bar atau tidak perlu? Biar tetap tapi opsional
+        document.getElementById("progressFill").style.width = "100%";
+        document.getElementById("stepLabel").innerHTML = "Selesai";
+        document.getElementById("roleName").innerHTML = "Hasil Keluarga";
+        
+        // event reset
+        const resetBtn = document.getElementById("resetAllBtn");
+        if (resetBtn) {
+            resetBtn.addEventListener("click", () => {
+                // reset semua state
+                answers = {
+                    ayah: new Array(questionsData.ayah.length).fill(null),
+                    bunda: new Array(questionsData.bunda.length).fill(null),
+                    anak: new Array(questionsData.anak.length).fill(null)
+                };
+                currentRoleIndex = 0;
+                renderCurrentRole();
+                // reset progress fill ke 0
+                document.getElementById("progressFill").style.width = "0%";
+            });
+        }
+    }
+
+    // Inisialisasi
+    renderCurrentRole();
 </script>
 </body>
 </html>
