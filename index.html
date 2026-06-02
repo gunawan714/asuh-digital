@@ -15,214 +15,92 @@
     
     <style>
         /* ======================== RESET & GLOBAL ======================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             background: linear-gradient(145deg, #FEF7E6 0%, #FFF0DF 100%);
-            font-family: 'Inter', sans-serif; /* Font body standar untuk keterbacaan tinggi */
-            color: #2D3E3B;
-            padding-bottom: 85px; /* Jarak aman untuk bottom nav */
-            line-height: 1.5;
+            font-family: 'Inter', sans-serif; color: #2D3E3B; padding-bottom: 85px; line-height: 1.5;
         }
-
-        h1, h2, h3, h4, .font-quicksand {
-            font-family: 'Quicksand', sans-serif;
-        }
+        h1, h2, h3, h4, .font-quicksand { font-family: 'Quicksand', sans-serif; }
 
         /* ======================== HEADER ======================== */
         .app-header {
-            background: linear-gradient(135deg, #FF9F4A, #FFB347);
-            padding: 20px 20px 16px;
-            text-align: center;
-            color: white;
-            border-bottom-left-radius: 32px;
-            border-bottom-right-radius: 32px;
-            box-shadow: 0 6px 16px rgba(193, 59, 0, 0.15);
-            position: sticky;
-            top: 0;
-            z-index: 15;
+            background: linear-gradient(135deg, #FF9F4A, #FFB347); padding: 20px 20px 16px;
+            text-align: center; color: white; border-bottom-left-radius: 32px; border-bottom-right-radius: 32px;
+            box-shadow: 0 6px 16px rgba(193, 59, 0, 0.15); position: sticky; top: 0; z-index: 15;
         }
+        .app-header h1 { font-size: 1.6rem; font-weight: 800; text-shadow: 1px 1px 0 #C13B00; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .app-header p { font-size: 0.8rem; background: rgba(0,0,0,0.15); display: inline-block; padding: 6px 14px; border-radius: 50px; margin-top: 8px; font-weight: 500; }
 
-        .app-header h1 {
-            font-size: 1.6rem;
-            font-weight: 800;
-            text-shadow: 1px 1px 0 #C13B00;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .app-header p {
-            font-size: 0.8rem;
-            background: rgba(0,0,0,0.15);
-            display: inline-block;
-            padding: 6px 14px;
-            border-radius: 50px;
-            margin-top: 8px;
-            font-weight: 500;
-        }
-
-        .main-content {
-            padding: 20px 16px 20px;
-            max-width: 600px; /* Lebar maksimal untuk tablet/desktop agar tetap seperti mobile */
-            margin: 0 auto;
-        }
-
-        .page {
-            display: none;
-            animation: fadeIn 0.4s ease;
-        }
+        .main-content { padding: 20px 16px 20px; max-width: 600px; margin: 0 auto; }
+        .page { display: none; animation: fadeIn 0.4s ease; }
         .page.active { display: block; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px);}
-            to { opacity: 1; transform: translateY(0);}
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px);} to { opacity: 1; transform: translateY(0);} }
 
         /* ======================== KARTU & KOMPONEN ======================== */
-        .card {
-            background: white;
-            border-radius: 32px;
-            padding: 24px 20px;
-            margin-bottom: 24px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-            border: 1px solid rgba(255, 159, 74, 0.2);
-        }
-
-        /* Edukasi Orang Tua (UX Copywriting) */
-        .parent-advice {
-            background: #EFF8FA;
-            border-left: 6px solid #1E5A74;
-            padding: 16px;
-            border-radius: 0 16px 16px 0;
-            margin-bottom: 24px;
-            font-size: 0.85rem;
-            color: #1E3B4A;
-        }
-        .parent-advice strong {
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1rem;
-            color: #0A2F44;
-            display: block;
-            margin-bottom: 6px;
-        }
+        .card { background: white; border-radius: 32px; padding: 24px 20px; margin-bottom: 24px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06); border: 1px solid rgba(255, 159, 74, 0.2); }
+        .parent-advice { background: #EFF8FA; border-left: 6px solid #1E5A74; padding: 16px; border-radius: 0 16px 16px 0; margin-bottom: 24px; font-size: 0.85rem; color: #1E3B4A; }
+        .parent-advice strong { font-family: 'Quicksand', sans-serif; font-size: 1rem; color: #0A2F44; display: block; margin-bottom: 6px; }
 
         /* Map */
-        .map-container {
-            border-radius: 28px;
-            overflow: hidden;
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-            border: 4px solid #FFD966;
-            margin-bottom: 24px;
-        }
+        .map-container { border-radius: 28px; overflow: hidden; box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1); border: 4px solid #FFD966; margin-bottom: 24px; }
         #mapid { height: 380px; width: 100%; background: #FFFAF0; }
 
         /* Buttons Global */
-        .btn {
-            border: none;
-            border-radius: 50px;
-            padding: 16px 20px;
-            font-size: 1rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Quicksand', sans-serif;
-            width: 100%;
-        }
+        .btn { border: none; border-radius: 50px; padding: 16px 20px; font-size: 1rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.2s; font-family: 'Quicksand', sans-serif; width: 100%; }
         .btn:active { transform: translateY(2px); }
-
         .action-row { display: flex; gap: 12px; margin-bottom: 12px; }
         .btn-panic { background: #E63946; color: white; flex: 1; box-shadow: 0 6px 0 #B22222; }
         .btn-share { background: #25D366; color: white; flex: 1; box-shadow: 0 6px 0 #1B9C4B; }
-        
-        .info-badge {
-            text-align: center;
-            font-size: 0.75rem;
-            background: #FFF2D7;
-            padding: 10px;
-            border-radius: 30px;
-            color: #B45309;
-            font-weight: 600;
-        }
+        .info-badge { text-align: center; font-size: 0.75rem; background: #FFF2D7; padding: 10px; border-radius: 30px; color: #B45309; font-weight: 600; }
 
         /* ======================== TAB KALKULATOR ======================== */
         .form-group { margin-bottom: 20px; }
-        .form-group label {
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #1E3B4A;
-            margin-bottom: 10px;
-        }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 16px;
-            border-radius: 20px;
-            border: 2px solid #E2EDF2;
-            font-size: 1rem;
-            font-family: inherit;
-            background: #FAFDFF;
-            transition: border-color 0.3s;
-        }
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: #1E5A74;
-            background: white;
-        }
+        .form-group label { font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; color: #1E3B4A; margin-bottom: 10px; }
+        .form-group input, .form-group select { width: 100%; padding: 16px; border-radius: 20px; border: 2px solid #E2EDF2; font-size: 1rem; font-family: inherit; background: #FAFDFF; transition: border-color 0.3s; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: #1E5A74; background: white; }
         .toggle-group { display: flex; gap: 10px; }
-        .toggle-btn {
-            background: #F1F5F9; border: none; padding: 14px 20px; border-radius: 30px;
-            font-size: 0.9rem; font-weight: 600; color: #64748B; cursor: pointer; flex: 1; transition: 0.3s;
-        }
+        .toggle-btn { background: #F1F5F9; border: none; padding: 14px 20px; border-radius: 30px; font-size: 0.9rem; font-weight: 600; color: #64748B; cursor: pointer; flex: 1; transition: 0.3s; }
         .toggle-btn.active { background: #0A2F44; color: white; box-shadow: 0 4px 10px rgba(10, 47, 68, 0.2); }
         .btn-primary { background: linear-gradient(105deg, #0A2F44 0%, #1E5A74 100%); color: white; margin-top: 10px; }
-        
-        .speedometer-container {
-            background: #F8FBFC; border-radius: 24px; padding: 24px 16px; text-align: center; margin-top: 24px; border: 1px solid #E2EDF2;
-        }
+        .speedometer-container { background: #F8FBFC; border-radius: 24px; padding: 24px 16px; text-align: center; margin-top: 24px; border: 1px solid #E2EDF2; }
         canvas { width: 100%; max-width: 280px; margin: 0 auto; display: block; }
         .score-value { font-size: 3rem; font-weight: 800; color: #0A2F44; font-family: 'Quicksand', sans-serif; line-height: 1; margin-top: -20px; }
         .grade-badge { display: inline-block; padding: 6px 16px; border-radius: 30px; font-weight: 700; font-size: 0.9rem; margin-top: 10px; background: #FFE0A3; color: #B45309; }
 
-        /* ======================== TAB PARENTING ======================== */
-        .role-tabs { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; }
-        .role-tab {
-            background: #F1F5F9; border: none; padding: 10px 20px; border-radius: 40px;
-            font-weight: 600; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; gap: 8px; color: #64748B; transition: 0.3s;
-        }
-        .role-tab.active { background: #1A6F6B; color: white; box-shadow: 0 4px 12px rgba(26, 111, 107, 0.3); }
+        /* ======================== TAB PARENTING (RESONANSI) ======================== */
+        .role-tabs { display: flex; gap: 0.8rem; justify-content: center; margin-bottom: 1.2rem; flex-wrap: wrap; }
+        .role-tab { background: #F1F5F9; border: none; padding: 0.8rem 1.2rem; border-radius: 40px; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 8px; color: #64748B; font-family: inherit; }
+        .role-tab.active { background: #1A6F6B; color: white; box-shadow: 0 8px 18px rgba(26,111,107,0.3); transform: scale(1.02); }
         
-        .habit-item {
-            background: white; border-radius: 20px; padding: 16px; margin-bottom: 12px;
-            display: flex; align-items: center; justify-content: space-between; gap: 12px;
-            border: 1px solid #F1F5F9; box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-        }
-        .habit-text { font-weight: 500; font-size: 0.95rem; flex: 1; color: #334155; }
-        .habit-buttons { display: flex; gap: 8px; }
-        .btn-choice { border: none; padding: 10px 16px; border-radius: 30px; font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: 0.2s; }
-        .btn-choice.yes { background: #F1F5F9; color: #64748B; }
-        .btn-choice.yes.active { background: #1A6F6B; color: white; }
-        .btn-choice.no { background: #F1F5F9; color: #64748B; }
-        .btn-choice.no.active { background: #E63946; color: white; }
+        .habits-container { margin: 1rem 0; }
+        .habit-item { background: white; border-radius: 24px; padding: 1rem 1.2rem; margin-bottom: 0.8rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; border: 1px solid #FFE6CD; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+        .habit-text { font-weight: 500; font-size: 0.9rem; flex: 1; color: #2D3E3B; }
+        .habit-buttons { display: flex; gap: 10px; }
+        
+        .btn-yes, .btn-no { border: none; padding: 8px 16px; border-radius: 40px; font-weight: 600; font-size: 0.8rem; cursor: pointer; transition: 0.2s; font-family: inherit; display: flex; align-items: center; gap: 6px; }
+        .btn-yes { background: #F1F5F9; color: #64748B; }
+        .btn-yes.active { background: #1A6F6B; color: white; box-shadow: 0 0 0 2px #E8B34B; }
+        .btn-no { background: #F1F5F9; color: #64748B; }
+        .btn-no.active { background: #C9CFCC; color: #2D3E3B; box-shadow: 0 0 0 2px #D65C2B; }
 
-        .score-summary {
-            background: #FEF5E8; border-radius: 24px; padding: 16px; display: flex; justify-content: space-between; text-align: center; gap: 12px; margin-top: 24px;
+        .score-summary { background: #FEF5E8; border-radius: 32px; padding: 1rem; margin: 1.5rem 0; display: flex; justify-content: space-between; text-align: center; gap: 12px; }
+        .score-card { flex: 1; background: white; border-radius: 20px; padding: 12px 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+        .score-card i { font-size: 1.4rem; margin-bottom: 4px; display: block; }
+        .score-number { font-weight: 800; font-size: 1.6rem; color: #1A6F6B; font-family: 'Quicksand', sans-serif; }
+        
+        .total-family { background: linear-gradient(115deg, #1A6F6B10, #D65C2B10); border-radius: 32px; padding: 1.2rem; text-align: center; margin: 1rem 0; }
+        .total-score { font-size: 2.5rem; font-weight: 800; color: #D65C2B; font-family: 'Quicksand', sans-serif; }
+        .insight-box { background: white; border-radius: 24px; padding: 1.2rem; margin-top: 1rem; border-left: 8px solid #E8B34B; transition: all 0.3s; background: #F8FBFC; }
+        .insight-title { font-weight: 700; font-size: 1rem; display: flex; gap: 8px; align-items: center; margin-bottom: 10px; color: #0A2F44; }
+        .reset-btn { background: #EDE5D6; border: none; padding: 16px; width: 100%; border-radius: 50px; font-weight: 600; margin-top: 1.5rem; cursor: pointer; color: #64748B; font-family: inherit; transition: 0.2s; }
+
+        @keyframes glowPop { 0% { transform: scale(1); background-color: #FFF3E0; } 70% { transform: scale(1.02); box-shadow: 0 0 0 6px rgba(232,179,75,0.3); } 100% { transform: scale(1); } }
+        .glow { animation: glowPop 0.5s ease; }
+
+        @media (max-width: 480px) {
+            .habit-item { flex-direction: column; align-items: stretch; }
+            .habit-buttons { justify-content: flex-end; }
         }
-        .score-card { background: white; border-radius: 16px; padding: 12px; flex: 1; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
-        .score-number { font-weight: 800; font-size: 1.8rem; color: #1A6F6B; font-family: 'Quicksand', sans-serif; }
-        .reset-btn { background: #F1F5F9; color: #64748B; border: none; padding: 16px; width: 100%; border-radius: 50px; font-weight: 600; margin-top: 16px; cursor: pointer; }
 
         /* ======================== TAB RUJUKAN & BOTTOM NAV ======================== */
         .totelala { background: #F9D371; border-radius: 24px; padding: 20px; text-align: center; font-weight: 800; margin: 20px 0; font-size: 1.1rem; }
@@ -234,14 +112,9 @@
             border-top: 1px solid #FFD58C; z-index: 20; max-width: 600px; margin: 0 auto; border-radius: 32px 32px 0 0;
             box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
         }
-        .nav-item {
-            display: flex; flex-direction: column; align-items: center; gap: 6px; background: none; border: none;
-            font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 0.7rem; color: #94A3B8;
-            cursor: pointer; padding: 8px 12px; border-radius: 20px; transition: 0.3s;
-        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; background: none; border: none; font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 0.7rem; color: #94A3B8; cursor: pointer; padding: 8px 12px; border-radius: 20px; transition: 0.3s; }
         .nav-item i { font-size: 1.4rem; }
         .nav-item.active { color: #C13B00; background: #FFF0E0; }
-
     </style>
 </head>
 <body>
@@ -267,16 +140,11 @@
     <div id="kalkulatorPage" class="page">
         <div class="parent-advice">
             <strong><i class="fas fa-brain"></i> Mengapa Durasi Layar Penting?</strong>
-            Otak anak masih dalam tahap perkembangan emas. Paparan layar yang berlebihan (terutama sebelum tidur atau saat makan) dapat menurunkan kemampuan fokus, mengganggu regulasi emosi, dan menghambat perkembangan motorik. Mari evaluasi kebiasaan harian Ananda di sini.
+            Otak anak masih dalam tahap perkembangan emas. Paparan layar berlebih (terutama sebelum tidur) dapat menurunkan kemampuan fokus dan menghambat perkembangan motorik. Mari evaluasi kebiasaan harian Ananda.
         </div>
-
         <div class="card">
-            <div class="form-group">
-                <label><i class="fas fa-child"></i> Nama Panggilan Anak</label>
-                <input type="text" id="childName" placeholder="Contoh: Aisha atau Rafa">
-            </div>
-            <div class="form-group">
-                <label><i class="fas fa-calendar-alt"></i> Usia Anak</label>
+            <div class="form-group"><label><i class="fas fa-child"></i> Nama Anak</label><input type="text" id="childName" placeholder="Contoh: Aisha atau Rafa"></div>
+            <div class="form-group"><label><i class="fas fa-calendar-alt"></i> Usia Anak</label>
                 <select id="ageGroup">
                     <option value="0">👶 Kurang dari 2 tahun</option>
                     <option value="1">🧸 2 - 5 tahun</option>
@@ -284,35 +152,18 @@
                     <option value="3">🎧 10 - 12+ tahun</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label><i class="fas fa-clock"></i> Screen time harian (Jam)</label>
-                <input type="number" id="dailyScreenTime" step="0.5" value="1.0" min="0" max="12">
+            <div class="form-group"><label><i class="fas fa-clock"></i> Screen time harian (Jam)</label><input type="number" id="dailyScreenTime" step="0.5" value="1.0" min="0" max="12"></div>
+            <div class="form-group"><label><i class="fas fa-moon"></i> Main gadget 1 jam sebelum tidur?</label>
+                <div class="toggle-group" id="preSleepGroup"><button type="button" class="toggle-btn" data-value="yes">Ya</button><button type="button" class="toggle-btn active" data-value="no">Tidak</button></div>
             </div>
-            <div class="form-group">
-                <label><i class="fas fa-moon"></i> Main gadget 1 jam sebelum tidur?</label>
-                <div class="toggle-group" id="preSleepGroup">
-                    <button type="button" class="toggle-btn" data-value="yes">Ya</button>
-                    <button type="button" class="toggle-btn active" data-value="no">Tidak</button>
-                </div>
+            <div class="form-group"><label><i class="fas fa-utensils"></i> Main gadget saat makan?</label>
+                <div class="toggle-group" id="mealGroup"><button type="button" class="toggle-btn" data-value="yes">Ya</button><button type="button" class="toggle-btn active" data-value="no">Tidak</button></div>
             </div>
-            <div class="form-group">
-                <label><i class="fas fa-utensils"></i> Main gadget saat makan?</label>
-                <div class="toggle-group" id="mealGroup">
-                    <button type="button" class="toggle-btn" data-value="yes">Ya</button>
-                    <button type="button" class="toggle-btn active" data-value="no">Tidak</button>
-                </div>
-            </div>
-            <div class="form-group">
-                <label><i class="fas fa-eye"></i> Tingkat Pendampingan Ayah/Bunda</label>
-                <div class="toggle-group" id="guideGroup">
-                    <button type="button" class="toggle-btn active" data-value="active">Aktif</button>
-                    <button type="button" class="toggle-btn" data-value="partial">Kadang</button>
-                    <button type="button" class="toggle-btn" data-value="minimal">Minim</button>
-                </div>
+            <div class="form-group"><label><i class="fas fa-eye"></i> Tingkat Pendampingan Orang Tua</label>
+                <div class="toggle-group" id="guideGroup"><button type="button" class="toggle-btn active" data-value="active">Aktif</button><button type="button" class="toggle-btn" data-value="partial">Kadang</button><button type="button" class="toggle-btn" data-value="minimal">Minim</button></div>
             </div>
             <button class="btn btn-primary" id="calculateBtn"><i class="fas fa-magic"></i> Lihat Analisis & Rekomendasi</button>
         </div>
-
         <div id="resultSection" style="display: none;">
             <div class="speedometer-container">
                 <canvas id="speedCanvas" width="300" height="170"></canvas>
@@ -321,60 +172,65 @@
                 <div class="grade-badge" id="gradeLabel">Belum dihitung</div>
             </div>
             <div class="card" style="margin-top: 20px; border-left: 6px solid #F2C94C;">
-                <h4 class="font-quicksand" style="color:#0A2F44; margin-bottom: 8px;"><i class="fas fa-lightbulb"></i> Saran Pakar untuk Bunda & Ayah</h4>
+                <h4 class="font-quicksand" style="color:#0A2F44; margin-bottom: 8px;"><i class="fas fa-lightbulb"></i> Saran Pakar</h4>
                 <p id="tipsText" style="font-size: 0.9rem; color: #334155;"></p>
             </div>
         </div>
     </div>
 
     <div id="parentingPage" class="page">
-        <div class="parent-advice">
+        <div class="parent-advice" style="border-left-color: #D65C2B; background: #FFF0DF;">
             <strong><i class="fas fa-network-wired"></i> Resonansi Keluarga</strong>
-            Anak adalah peniru ulung. Perlindungan digital tidak bisa hanya dibebankan pada aturan untuk anak, tetapi membutuhkan *role model* dari orang tua. Tab ini membantu menyelaraskan kebiasaan digital antara Ayah, Bunda, dan Anak agar tercipta ekosistem rumah yang sehat.
+            Anak adalah peniru ulung. Perlindungan digital tidak bisa hanya dibebankan pada aturan untuk anak. Tab ini membantu menyelaraskan kebiasaan digital antara Ayah, Bunda, dan Anak agar tercipta ekosistem rumah yang sehat.
         </div>
 
         <div class="card">
-            <div class="role-tabs" id="parentingRoleTabs">
+            <div class="role-tabs" id="roleTabsContainer">
                 <button class="role-tab active" data-role="ayah"><i class="fas fa-user-tie"></i> Ayah</button>
                 <button class="role-tab" data-role="bunda"><i class="fas fa-user"></i> Bunda</button>
                 <button class="role-tab" data-role="anak"><i class="fas fa-child"></i> Anak</button>
             </div>
-            
-            <div id="habitsList">
-                </div>
 
-            <div class="score-summary">
-                <div class="score-card"><i class="fas fa-user-tie" style="color:#64748B;"></i><div class="score-number" id="ayahScore">0</div><div style="font-size:0.7rem; font-weight:600;">/ 7</div></div>
-                <div class="score-card"><i class="fas fa-user" style="color:#64748B;"></i><div class="score-number" id="bundaScore">0</div><div style="font-size:0.7rem; font-weight:600;">/ 7</div></div>
-                <div class="score-card"><i class="fas fa-child" style="color:#64748B;"></i><div class="score-number" id="anakScore">0</div><div style="font-size:0.7rem; font-weight:600;">/ 7</div></div>
+            <div id="habitsList" class="habits-container"></div>
+
+            <div class="score-summary" id="scoreSummary">
+                <div class="score-card"><i class="fas fa-user-tie" style="color:#64748B;"></i><div class="score-number" id="ayahScore">0</div><div style="font-size:0.7rem; font-weight:600; color:#64748B;">/ 7</div></div>
+                <div class="score-card"><i class="fas fa-user" style="color:#64748B;"></i><div class="score-number" id="bundaScore">0</div><div style="font-size:0.7rem; font-weight:600; color:#64748B;">/ 7</div></div>
+                <div class="score-card"><i class="fas fa-child" style="color:#64748B;"></i><div class="score-number" id="anakScore">0</div><div style="font-size:0.7rem; font-weight:600; color:#64748B;">/ 7</div></div>
             </div>
 
-            <div style="background: #F8FBFC; padding: 16px; border-radius: 16px; margin-top: 16px; text-align: center; border: 1px dashed #CBD5E1;">
-                <p id="insightText" style="font-size:0.85rem; font-weight:600; color:#0A2F44;"></p>
+            <div class="total-family">
+                <div style="font-weight:600; color:#1E3B4A;">🌟 Total Kebiasaan Baik Keluarga</div>
+                <div class="total-score" id="totalFamilyScore">0</div>
+                <div style="font-size:0.8rem; color:#64748B;">dari 21 kebiasaan</div>
             </div>
 
-            <button class="reset-btn" id="resetParentingBtn"><i class="fas fa-undo"></i> Reset Semua Data</button>
+            <div class="insight-box" id="insightBox">
+                <div class="insight-title"><i class="fas fa-brain" style="color:#D65C2B;"></i> Resonance Insight</div>
+                <p id="insightText" style="font-size: 0.9rem; color: #334155;">Pilih kebiasaan yang sudah dilakukan oleh setiap anggota keluarga. Semakin lengkap, semakin personal rekomendasi kami.</p>
+            </div>
+
+            <button class="reset-btn" id="resetBtn"><i class="fas fa-undo-alt"></i> Reset Semua Pilihan</button>
         </div>
     </div>
 
     <div id="rujukanPage" class="page">
         <div class="card">
             <h3 style="color:#C13B00; margin-bottom: 12px;"><i class="fas fa-shield-alt"></i> SOP Keselamatan Anak</h3>
-            <p style="font-size:0.9rem; margin-bottom: 16px;">Ajarkan anak Anda prinsip perlindungan diri dasar ini ketika menghadapi ancaman, kekerasan, atau perundungan (bullying):</p>
+            <p style="font-size:0.9rem; margin-bottom: 16px;">Ajarkan anak Anda prinsip perlindungan diri dasar ini ketika menghadapi ancaman atau perundungan:</p>
             <div class="totelala">
                 <i class="fas fa-bullhorn"></i> T O T E L A L A <i class="fas fa-running"></i><br>
                 <span>Tolak</span> <span>Teriak</span> <span>Lari</span> <span>Lapor</span>
             </div>
             <a href="tel:129" class="btn" style="background:#FF7043; color:white; margin-top:16px;"><i class="fas fa-phone-alt"></i> Hubungi 129 (Hotline Anak)</a>
         </div>
-
         <div class="card">
-            <h3 style="color:#1E5A74; margin-bottom: 12px;"><i class="fas fa-gavel"></i> Perlindungan dalam KUHP Baru</h3>
-            <p style="font-size: 0.85rem; color: #475569; margin-bottom: 12px;">Berdasarkan UU No.1/2023 dan UU No.20/2025, negara memberlakukan sanksi tegas untuk kejahatan terhadap anak.</p>
+            <h3 style="color:#1E5A74; margin-bottom: 12px;"><i class="fas fa-gavel"></i> Perlindungan KUHP Baru</h3>
+            <p style="font-size: 0.85rem; color: #475569; margin-bottom: 12px;">Berdasarkan UU No.1/2023 dan UU No.20/2025:</p>
             <ul style="font-size: 0.85rem; color: #1E3B4A; padding-left: 16px; line-height: 1.6;">
                 <li style="margin-bottom: 8px;"><strong>Pasal 473:</strong> Persetubuhan dengan anak dipidana penjara 3 - 15 tahun (ditambah 1/3 jika dilakukan keluarga inti).</li>
                 <li style="margin-bottom: 8px;"><strong>Pasal 414 & 415:</strong> Tindak pencabulan dipidana maksimal 9 tahun penjara.</li>
-                <li><strong>Tanpa Restorative Justice:</strong> Berdasarkan KUHAP baru, kekerasan seksual pada anak WAJIB diproses pidana secara penuh.</li>
+                <li><strong>Tanpa Restorative Justice:</strong> Kekerasan seksual pada anak WAJIB diproses pidana secara penuh.</li>
             </ul>
         </div>
     </div>
@@ -383,12 +239,10 @@
         <div class="card" style="text-align: center;">
             <i class="fas fa-shield-alt" style="font-size:60px; color:#FF9F4A; margin-bottom: 16px;"></i>
             <h2 style="color:#C13B00; margin-bottom: 8px;">Sahabat Anak Banten</h2>
-            <p style="font-size: 0.9rem; color: #64748B; margin-bottom: 24px;">Platform Terintegrasi Advokasi Anak & Parenting Era Digital</p>
-            
+            <p style="font-size: 0.9rem; color: #64748B; margin-bottom: 24px;">Platform Terintegrasi Advokasi Anak & Parenting</p>
             <div style="background: #FFF8F1; padding: 16px; border-radius: 16px; text-align: left; border: 1px solid #FFE0A3;">
                 <h4 style="margin-bottom: 8px; color: #B45309;">Dipersembahkan Oleh:</h4>
                 <p style="font-size: 0.85rem; font-weight: 600; color: #1E3B4A;">Komnas Perlindungan Anak Provinsi Banten</p>
-                <p style="font-size: 0.8rem; color: #475569; margin-top: 8px;">Mendukung terciptanya ekosistem digital yang aman dan keluarga yang beresonansi positif dalam mendidik anak di Banten.</p>
             </div>
         </div>
     </div>
@@ -415,30 +269,19 @@
         rujukan: document.getElementById('rujukanPage'),
         profil: document.getElementById('profilPage')
     };
-    
     const navBtns = document.querySelectorAll('.nav-item');
     
     function switchTab(tabId) {
-        // Sembunyikan semua halaman
-        Object.keys(pages).forEach(id => { 
-            if (pages[id]) pages[id].classList.remove('active'); 
-        });
-        
-        // Tampilkan halaman yang dipilih
+        Object.keys(pages).forEach(id => { if (pages[id]) pages[id].classList.remove('active'); });
         if (pages[tabId]) pages[tabId].classList.add('active');
-        
-        // Ubah styling pada Bottom Nav
         navBtns.forEach(btn => { 
             btn.classList.remove('active'); 
             if (btn.getAttribute('data-tab') === tabId) btn.classList.add('active'); 
         });
-        
-        // Fix isu Leaflet Map yang tidak me-render dengan benar saat disembunyikan
-        if (tabId === 'home' && map) {
+        if (tabId === 'home' && typeof map !== 'undefined') {
             setTimeout(() => map.invalidateSize(), 200);
         }
     }
-    
     navBtns.forEach(btn => btn.addEventListener('click', () => switchTab(btn.getAttribute('data-tab'))));
 
     /**
@@ -447,10 +290,7 @@
      * ==========================================
      */
     let map = L.map('mapid').setView([-6.3, 106.2], 9);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { 
-        attribution: '© OSM & CartoDB', 
-        maxZoom: 18 
-    }).addTo(map);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 18 }).addTo(map);
 
     const cities = [
         { name: "Kota Serang", lat: -6.1188, lng: 106.1502, lembaga: "UPTD PPA Kota Serang" },
@@ -464,13 +304,8 @@
     ];
 
     cities.forEach(city => {
-        const icon = L.divIcon({ 
-            html: `<div style="background:#FF9F4A; border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center; border:2px solid white; box-shadow:0 2px 5px rgba(0,0,0,0.2);"><i class="fas fa-shield-alt" style="color:white; font-size:12px;"></i></div>`, 
-            iconSize: [30,30], 
-            popupAnchor: [0,-15] 
-        });
-        L.marker([city.lat, city.lng], { icon }).addTo(map)
-         .bindPopup(`<strong style="font-family:'Quicksand'; color:#C13B00;">${city.name}</strong><br>${city.lembaga}`);
+        const icon = L.divIcon({ html: `<div style="background:#FF9F4A; border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center; border:2px solid white;"><i class="fas fa-shield-alt" style="color:white; font-size:12px;"></i></div>`, iconSize: [30,30], popupAnchor: [0,-15] });
+        L.marker([city.lat, city.lng], { icon }).addTo(map).bindPopup(`<strong style="font-family:'Quicksand'; color:#C13B00;">${city.name}</strong><br>${city.lembaga}`);
     });
 
     /**
@@ -478,59 +313,27 @@
      * BAGIAN 3: PANIC BUTTON & GEOLOCATION
      * ==========================================
      */
-    let userMarker = null;
-    let lastKnownPos = null;
-
+    let userMarker = null; let lastKnownPos = null;
     document.getElementById('panicButton').addEventListener('click', () => {
-        const btn = document.getElementById('panicButton');
-        const status = document.getElementById('locationStatus');
-        
-        btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> MEMPROSES...';
-        btn.disabled = true;
-
-        if (!navigator.geolocation) {
-            alert("Peramban Anda tidak mendukung akses lokasi.");
-            resetPanicBtn(btn);
-            return;
-        }
-
+        const btn = document.getElementById('panicButton'); const status = document.getElementById('locationStatus');
+        btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> MEMPROSES...'; btn.disabled = true;
+        if (!navigator.geolocation) { alert("GPS tidak didukung."); resetPanicBtn(btn); return; }
         navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const { latitude, longitude } = position.coords;
-                lastKnownPos = { latitude, longitude };
-                
+            (pos) => {
+                const { latitude, longitude } = pos.coords; lastKnownPos = { latitude, longitude };
                 if (userMarker) map.removeLayer(userMarker);
-                
-                userMarker = L.circleMarker([latitude, longitude], {
-                    color: "#E63946", fillColor: "#FF4D4D", fillOpacity: 0.8, radius: 15, weight: 3
-                }).addTo(map);
-                
+                userMarker = L.circleMarker([latitude, longitude], { color: "#E63946", fillColor: "#FF4D4D", fillOpacity: 0.8, radius: 15, weight: 3 }).addTo(map);
                 map.flyTo([latitude, longitude], 14);
-                status.innerHTML = '<i class="fas fa-check-circle" style="color:#1B9C4B;"></i> Lokasi ditemukan. Titik merah menyala.';
-                status.style.background = "#E8F5E9";
+                status.innerHTML = '<i class="fas fa-check-circle" style="color:#1B9C4B;"></i> Lokasi ditemukan.';
                 resetPanicBtn(btn);
             },
-            (error) => {
-                alert("Gagal mengakses lokasi. Pastikan GPS/Location aktif.");
-                resetPanicBtn(btn);
-            },
-            { enableHighAccuracy: true, timeout: 10000 }
+            (err) => { alert("Gagal akses lokasi."); resetPanicBtn(btn); }, { enableHighAccuracy: true, timeout: 10000 }
         );
     });
-
-    function resetPanicBtn(btn) {
-        btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> DARURAT';
-        btn.disabled = false;
-    }
-
+    function resetPanicBtn(btn) { btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> DARURAT'; btn.disabled = false; }
     document.getElementById('shareWaButton').addEventListener('click', () => {
-        let msg = `Halo Komnas PA / UPTD PPA Banten, saya memerlukan bantuan perlindungan anak segera.\n\n`;
-        if (lastKnownPos) {
-            msg += `📍 Lokasi Darurat Saya: https://www.google.com/maps/search/?api=1&query=${lastKnownPos.latitude},${lastKnownPos.longitude}\n\n`;
-        } else {
-            msg += `(Lokasi otomatis tidak aktif, mohon pandu saya)\n\n`;
-        }
-        msg += `[Dikirim dari Aplikasi Peta Anak Banten]`;
+        let msg = `Halo Komnas PA / UPTD PPA Banten, saya memerlukan bantuan darurat.\n\n`;
+        if (lastKnownPos) msg += `📍 Lokasi Saya: https://www.google.com/maps/search/?api=1&query=$${lastKnownPos.latitude},${lastKnownPos.longitude}\n\n`;
         window.open(`https://wa.me/628111129129?text=${encodeURIComponent(msg)}`, '_blank');
     });
 
@@ -539,231 +342,201 @@
      * BAGIAN 4: KALKULATOR DIGITAL PARENTING
      * ==========================================
      */
-    // Logika Toggle Buttons
     ['preSleepGroup', 'mealGroup', 'guideGroup'].forEach(groupId => {
-        const group = document.getElementById(groupId);
-        if(!group) return;
-        const btns = group.querySelectorAll('.toggle-btn');
-        btns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                btns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-            });
-        });
+        const btns = document.querySelectorAll(`#${groupId} .toggle-btn`);
+        btns.forEach(btn => btn.addEventListener('click', () => { btns.forEach(b => b.classList.remove('active')); btn.classList.add('active'); }));
     });
-
-    function getToggleValue(groupId) {
-        const active = document.querySelector(`#${groupId} .toggle-btn.active`);
-        return active ? active.getAttribute('data-value') : null;
-    }
-
-    function calculateScore() {
-        const age = document.getElementById('ageGroup').value;
-        const dailyTime = parseFloat(document.getElementById('dailyScreenTime').value) || 0;
-        const preSleep = getToggleValue('preSleepGroup');
-        const meal = getToggleValue('mealGroup');
-        const guide = getToggleValue('guideGroup');
-
-        let score = 100;
-
-        // Aturan WHO/IDAI untuk batas screen time
-        let maxTime = (age === '0') ? 0 : (age === '1') ? 1 : (age === '2') ? 1.5 : 2;
-        
-        // Pinalti Overtime
-        if (dailyTime > maxTime) {
-            score -= Math.min(40, (dailyTime - maxTime) * 20);
-        }
-        // Pinalti khusus bayi di bawah 2 tahun
-        if (age === '0' && dailyTime > 0) score -= 30;
-
-        // Pinalti kebiasaan buruk
-        if (preSleep === 'yes') score -= 15;
-        if (meal === 'yes') score -= 15;
-
-        // Bonus/Pinalti peran orang tua
-        if (guide === 'active') score += 10;
-        else if (guide === 'minimal') score -= 20;
-
-        return Math.min(100, Math.max(0, Math.round(score)));
-    }
+    function getToggleValue(groupId) { const active = document.querySelector(`#${groupId} .toggle-btn.active`); return active ? active.getAttribute('data-value') : null; }
 
     document.getElementById('calculateBtn').addEventListener('click', () => {
-        const score = calculateScore();
-        const name = document.getElementById('childName').value || "Ananda";
+        const age = document.getElementById('ageGroup').value;
+        const dailyTime = parseFloat(document.getElementById('dailyScreenTime').value) || 0;
+        let score = 100;
+        let maxTime = (age === '0') ? 0 : (age === '1') ? 1 : (age === '2') ? 1.5 : 2;
         
+        if (dailyTime > maxTime) score -= Math.min(40, (dailyTime - maxTime) * 20);
+        if (age === '0' && dailyTime > 0) score -= 30;
+        if (getToggleValue('preSleepGroup') === 'yes') score -= 15;
+        if (getToggleValue('mealGroup') === 'yes') score -= 15;
+        
+        const guide = getToggleValue('guideGroup');
+        if (guide === 'active') score += 10; else if (guide === 'minimal') score -= 20;
+        
+        score = Math.min(100, Math.max(0, Math.round(score)));
         document.getElementById('scoreNumber').innerText = score;
         
-        const resultSection = document.getElementById('resultSection');
-        const gradeBadge = document.getElementById('gradeLabel');
-        const tipsText = document.getElementById('tipsText');
-
-        if (score >= 85) {
-            gradeBadge.innerText = "🌟 Keseimbangan Sangat Baik";
-            gradeBadge.style.background = "#D1FAE5"; gradeBadge.style.color = "#065F46";
-            tipsText.innerHTML = `Hebat Bunda & Ayah! Pola asuh untuk <strong>${name}</strong> sudah sangat sesuai standar kesehatan anak. Tetap konsisten memberikan contoh yang baik.`;
-        } else if (score >= 60) {
-            gradeBadge.innerText = "✅ Cukup, Perlu Sedikit Evaluasi";
-            gradeBadge.style.background = "#FEF3C7"; gradeBadge.style.color = "#92400E";
-            tipsText.innerHTML = `Pola asuh <strong>${name}</strong> sudah lumayan baik. Coba kurangi paparan layar di waktu krusial (sebelum tidur/saat makan) untuk mengoptimalkan perkembangan otaknya.`;
-        } else {
-            gradeBadge.innerText = "🚨 Waspada Screen-Dependency";
-            gradeBadge.style.background = "#FEE2E2"; gradeBadge.style.color = "#991B1B";
-            tipsText.innerHTML = `Durasi layar <strong>${name}</strong> cukup mengkhawatirkan. Mulailah membuat "Zona Bebas Gadget" di rumah tangga. Jangan jadikan gawai sebagai *babysitter* digital. Hubungi psikolog anak jika muncul gejala tantrum berlebih.`;
-        }
-
-        resultSection.style.display = 'block';
+        const gb = document.getElementById('gradeLabel'); const tips = document.getElementById('tipsText');
+        if (score >= 85) { gb.innerText = "🌟 Sangat Baik"; gb.style.background = "#D1FAE5"; gb.style.color = "#065F46"; tips.innerHTML = "Pola asuh sudah sangat sesuai standar."; }
+        else if (score >= 60) { gb.innerText = "✅ Cukup Baik"; gb.style.background = "#FEF3C7"; gb.style.color = "#92400E"; tips.innerHTML = "Cukup baik, kurangi gawai sebelum tidur."; }
+        else { gb.innerText = "🚨 Waspada"; gb.style.background = "#FEE2E2"; gb.style.color = "#991B1B"; tips.innerHTML = "Durasi layar tinggi. Buat zona bebas gadget segera."; }
+        
+        document.getElementById('resultSection').style.display = 'block';
         drawSpeedometer(score);
     });
 
     function drawSpeedometer(score) {
-        const canvas = document.getElementById('speedCanvas');
-        if(!canvas) return;
-        const ctx = canvas.getContext('2d');
-        const w = canvas.width, h = canvas.height;
-        const cx = w/2, cy = h-20, rad = 110;
-        
+        const canvas = document.getElementById('speedCanvas'); if(!canvas) return;
+        const ctx = canvas.getContext('2d'); const w = canvas.width, h = canvas.height, cx = w/2, cy = h-20, rad = 110;
         ctx.clearRect(0,0,w,h);
-        
-        // Background arc
-        ctx.beginPath();
-        ctx.arc(cx, cy, rad, Math.PI, 2*Math.PI);
-        ctx.strokeStyle = "#E2EDF2";
-        ctx.lineWidth = 20;
-        ctx.stroke();
-
-        // Score arc
+        ctx.beginPath(); ctx.arc(cx, cy, rad, Math.PI, 2*Math.PI); ctx.strokeStyle = "#E2EDF2"; ctx.lineWidth = 20; ctx.stroke();
         const endAngle = Math.PI + (Math.PI * (score / 100));
-        ctx.beginPath();
-        ctx.arc(cx, cy, rad, Math.PI, endAngle);
-        ctx.strokeStyle = score < 60 ? "#E63946" : score < 85 ? "#F2C94C" : "#1B9C4B";
-        ctx.stroke();
+        ctx.beginPath(); ctx.arc(cx, cy, rad, Math.PI, endAngle);
+        ctx.strokeStyle = score < 60 ? "#E63946" : score < 85 ? "#F2C94C" : "#1B9C4B"; ctx.stroke();
     }
 
     /**
      * ==========================================
-     * BAGIAN 5: PARENTING (RESONANSI KELUARGA)
+     * BAGIAN 5: TAB PARENTING (RESONANSI KELUARGA V2)
      * ==========================================
      */
-    const habitsDB = {
+    const habitsLibrary = {
         ayah: [
-            "Bermain fisik tanpa gadget minimal 30 menit/hari",
-            "Mendampingi anak saat memilih konten YouTube/Game",
-            "Tidak membawa pekerjaan/ponsel ke meja makan",
-            "Konsisten menerapkan aturan jam mematikan TV/Gadget",
-            "Mengajak diskusi 'apa yang seru di internet hari ini?'",
-            "Mencontohkan membaca buku di depan anak",
-            "Membangun rutinitas pengantar tidur (mendongeng)"
+            "Mengajak anak bermain tanpa gawai minimal 30 menit",
+            "Menyepakati jadwal penggunaan gadget bersama keluarga",
+            "Tidak membawa ponsel ke meja makan saat makan malam",
+            "Memberi contoh dengan membaca buku di depan anak",
+            "Mendampingi anak saat menonton konten digital",
+            "Membuat aturan 'jam tidur tanpa layar' untuk semua",
+            "Aktif bertanya tentang aktivitas online anak"
         ],
         bunda: [
-            "Menetapkan zona aman bebas gadget di rumah",
-            "Tidak menyuapi makan anak sambil memutar video",
-            "Menyaring aplikasi/game yang diunduh anak",
-            "Memberi pujian spesifik saat anak bermain *offline*",
-            "Mengatur timer *screen time* bersama anak",
-            "Menyediakan aktivitas kerajinan/sensorik alternatif",
-            "Mendengarkan keluh kesah anak tanpa interupsi layar"
+            "Menciptakan zona bebas gadget di ruang keluarga",
+            "Mengajak anak memasak/berkebun tanpa interupsi HP",
+            "Mendiskusikan batasan screen time dengan suami & anak",
+            "Memberi pujian saat anak memilih bermain fisik",
+            "Memeriksa dan menyetujui aplikasi yang diinstall anak",
+            "Menjadwalkan quality time tanpa teknologi tiap pekan",
+            "Menjadi pendengar aktif ketika anak bercerita konten"
         ],
         anak: [
-            "Meminta izin sebelum meminjam HP/Tablet",
-            "Mematikan layar saat dipanggil orang tua",
-            "Menyerahkan gadget saat waktu makan tiba",
-            "Menjauhkan perangkat dari tempat tidur di malam hari",
-            "Menonton video dengan posisi tubuh yang baik",
-            "Berani melapor jika melihat konten menakutkan",
-            "Mau diajak bermain di luar ruangan (outdoor)"
+            "Mematikan notifikasi HP saat belajar atau tidur",
+            "Meminta izin orang tua sebelum mengunduh aplikasi",
+            "Mengajak orang tua bermain board game atau olahraga",
+            "Tidak menggunakan gadget saat makan bersama",
+            "Membantu orang tua mengatur timer penggunaan gawai",
+            "Melapor ke orang tua jika melihat konten tak pantas",
+            "Menaruh ponsel di keranjang digital sebelum tidur"
         ]
     };
 
-    let userHabits = { ayah: Array(7).fill(false), bunda: Array(7).fill(false), anak: Array(7).fill(false) };
-    let currentRole = 'ayah';
+    let habitsStatus = { ayah: new Array(7).fill(false), bunda: new Array(7).fill(false), anak: new Array(7).fill(false) };
+    let currentResonanceRole = "ayah";
 
-    // Manajemen LocalStorage
-    function loadHabits() {
-        try {
-            const saved = localStorage.getItem('banten_parenting_data');
-            if (saved) userHabits = JSON.parse(saved);
-        } catch (e) { console.error("Gagal load storage", e); }
-    }
-    
-    function saveHabits() {
-        try { localStorage.setItem('banten_parenting_data', JSON.stringify(userHabits)); } 
-        catch (e) { console.error("Storage penuh atau diblokir"); }
+    const habitsContainer = document.getElementById("habitsList");
+    const insightText = document.getElementById("insightText");
+
+    function loadResonanceData() {
+        const saved = localStorage.getItem("resonansi_keluarga_v2");
+        if(saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                if(parsed.habitsStatus) {
+                    habitsStatus = {
+                        ayah: parsed.habitsStatus.ayah || new Array(7).fill(false),
+                        bunda: parsed.habitsStatus.bunda || new Array(7).fill(false),
+                        anak: parsed.habitsStatus.anak || new Array(7).fill(false)
+                    };
+                }
+            } catch(e) {}
+        }
+        updateResonanceScores();
+        renderResonanceHabits();
     }
 
-    function renderHabits() {
-        const container = document.getElementById('habitsList');
-        const list = habitsDB[currentRole];
-        const status = userHabits[currentRole];
+    function saveResonanceData() {
+        localStorage.setItem("resonansi_keluarga_v2", JSON.stringify({ habitsStatus: habitsStatus }));
+    }
+
+    function getResonanceScore(role) { return habitsStatus[role].filter(v => v === true).length; }
+
+    function updateResonanceScores() {
+        const ayahSc = getResonanceScore("ayah"); const bundaSc = getResonanceScore("bunda"); const anakSc = getResonanceScore("anak");
+        document.getElementById("ayahScore").innerText = ayahSc;
+        document.getElementById("bundaScore").innerText = bundaSc;
+        document.getElementById("anakScore").innerText = anakSc;
         
-        let html = '';
-        list.forEach((habit, i) => {
-            const isDone = status[i];
+        const total = ayahSc + bundaSc + anakSc;
+        document.getElementById("totalFamilyScore").innerText = total;
+        
+        // Insight Generator
+        let insight = "";
+        if (total === 21) insight = "🎉 Luar biasa! Keluarga Anda telah menerapkan semua kebiasaan baik. Pertahankan resonance digital ini!";
+        else if (total >= 15) insight = "✨ Keluarga sangat sadar digital! Fokus pada kebiasaan yang belum. Pastikan semua anggota terlibat aktif.";
+        else if (total >= 8) insight = "🌱 Bagus, sudah setengah jalan! Coba ayah & bunda diskusikan kebiasaan yang masih 'Belum'.";
+        else if (total >= 3) insight = "💪 Awal yang baik! Mulai dari kebiasaan sederhana seperti makan tanpa gawai.";
+        else insight = "👋 Selamat datang! Pilih 'Sudah' pada kebiasaan yang telah dilakukan keluarga.";
+        
+        insightText.innerHTML = insight;
+        
+        const totalDiv = document.querySelector(".total-score");
+        totalDiv.classList.add("glow"); setTimeout(() => totalDiv.classList.remove("glow"), 500);
+    }
+
+    function renderResonanceHabits() {
+        const habitsArray = habitsLibrary[currentResonanceRole];
+        const statusArray = habitsStatus[currentResonanceRole];
+        if (!habitsArray) return;
+
+        let html = `<div style="margin-bottom: 1rem; font-weight:700; color:#1E3B4A;"><i class="fas fa-list-check" style="color:#D65C2B;"></i> 7 Kebiasaan ${currentResonanceRole.charAt(0).toUpperCase() + currentResonanceRole.slice(1)}</div>`;
+        
+        for (let i = 0; i < habitsArray.length; i++) {
+            const isDone = statusArray[i];
             html += `
-                <div class="habit-item">
-                    <div class="habit-text">${habit}</div>
+                <div class="habit-item" data-idx="${i}">
+                    <div class="habit-text">${habitsArray[i]}</div>
                     <div class="habit-buttons">
-                        <button class="btn-choice yes ${isDone ? 'active' : ''}" data-idx="${i}" data-val="true">Sudah</button>
-                        <button class="btn-choice no ${!isDone ? 'active' : ''}" data-idx="${i}" data-val="false">Belum</button>
+                        <button class="btn-yes ${isDone ? 'active' : ''}" data-choice="yes" data-idx="${i}"><i class="fas fa-check-circle"></i> Sudah</button>
+                        <button class="btn-no ${!isDone ? 'active' : ''}" data-choice="no" data-idx="${i}"><i class="fas fa-times-circle"></i> Belum</button>
                     </div>
                 </div>
             `;
-        });
-        container.innerHTML = html;
-
-        // Tambahkan Event Listener ke tiap tombol
-        container.querySelectorAll('.btn-choice').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const idx = parseInt(e.target.getAttribute('data-idx'));
-                const val = e.target.getAttribute('data-val') === 'true';
-                userHabits[currentRole][idx] = val;
-                saveHabits();
-                renderHabits(); // Re-render untuk update UI tombol
-                updateParentingScore();
-            });
+        }
+        habitsContainer.innerHTML = html;
+        
+        document.querySelectorAll('.habit-item').forEach(item => {
+            const idx = parseInt(item.dataset.idx);
+            item.querySelector('.btn-yes')?.addEventListener('click', () => setHabitStatus(idx, true, item));
+            item.querySelector('.btn-no')?.addEventListener('click', () => setHabitStatus(idx, false, item));
         });
     }
 
-    function updateParentingScore() {
-        const sAyah = userHabits.ayah.filter(v => v).length;
-        const sBunda = userHabits.bunda.filter(v => v).length;
-        const sAnak = userHabits.anak.filter(v => v).length;
-        const total = sAyah + sBunda + sAnak;
-
-        document.getElementById('ayahScore').innerText = sAyah;
-        document.getElementById('bundaScore').innerText = sBunda;
-        document.getElementById('anakScore').innerText = sAnak;
-
-        const insight = document.getElementById('insightText');
-        if (total >= 18) insight.innerHTML = "🎉 Sempurna! Resonansi keluarga sangat kompak dan saling mendukung.";
-        else if (total >= 10) insight.innerHTML = "✨ Fondasi sudah terbangun. Yuk, mulai biasakan poin yang masih 'Belum'.";
-        else insight.innerHTML = "🌱 Setiap langkah kecil berarti. Diskusikan kebiasaan ini perlahan tanpa menghakimi.";
+    function setHabitStatus(index, value, itemElement) {
+        if (habitsStatus[currentResonanceRole][index] !== value) {
+            habitsStatus[currentResonanceRole][index] = value;
+            const actionText = value ? " ✅ Kebiasaan baik bertambah!" : " 🔄 Tetap semangat, coba lagi nanti.";
+            insightText.innerHTML = `<i class="fas fa-sync-alt" style="color:#D65C2B;"></i> ${actionText}`;
+            setTimeout(() => updateResonanceScores(), 100);
+        }
+        itemElement.classList.add('glow'); setTimeout(() => itemElement.classList.remove('glow'), 300);
+        renderResonanceHabits();
+        saveResonanceData();
     }
 
-    // Role Tab Switcher
-    document.querySelectorAll('.role-tab').forEach(tab => {
-        tab.addEventListener('click', (e) => {
-            document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
-            const target = e.currentTarget;
-            target.classList.add('active');
-            currentRole = target.getAttribute('data-role');
-            renderHabits();
+    document.querySelectorAll('#roleTabsContainer .role-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+            currentResonanceRole = btn.getAttribute('data-role');
+            document.querySelectorAll('#roleTabsContainer .role-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            
+            habitsContainer.style.opacity = "0";
+            setTimeout(() => {
+                renderResonanceHabits();
+                habitsContainer.style.opacity = "1";
+                habitsContainer.style.transition = "0.2s ease";
+            }, 50);
         });
     });
 
-    document.getElementById('resetParentingBtn').addEventListener('click', () => {
-        if(confirm("Apakah Anda yakin ingin mengatur ulang semua progres Resonansi Keluarga?")) {
-            userHabits = { ayah: Array(7).fill(false), bunda: Array(7).fill(false), anak: Array(7).fill(false) };
-            saveHabits();
-            renderHabits();
-            updateParentingScore();
+    document.getElementById("resetBtn").addEventListener("click", () => {
+        if (confirm("Reset semua progres Resonansi Keluarga?")) {
+            habitsStatus = { ayah: new Array(7).fill(false), bunda: new Array(7).fill(false), anak: new Array(7).fill(false) };
+            saveResonanceData(); renderResonanceHabits(); updateResonanceScores();
+            const insightDiv = document.getElementById("insightBox");
+            insightDiv.style.transform = "scale(0.95)"; setTimeout(() => insightDiv.style.transform = "", 200);
         }
     });
 
-    // Inisialisasi awal
-    loadHabits();
-    renderHabits();
-    updateParentingScore();
-
+    loadResonanceData();
 </script>
 </body>
 </html>
