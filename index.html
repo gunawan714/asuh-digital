@@ -165,7 +165,7 @@
         .kab-card button:active { transform: scale(0.97); }
 
         /* SOP & Rujukan styling */
-        .sop-card, .rujukan-card, .kuhp-card {
+        .sop-card, .rujukan-card, .kuhp-card, .tips-card {
             background: white;
             border-radius: 32px;
             padding: 20px;
@@ -343,8 +343,26 @@
         #kalkulatorPage .speedometer-container { background: #F9FCFE; border-radius: 40px; padding: 16px; text-align: center; margin: 8px 0 20px; }
         #kalkulatorPage canvas { width: 100%; max-width: 260px; margin: 0 auto; display: block; }
         #kalkulatorPage .score-value { font-size: 2.6rem; font-weight: 800; color: #0A2F44; }
+        #kalkulatorPage .grade-badge { display: inline-block; background: #F2C94C20; padding: 4px 16px; border-radius: 60px; font-size: 0.75rem; font-weight: 700; color: #B45F1B; margin-top: 8px; }
+        #kalkulatorPage .tips-card { background: #FFF8E7; border-left: 6px solid #F2C94C; }
         #kalkulatorPage .btn-wa { background: #25D366; border: none; border-radius: 48px; padding: 14px; font-weight: 700; color: white; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; margin-top: 20px; cursor: pointer; }
         #kalkulatorPage .info-reference { background: #EFF8FA; border-radius: 24px; padding: 16px; font-size: 0.7rem; margin-top: 20px; }
+
+        /* Panduan Orang Tua (tambahan) */
+        .parenting-guide, .kalkulator-guide {
+            background: #E8F4F8;
+            border-radius: 28px;
+            padding: 16px;
+            margin: 16px 0;
+            border-left: 8px solid #1A6F6B;
+        }
+        .parenting-guide h4, .kalkulator-guide h4 {
+            color: #1A6F6B;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
         /* Bottom Navigation */
         .bottom-nav {
@@ -432,6 +450,20 @@
             <h2 style="margin:8px 0 0;">Kalkulator Pola Asuh Digital</h2>
             <p style="font-size:0.8rem;">Cek kesiapan Bunda & Ayah dalam mendampingi dunia digital anak</p>
         </div>
+
+        <!-- PANDUAN ORANG TUA DI KALKULATOR -->
+        <div class="kalkulator-guide">
+            <h4><i class="fas fa-lightbulb"></i> Panduan untuk Orang Tua</h4>
+            <p><strong>Mengapa ini penting?</strong> Berdasarkan rekomendasi WHO & IDAI, paparan layar berlebihan pada anak dapat mengganggu perkembangan otak, kualitas tidur, dan interaksi sosial. Kalkulator ini membantu Anda mengevaluasi kebiasaan digital keluarga.</p>
+            <p><strong>🎯 Target ideal:</strong><br>
+            • Anak <2 tahun: <strong>0 jam layar</strong> (kecuali video call)<br>
+            • Usia 2-5 tahun: maksimal <strong>1 jam/hari</strong> dengan pendampingan aktif<br>
+            • Usia 6-12 tahun: maksimal <strong>1-2 jam/hari</strong>, hindari gadget 1 jam sebelum tidur & saat makan<br>
+            • Pendampingan aktif (menemani, menjelaskan konten) meningkatkan skor hingga 12 poin.<br>
+            • Screen time sebelum tidur dan saat makan mengurangi skor 15-12 poin.</p>
+            <p><i class="fas fa-heart"></i> <strong>Tips Praktis:</strong> Buat "zona bebas gadget" (meja makan, kamar tidur), jadwalkan "screen time bersama", dan jadilah teladan dengan mengurangi penggunaan ponsel saat bersama anak.</p>
+        </div>
+
         <div class="kalkulator-card">
             <div class="form-group"><label><i>👧</i> Nama Anak</label><input type="text" id="childName" placeholder="cth: Aisha atau Rafa"></div>
             <div class="form-group"><label><i>📅</i> Usia Anak</label>
@@ -445,9 +477,9 @@
         </div>
         <div id="resultSection" style="display: none;">
             <div class="speedometer-container"><canvas id="speedCanvas" width="300" height="170"></canvas><div class="score-value" id="scoreNumber">0</div><div class="score-label">Skor Keseimbangan Digital</div><div class="grade-badge" id="gradeLabel">Belum dihitung</div></div>
-            <div class="tips-card"><div class="tips-title">💡 Rekomendasi</div><div class="tips-text" id="tipsText">Masukkan data, klik hitung.</div></div>
+            <div class="tips-card"><div class="tips-title"><i class="fas fa-comment-dots"></i> Rekomendasi Personal</div><div class="tips-text" id="tipsText">Masukkan data, klik hitung.</div></div>
             <button class="btn-wa" id="shareWA">📲 Bagikan ke WhatsApp</button>
-            <div class="info-reference">📖 Acuan WHO & IDAI: <2 tahun: hindari layar; 2-5 tahun: max 1 jam; 6-12 tahun: max 2 jam.</div>
+            <div class="info-reference">📖 <strong>Acuan WHO & IDAI:</strong> <2 tahun: hindari layar; 2-5 tahun: max 1 jam; 6-12 tahun: max 2 jam. Pastikan tidak mengganggu tidur & interaksi keluarga.</div>
         </div>
     </div>
 
@@ -455,6 +487,19 @@
     <div id="parentingPage" class="page">
         <div class="parenting-container">
             <div style="text-align:center;"><i class="fas fa-circle-nodes" style="font-size:2rem; color:#D65C2B;"></i><h3>Resonansi Keluarga</h3><p style="font-size:0.75rem;">lingkar asuh digital · pilih kebiasaan baik bersama</p></div>
+            
+            <!-- PANDUAN ORANG TUA DI PARENTING -->
+            <div class="parenting-guide">
+                <h4><i class="fas fa-chalkboard-user"></i> Saran untuk Ayah & Bunda</h4>
+                <p><strong>Mengapa kebiasaan ini penting?</strong> Anak belajar dari teladan. Ketika seluruh anggota keluarga menerapkan kebiasaan digital sehat, ikatan keluarga semakin kuat dan anak terlindungi dari dampak negatif gadget.</p>
+                <p><strong>💡 Cara memotivasi:</strong><br>
+                • Libatkan anak dalam membuat "kontrak digital keluarga"<br>
+                • Beri apresiasi (stiker, pelukan) setiap kali kebiasaan baik dilakukan<br>
+                • Jadikan momen bebas gadget sebagai waktu berkualitas (bermain board game, memasak bersama)<br>
+                • Orang tua juga harus konsisten: jangan menggunakan ponsel saat makan atau sebelum tidur.</p>
+                <p><i class="fas fa-chart-line"></i> <strong>Interpretasi skor:</strong> Total 21 kebiasaan. Semakin tinggi, semakin sehat ekosistem digital keluarga. Target minimal 15 kebiasaan baik.</p>
+            </div>
+
             <div class="role-tabs" id="parentingRoleTabs">
                 <button class="role-tab" data-role="ayah"><i class="fas fa-user"></i> Ayah</button>
                 <button class="role-tab" data-role="bunda"><i class="fas fa-heart"></i> Bunda</button>
@@ -467,21 +512,18 @@
                 <div class="score-card"><i class="fas fa-child"></i><div class="score-number" id="anakScore">0</div><div>/7</div></div>
             </div>
             <div class="total-family"><div>🌟 Total Kebiasaan Baik Keluarga</div><div class="total-score" id="totalFamilyScore">0</div><div>dari 21 kebiasaan</div></div>
-            <div class="insight-box"><div class="insight-title"><i class="fas fa-brain"></i> Insight Keluarga</div><p id="insightText">Pilih kebiasaan yang sudah dilakukan.</p></div>
+            <div class="insight-box"><div class="insight-title"><i class="fas fa-brain"></i> Insight Keluarga</div><p id="insightText">Pilih kebiasaan yang sudah dilakukan. Semakin lengkap, semakin sehat keluarga digital Anda.</p></div>
             <button class="reset-btn" id="resetParentingBtn"><i class="fas fa-undo-alt"></i> Reset Semua Pilihan</button>
         </div>
     </div>
 
     <!-- Halaman Rujukan (Gabungan Peta Kabupaten + SOP + Lembaga + Materi KUHP/KUHAP) -->
     <div id="rujukanPage" class="page">
-        <!-- Daftar 8 Kabupaten dengan tombol WA -->
         <div class="sop-card">
             <h3><i class="fas fa-city"></i> 8 Kabupaten/Kota Banten</h3>
             <p>Klik tombol untuk menghubungi lembaga perlindungan anak setempat.</p>
             <div id="kabupatenList" class="kabupaten-grid"></div>
         </div>
-
-        <!-- SOP TOTELALA dan Lembaga Rujukan -->
         <div class="sop-card">
             <h3><i class="fas fa-hands-helping"></i> Langkah & SOP Keselamatan Anak</h3>
             <ul style="margin-left: 20px;">
@@ -504,8 +546,6 @@
                 <a href="https://wa.me/628111129129?text=Halo%2C%20saya%20membutuhkan%20bantuan%20perlindungan%20anak%20di%20Banten." target="_blank" class="btn-darurat" style="background:#128C7E;"><i class="fab fa-whatsapp"></i> WA 08111129129</a>
             </div>
         </div>
-
-        <!-- Materi KUHP dan KUHAP Baru (dari file FGD) -->
         <div class="kuhp-card">
             <h3><i class="fas fa-gavel"></i> Perlindungan Anak dalam KUHP & KUHAP Baru</h3>
             <p style="font-size:0.8rem; margin-bottom:12px;">Berlaku sejak 2 Januari 2026. KUHP Nasional dan KUHAP baru menggantikan sistem kolonial.</p>
@@ -537,15 +577,15 @@
         <footer>© 2026 - Sahabat Anak Banten | Informasi hukum untuk perlindungan anak</footer>
     </div>
 
-    <!-- Halaman Profil (dulu Akun) -->
+    <!-- Halaman Profil -->
     <div id="profilPage" class="page">
         <div class="rujukan-card">
             <h3><i class="fas fa-heart"></i> Tentang Aplikasi</h3>
             <p>Aplikasi ini membantu anak dan keluarga di Banten mengakses peta perlindungan, panic button, serta membangun kebiasaan digital yang sehat.</p>
-            <p><strong>Fitur Unggulan:</strong><br>📍 Peta interaktif 8 kab/kota + Panic Button<br>📲 Share lokasi WA ke 08111129129<br>📞 Nomor darurat 129 & lembaga rujukan<br>🧠 Kalkulator Pola Asuh Digital<br>👨‍👩‍👧 Resonansi Keluarga (kebiasaan digital)<br>⚖️ Informasi KUHP & KUHAP baru</p>
+            <p><strong>Fitur Unggulan:</strong><br>📍 Peta interaktif 8 kab/kota + Panic Button<br>📲 Share lokasi WA ke 08111129129<br>📞 Nomor darurat 129 & lembaga rujukan<br>🧠 Kalkulator Pola Asuh Digital dengan panduan orang tua<br>👨‍👩‍👧 Resonansi Keluarga (kebiasaan digital + saran praktis)<br>⚖️ Informasi KUHP & KUHAP baru</p>
             <div style="text-align:center; margin-top:20px;"><i class="fas fa-shield-alt" style="font-size:40px; color:#FF9F4A;"></i><p>Dipersembahkan dari <strong>Komnas Perlindungan Anak Provinsi Banten</strong></p></div>
         </div>
-        <footer>© 2026 - Sahabat Anak Banten | Versi 2.0 Terintegrasi</footer>
+        <footer>© 2026 - Sahabat Anak Banten | Versi 2.1 dengan Panduan Orang Tua</footer>
     </div>
 </div>
 
@@ -652,10 +692,10 @@
         const total=getScoreRole("ayah")+getScoreRole("bunda")+getScoreRole("anak");
         document.getElementById("totalFamilyScore").innerText=total;
         let insight="";
-        if(total===21) insight="🎉 Luar biasa! Semua kebiasaan baik diterapkan.";
-        else if(total>=15) insight="✨ Keluarga sangat sadar digital! Fokus kebiasaan yang belum.";
-        else if(total>=8) insight="🌱 Bagus! Diskusikan kebiasaan yang masih 'Belum'.";
-        else insight="👋 Pilih 'Sudah' pada kebiasaan yang telah dilakukan.";
+        if(total===21) insight="🎉 Luar biasa! Semua kebiasaan baik diterapkan. Keluarga Anda adalah teladan digital!";
+        else if(total>=15) insight="✨ Keluarga sangat sadar digital! Fokus pada kebiasaan yang belum. Coba ajak anak diskusi ringan.";
+        else if(total>=8) insight="🌱 Bagus! Sudah setengah jalan. Tingkatkan konsistensi, terutama zona bebas gadget saat makan.";
+        else insight="👋 Mari mulai kebiasaan kecil dulu, misalnya 'tidak pakai gadget saat makan'. Setiap langkah baik berarti!";
         document.getElementById("insightText").innerHTML=insight;
         document.querySelector(".total-score")?.classList.add("glow");
         setTimeout(()=>document.querySelector(".total-score")?.classList.remove("glow"),500);
@@ -715,9 +755,9 @@
         }
         function generateTips(score,name){
             let nm=name.trim()||"Ananda";
-            if(score>=85) return `🎉 Selamat! Pola asuh digital ${nm} sangat seimbang. Pertahankan kebiasaan baik.`;
-            if(score>=60) return `👍 Lumayan baik! ${nm} perlu sedikit penyesuaian. Batasi gadget sebelum tidur.`;
-            return `⚠️ Waktunya evaluasi. ${nm} memiliki paparan layar cukup tinggi. Mulai dari komitmen kecil.`;
+            if(score>=85) return `🎉 Selamat! Pola asuh digital ${nm} sudah sangat seimbang. Pertahankan kebiasaan baik: terus dampingi, ciptakan rutinitas tanpa layar, dan jadilah teladan.`;
+            if(score>=60) return `👍 Lumayan baik! ${nm} perlu sedikit penyesuaian. Fokus pada: batasi gadget 1 jam sebelum tidur, pastikan screen time tidak melebihi rekomendasi usia, dan tingkatkan pendampingan aktif.`;
+            return `⚠️ Waktunya evaluasi, Ayah/Bunda. ${nm} memiliki paparan layar cukup tinggi. Mulai dari komitmen kecil: aturan "no gadget saat makan", buat zona bebas layar di kamar tidur, dan jadwalkan quality time tanpa teknologi. Konsistensi lebih penting daripada keras.`;
         }
         let lastResult={};
         function updateResult(){
@@ -733,7 +773,7 @@
         }
         document.getElementById('calculateBtn').addEventListener('click',updateResult);
         document.getElementById('shareWA').addEventListener('click',()=>{
-            let txt=lastResult.childName?`*Hasil Kalkulator Pola Asuh Digital*\nNama: ${lastResult.childName}\nSkor: ${lastResult.score}/100\n${lastResult.tips}`:"Cek kalkulator digital parenting!";
+            let txt=lastResult.childName?`*Hasil Kalkulator Pola Asuh Digital*\nNama: ${lastResult.childName}\nSkor: ${lastResult.score}/100\n${lastResult.tips}`:"Cek kalkulator digital parenting di Peta Perlindungan Anak Banten!";
             window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`,'_blank');
         });
         drawSpeedo(0);
