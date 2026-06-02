@@ -53,7 +53,7 @@
         .parent-advice { background: #EFF8FA; border-left: 6px solid #1E5A74; padding: 18px; border-radius: 0 20px 20px 0; margin-bottom: 24px; font-size: 0.88rem; color: #1E3B4A; box-shadow: 0 4px 12px rgba(0,0,0,0.01); }
         .parent-advice strong { font-family: 'Quicksand', sans-serif; font-size: 1.05rem; color: var(--color-primary); display: block; margin-bottom: 6px; }
 
-        /* ======================== TAB PETA & DARURAT ======================== */
+        /* Tab 1: Peta Komponen */
         .map-container { border-radius: 28px; overflow: hidden; box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1); border: 4px solid #FFD966; margin-bottom: 20px; z-index: 1; }
         #mapid { height: 360px; width: 100%; background: #FFFAF0; }
         .btn { border: none; border-radius: 50px; padding: 16px; font-size: 1rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.2s; font-family: 'Quicksand', sans-serif; width: 100%; }
@@ -63,7 +63,7 @@
         .btn-share { background: #25D366; color: white; flex: 1; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3); }
         .info-badge { text-align: center; font-size: 0.75rem; background: #FFF2D7; padding: 12px; border-radius: 30px; color: #B45309; font-weight: 600; }
 
-        /* ======================== TAB KALKULATOR FORM COMPONENTS ======================== */
+        /* Tab 2: Form Kalkulator */
         .form-group { margin-bottom: 22px; }
         .form-group label { font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; color: var(--color-primary); margin-bottom: 10px; }
         .form-group label .icon-wrapper { background: #EFF5F8; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-style: normal; }
@@ -75,7 +75,7 @@
         .toggle-btn { background: #F1F5F9; border: 2px solid transparent; padding: 12px 16px; border-radius: 14px; font-size: 0.85rem; font-weight: 700; color: #4A687A; cursor: pointer; text-align: center; font-family: inherit; transition: all 0.2s ease; }
         .toggle-btn.active { background: var(--color-primary); color: #FFFFFF; border-color: var(--color-primary); box-shadow: 0 6px 15px rgba(10, 47, 68, 0.18); }
         
-        .btn-primary { background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%); border: none; width: 100%; padding: 18px; border-radius: 16px; font-weight: 800; font-size: 1rem; color: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; box-shadow: 0 10px 20px rgba(10, 47, 68, 0.2); margin-top: 12px; letter-spacing: 0.5px; font-family: inherit; transition: all 0.25s; }
+        .btn-primary { background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%); border: none; width: 100%; padding: 16px; border-radius: 16px; font-weight: 800; font-size: 1rem; color: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; box-shadow: 0 10px 20px rgba(10, 47, 68, 0.2); margin-top: 12px; letter-spacing: 0.5px; font-family: inherit; transition: all 0.25s; }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(10, 47, 68, 0.25); }
 
         /* Dashboard Hasil Kalkulator */
@@ -427,7 +427,7 @@
     function resetPanicBtn(btn) { btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> DARURAT'; btn.disabled = false; }
     document.getElementById('shareWaButton').addEventListener('click', () => {
         let msg = `🚨 *DARURAT PERLINDUNGAN ANAK PROVINSI BANTEN* 🚨\nHalo Komnas Perlindungan Anak, saya membutuhkan tindakan pendampingan darurat.\n\n`;
-        if (lastKnownPos) msg += `📍 *Titik Lokasi Kejadian:* https://www.google.com/maps?q=${lastKnownPos.latitude},${lastKnownPos.longitude}\n\n`;
+        if (lastKnownPos) msg += `📍 *Titik Lokasi Kejadian:* http://maps.google.com/?q=${lastKnownPos.latitude},${lastKnownPos.longitude}\n\n`;
         else msg += `(Sinyal GPS pelapor nonaktif, mohon tanggapi nomor ini guna koordinasi rute manual).\n\n`;
         msg += `_Dikirim via Platform Aplikasi Taktis Sahabat Anak Banten_`;
         window.open(`https://wa.me/628111129129?text=${encodeURIComponent(msg)}`, '_blank');
@@ -458,7 +458,6 @@
         
         const shareWAbtn = document.getElementById('shareWA'); const canvas = document.getElementById('speedCanvas'); const ctx = canvas.getContext('2d');
 
-        // Penanganan Skala Kepadatan Piksel (Retina Display Anti-Blur)
         const dpr = window.devicePixelRatio || 1;
         canvas.width = 320 * dpr; canvas.height = 180 * dpr;
         ctx.scale(dpr, dpr);
@@ -548,6 +547,9 @@
 
             textPsychosocial.innerHTML = p1; textPhysical.innerHTML = p2; textIntervention.innerHTML = p3;
             stateResult = { score, childName, gradeText: grade, textP1: p1, textP2: p2, textP3: p3 };
+            
+            // SINKRONISASI TEKS ANGKA DIGITAL (FIXED BUG)
+            scoreNumberSpan.innerText = score;
             
             drawSpeedometer(score); resultSection.style.display = "block";
             setTimeout(() => resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 120);
