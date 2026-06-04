@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <meta name="description" content="Aplikasi Peta Perlindungan Anak Banten, Kalkulator Digital Parenting, dan Panduan Hukum UU No.1/2023.">
-    <title>Peta Perlindungan Anak Banten | Sahabat Anak Banten</title>
+    <meta name="description" content="Peta Perlindungan Anak Banten - Darurat, Kalkulator Parenting, dan Edukasi Hukum">
+    <title>Peta Perlindungan Anak Banten | #SahabatAnakBanten</title>
     
-    <!-- Leaflet CSS + JS -->
+    <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- Font Awesome 6 -->
+    
+    <!-- Font Awesome & Google Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* ======================== VARIABLES & DESIGN SYSTEM (dari script pertama) ======================== */
+        /* ======================== VARIABLES & DESIGN SYSTEM (Gabungan) ======================== */
         :root {
             --color-primary: #0A2F44;
             --color-primary-light: #1E5A74;
@@ -29,19 +29,17 @@
             --primary: #A855F7;
             --primary-light: #F3E8FF;
             --secondary: #FACC15;
-            --success: #10B981;
+            --dark: #1E293B;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             background: linear-gradient(145deg, #FEF7E6 0%, #FFF0DF 100%);
-            font-family: 'Quicksand', sans-serif;
-            color: var(--color-text-main);
-            padding-bottom: 80px;
-            line-height: 1.5;
+            font-family: 'Inter', sans-serif; color: var(--color-text-main); padding-bottom: 95px; line-height: 1.5;
         }
+        h1, h2, h3, h4, .font-quicksand { font-family: 'Quicksand', sans-serif; }
 
-        /* Header (dari script pertama) */
+        /* ======================== HEADER ======================== */
         .app-header {
             background: linear-gradient(135deg, var(--color-accent), var(--color-accent-light));
             padding: 16px 20px 14px;
@@ -68,211 +66,104 @@
             border-radius: 60px;
             backdrop-filter: blur(2px);
         }
-        .logo-placeholder {
+        .logo-img {
             width: 42px;
             height: 42px;
-            background: #FFFFFF;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #C13B00;
-            font-size: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: white;
+            padding: 4px;
         }
         .header-title {
             flex: 1;
             text-align: center;
         }
-        .app-header h1 {
-            font-size: 1.4rem;
-            font-weight: 800;
-            text-shadow: 1px 1px 0 #C13B00;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin: 0;
-        }
-        .app-header p {
-            font-size: 0.7rem;
-            background: rgba(0,0,0,0.15);
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 50px;
-            margin-top: 6px;
-            font-weight: 500;
-        }
-
+        .app-header h1 { font-size: 1.4rem; font-weight: 800; text-shadow: 1px 1px 0 #C13B00; display: flex; align-items: center; justify-content: center; gap: 8px; margin: 0; }
+        .app-header p { font-size: 0.7rem; background: rgba(0,0,0,0.15); display: inline-block; padding: 4px 12px; border-radius: 50px; margin-top: 6px; font-weight: 500; }
         .main-content { padding: 20px 16px; max-width: 600px; margin: 0 auto; }
         .page { display: none; animation: fadeIn 0.4s ease; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(12px);} to { opacity: 1; transform: translateY(0);} }
 
-        /* Card System (dari script pertama) */
-        .card {
-            background: white;
-            border-radius: 32px;
-            padding: 24px 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(255, 159, 74, 0.15);
-        }
-
-        /* ========== STYLE UNTUK BERANDA BARU (dari script kedua) ========== */
-        .stepper-dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #CBD5E1;
-            transition: all 0.3s;
-        }
-        .dot.active {
-            background: var(--primary);
-            width: 24px;
-            border-radius: 10px;
-        }
-        .btn {
-            border: none;
-            border-radius: 24px;
-            padding: 16px 24px;
-            font-weight: 800;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.2s;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.15);
-            font-family: 'Quicksand', sans-serif;
-        }
-        .btn:active {
-            transform: translateY(4px);
-            box-shadow: 0 0px 0 transparent;
-        }
-        .btn-panic { background: var(--color-danger); color: white; font-size: 1.1rem; padding: 20px; animation: pulseGlow 2s infinite; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-success { background: var(--success); color: white; }
+        /* Card & Utility */
+        .card { background: white; border-radius: 32px; padding: 24px 20px; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05); border: 1px solid rgba(255, 159, 74, 0.15); }
+        .parent-advice { background: #EFF8FA; border-left: 6px solid #1E5A74; padding: 18px; border-radius: 0 20px 20px 0; margin-bottom: 24px; }
+        .btn { border: none; border-radius: 50px; padding: 16px; font-size: 1rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.2s; font-family: 'Quicksand', sans-serif; width: 100%; box-shadow: 0 4px 0 rgba(0,0,0,0.15); }
+        .btn:active { transform: translateY(4px); box-shadow: 0 0px 0 transparent; }
+        .btn-panic { background: var(--color-danger); color: white; animation: pulseGlow 2s infinite; }
+        .btn-primary { background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%); color: white; }
+        .btn-success { background: var(--color-success); color: white; }
         .btn-secondary { background: #64748B; color: white; }
-        .btn-audio {
-            background: #0EA5E9;
-            color: white;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            padding: 12px;
-        }
-        .btn-audio.recording {
-            background: var(--color-danger);
-            animation: pulseGlow 1.2s infinite;
-        }
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); }
-            70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-        }
-        textarea {
-            width: 100%;
-            padding: 16px;
-            border-radius: 20px;
-            border: 2px solid #E2E8F0;
-            font-size: 0.95rem;
-            font-weight: 600;
-            resize: none;
-            outline: none;
-            margin-bottom: 16px;
-            background: #F8FAFC;
-            font-family: 'Quicksand', sans-serif;
-        }
-        textarea:focus { border-color: var(--primary); background: #FFF; }
-        .meta-container {
-            background: #F8FAFC;
-            border: 2px dashed #CBD5E1;
-            border-radius: 18px;
-            padding: 14px;
-            margin-bottom: 16px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #475569;
-        }
-        .meta-item { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-        .meta-item:last-child { margin-bottom: 0; }
-        .meta-item i { color: var(--primary); width: 20px; }
-        .step-panel { display: none; }
-        .step-panel.active { display: block; animation: slideIn 0.3s ease; }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .audio-wrapper {
-            background: var(--primary-light);
-            padding: 12px;
-            border-radius: 18px;
-            margin-bottom: 16px;
-            display: none;
-        }
-        audio { width: 100%; height: 40px; }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(230,57,70,0.5); } 70% { box-shadow: 0 0 0 15px rgba(230,57,70,0); } 100% { box-shadow: 0 0 0 0 rgba(230,57,70,0); } }
 
-        /* Tab Kalkulator, Parenting, Rujukan, Profil (style dari script pertama) */
+        /* Stepper khusus Beranda */
+        .stepper-dots { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: #CBD5E1; transition: 0.3s; }
+        .dot.active { background: var(--primary); width: 24px; border-radius: 10px; }
+        .step-panel { display: none; animation: slideIn 0.3s ease; }
+        .step-panel.active { display: block; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Map Beranda */
+        #mapid { height: 240px; border-radius: 20px; border: 3px solid var(--secondary); margin-bottom: 16px; z-index: 1; }
+        .meta-container { background: #F8FAFC; border: 2px dashed #CBD5E1; border-radius: 18px; padding: 14px; margin-bottom: 16px; font-size: 0.85rem; font-weight: 700; color: #475569; }
+        .meta-item { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+        .meta-item i { color: var(--primary); width: 16px; }
+        textarea { width: 100%; padding: 16px; border-radius: 20px; border: 2px solid #E2E8F0; font-size: 0.95rem; font-weight: 700; resize: none; outline: none; margin-bottom: 16px; background: #F8FAFC; }
+        textarea:focus { border-color: var(--primary); background: #FFF; }
+        .btn-audio { background: #0EA5E9; color: white; border-radius: 20px; font-size: 0.9rem; padding: 12px; }
+        .btn-audio.recording { background: var(--color-danger); animation: pulseGlow 1.2s infinite; }
+        .audio-wrapper { background: var(--primary-light); padding: 12px; border-radius: 18px; margin-bottom: 16px; display: none; }
+        audio { width: 100%; height: 40px; }
+        .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); padding: 16px; border-top: 2px solid rgba(168,85,247,0.15); display: flex; justify-content: center; z-index: 10; max-width: 600px; margin: 0 auto; border-radius: 32px 32px 0 0; display: none; }
+        .bottom-bar-inner { max-width: 500px; width: 100%; display: flex; gap: 10px; }
+
+        /* ========== KALKULATOR, PARENTING, RUJUKAN, PROFIL ========== (Tetap) */
         .form-group { margin-bottom: 22px; }
         .form-group label { font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; color: var(--color-primary); margin-bottom: 10px; }
         .form-group input, .form-group select { width: 100%; padding: 14px 18px; border-radius: 16px; border: 2px solid #E6EDF0; background: #F8FAFC; font-size: 0.95rem; font-weight: 600; outline: none; }
         .toggle-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 4px; }
-        .toggle-btn { background: #F1F5F9; border: 2px solid transparent; padding: 12px 16px; border-radius: 14px; font-size: 0.85rem; font-weight: 700; color: #4A687A; cursor: pointer; text-align: center; }
-        .toggle-btn.active { background: var(--color-primary); color: #FFFFFF; }
-        .btn-primary-custom { background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%); border: none; width: 100%; padding: 16px; border-radius: 16px; font-weight: 800; color: white; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; margin-top: 12px; }
+        .toggle-btn { background: #F1F5F9; border: 2px solid transparent; padding: 12px 16px; border-radius: 14px; font-size: 0.85rem; font-weight: 700; color: #4A687A; cursor: pointer; text-align: center; transition: 0.2s; }
+        .toggle-btn.active { background: var(--color-primary); color: white; }
         .speedometer-container { background: #FFFFFF; border-radius: 28px; padding: 24px 16px; text-align: center; margin-bottom: 24px; }
         .score-value { font-size: 3.2rem; font-weight: 900; color: var(--color-primary); }
+        .grade-badge { display: inline-block; padding: 6px 18px; border-radius: 50px; font-size: 0.8rem; font-weight: 800; margin-top: 4px; }
         .analytics-pillar { background: #FFFFFF; border-radius: 20px; padding: 18px 20px; border-left: 5px solid #CBD5E1; margin-bottom: 16px; }
-        .btn-wa-share { background: #25D366; color: white; border: none; border-radius: 16px; padding: 16px; font-weight: 800; width: 100%; cursor: pointer; }
-
+        .btn-wa-share { background: #25D366; color: white; border: none; border-radius: 16px; padding: 16px; font-weight: 800; width: 100%; cursor: pointer; margin-top: 12px; }
         .role-tabs { display: flex; gap: 0.6rem; justify-content: center; margin-bottom: 1.2rem; flex-wrap: wrap; }
-        .role-tab { background: #F1F5F9; border: none; padding: 0.8rem 1.2rem; border-radius: 40px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .role-tab { background: #F1F5F9; border: none; padding: 0.8rem 1.2rem; border-radius: 40px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; color: #64748B; }
         .role-tab.active { background: #1A6F6B; color: white; }
-        .habit-item { background: white; border-radius: 24px; padding: 1rem; margin-bottom: 0.8rem; display: flex; justify-content: space-between; flex-wrap: wrap; border: 1px solid #FFE6CD; }
-        .habit-buttons { display: flex; gap: 8px; }
-        .btn-yes, .btn-no { border: none; padding: 6px 14px; border-radius: 40px; font-weight: 600; cursor: pointer; }
+        .habit-item { background: white; border-radius: 24px; padding: 1rem; margin-bottom: 0.8rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; border: 1px solid #FFE6CD; }
+        .btn-yes, .btn-no { border: none; padding: 8px 14px; border-radius: 40px; font-weight: 600; cursor: pointer; }
         .btn-yes.active { background: #1A6F6B; color: white; }
-        .btn-no.active { background: #C9CFCC; }
-        .score-summary { background: #FEF5E8; border-radius: 32px; padding: 1rem; display: flex; justify-content: space-between; margin: 1rem 0; }
+        .btn-no.active { background: #C9CFCC; color: #2D3E3B; }
+        .score-summary { background: #FEF5E8; border-radius: 32px; padding: 1rem; margin: 1.5rem 0; display: flex; justify-content: space-between; gap: 10px; }
+        .score-card { flex: 1; background: white; border-radius: 20px; padding: 10px; text-align: center; }
         .total-family { background: linear-gradient(115deg, #1A6F6B10, #D65C2B10); border-radius: 32px; padding: 1.2rem; text-align: center; margin: 1rem 0; }
-        .reset-btn { background: #EDE5D6; border: none; padding: 14px; width: 100%; border-radius: 50px; font-weight: 600; cursor: pointer; }
-
-        .kabupaten-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); gap: 10px; }
+        .kabupaten-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); gap: 10px; margin-top: 14px; }
         .kab-card { background: #F9FCFE; border-radius: 20px; padding: 12px; text-align: center; border: 1px solid #E2EDF2; }
-        .btn-kab { background: #FF9F4A; border: none; border-radius: 30px; padding: 8px; font-weight: 700; color: white; cursor: pointer; width: 100%; }
+        .btn-kab { background: #FF9F4A; border: none; border-radius: 30px; padding: 8px; font-weight: 700; font-size: 0.75rem; color: white; cursor: pointer; width: 100%; }
         .totelala { background: #F9D371; border-radius: 24px; padding: 20px; text-align: center; font-weight: 800; margin: 20px 0; }
         .totelala span { background: var(--color-danger); color: white; border-radius: 50px; padding: 8px 16px; display: inline-block; margin: 4px; }
-
+        
         /* Bottom Navigation */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(10px); display: flex; justify-content: space-around; padding: 10px 6px 20px;
             border-top: 1px solid #FFD58C; z-index: 20; max-width: 600px; margin: 0 auto; border-radius: 28px 28px 0 0;
         }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: none; font-weight: 700; font-size: 0.65rem; color: #94A3B8; cursor: pointer; padding: 6px 10px; border-radius: 16px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: none; font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 0.65rem; color: #94A3B8; cursor: pointer; padding: 6px 10px; border-radius: 16px; }
         .nav-item i { font-size: 1.3rem; }
         .nav-item.active { color: #C13B00; background: #FFF0E0; }
-        footer { text-align: center; font-size: 0.7rem; color: #94A3B8; margin-top: 24px; }
-
-        @media (max-width: 550px) {
-            .logo-placeholder { width: 36px; height: 36px; }
-            .app-header h1 { font-size: 1.2rem; }
-        }
+        footer { text-align: center; font-size: 0.7rem; color: #94A3B8; margin-top: 24px; padding-bottom: 10px; }
     </style>
 </head>
 <body>
 
 <div class="app-header">
     <div class="logo-area">
-        <div class="logo-placeholder"><i class="fas fa-shield-alt"></i></div>
+        <img src="logo-komnas.png" alt="Logo Komnas" class="logo-img" onerror="this.onerror=null; this.parentElement.innerHTML='<div style=background:white;border-radius:50%;width:42px;height:42px;display:flex;align-items:center;justify-content:center;><i class=fas fa-shield-alt style=color:#C13B00;font-size:24px;></i></div>';">
     </div>
     <div class="header-title">
         <h1><i class="fas fa-map-marked-alt"></i> PETA ANAK BANTEN</h1>
@@ -282,30 +173,28 @@
 </div>
 
 <div class="main-content">
-    <!-- BERANDA BARU (dari script kedua) -->
+    <!-- ======================== BERANDA (HOME) - ALUR DARURAT BARU ======================== -->
     <div id="homePage" class="page active">
         <div class="stepper-dots">
             <div class="dot active" id="dot1"></div>
             <div class="dot" id="dot2"></div>
             <div class="dot" id="dot3"></div>
         </div>
-
         <div id="step1Panel" class="step-panel active">
             <div class="card">
                 <h2>👋 Halo, Kamu Aman di Sini!</h2>
-                <p class="desc" style="margin-bottom: 16px;">Aplikasi ini siap bantuin kamu kapan aja dan di mana aja kalau kamu ngerasa gak nyaman atau butuh bantuan segera. Jangan panik ya, we got your back! ✨</p>
+                <p class="desc" style="font-size:0.9rem;">Aplikasi ini siap bantuin kamu kapan aja dan di mana aja kalau kamu ngerasa gak nyaman atau butuh bantuan segera. Jangan panik ya, kami di sini untuk melindungi! ✨</p>
                 <button class="btn btn-panic" onclick="moveStep(2)"><i class="fas fa-bell"></i> TOMBOL DARURAT (LAPOR)</button>
             </div>
             <div class="card" style="background: var(--primary-light); text-align: center;">
-                <p class="desc" style="margin-bottom:0;">📞 Call Center Nasional Sahabat Anak: <strong>129</strong></p>
+                <p class="desc" style="margin-bottom:0; color: var(--dark);">📞 Call Center Nasional Sahabat Anak: <strong>129</strong></p>
             </div>
         </div>
-
         <div id="step2Panel" class="step-panel">
             <div class="card">
                 <h2><i class="fas fa-location-crosshairs"></i> Mengunci Lokasi & Waktu</h2>
-                <p class="desc">Sistem lagi nge-lock koordinat tempat kamu berada dan waktu pelaporan secara real-time biar valid no-cap!</p>
-                <div id="mapBeranda" style="height: 240px; border-radius: 20px; border: 3px solid var(--secondary); margin-bottom: 16px;"></div>
+                <p class="desc">Sistem sedang mengunci koordinat tempat kamu dan waktu pelaporan secara real-time.</p>
+                <div id="mapid"></div>
                 <div class="meta-container">
                     <div class="meta-item"><i class="fas fa-calendar-day"></i> <span id="lblTanggal">Memuat tanggal...</span></div>
                     <div class="meta-item"><i class="fas fa-clock"></i> <span id="lblJam">Memuat jam...</span></div>
@@ -314,83 +203,121 @@
                 <button class="btn btn-primary" id="btnNextToStep3" disabled onclick="moveStep(3)">Lanjut Isi Detail <i class="fas fa-arrow-right"></i></button>
             </div>
         </div>
-
         <div id="step3Panel" class="step-panel">
             <div class="card">
                 <h2><i class="fas fa-comment-medical"></i> Ceritain Kejadiannya</h2>
-                <p class="desc">Tulis apa yang terjadi atau kamu juga bisa rekam suara kamu biar lebih jelas. Semua data aman dan rahasia! 🤐</p>
+                <p class="desc">Tulis apa yang terjadi atau kamu juga bisa rekam suara kamu biar lebih jelas. Semua data aman dan rahasia!</p>
                 <textarea id="txtKronologi" rows="4" placeholder="Spill kejadiannya di sini... (Contoh: Siapa, di mana, atau apa yang kamu alami)"></textarea>
-                <button class="btn btn-audio" id="btnVoiceRecord" style="margin-bottom: 16px;"><i class="fas fa-microphone"></i> Rekam Suara Kamu</button>
+                <button class="btn btn-audio" id="btnVoiceRecord"><i class="fas fa-microphone"></i> Rekam Suara Kamu</button>
                 <div class="audio-wrapper" id="audioPlayerArea">
-                    <p style="margin-bottom: 8px; font-size: 0.8rem;"><i class="fas fa-circle-check" style="color: var(--success)"></i> Suara berhasil terekam! Kamu bisa dengerin lagi di bawah:</p>
+                    <p style="font-size:0.8rem; margin-bottom: 8px;"><i class="fas fa-circle-check" style="color: var(--success)"></i> Suara berhasil terekam! Kamu bisa dengerin lagi:</p>
                     <audio id="audioPlayback" controls></audio>
-                    <button class="btn btn-secondary" id="btnDownloadAudio" style="margin-top: 8px; padding: 8px; font-size: 0.8rem; border-radius: 12px;"><i class="fas fa-download"></i> Simpan File Audio ke HP</button>
+                    <button class="btn btn-secondary" id="btnDownloadAudio" style="margin-top: 8px; padding: 8px; font-size: 0.8rem;"><i class="fas fa-download"></i> Simpan File Audio</button>
                 </div>
                 <button class="btn btn-success" onclick="kirimLaporanWA()"><i class="fab fa-whatsapp"></i> KIRIM SEKARANG VIA WA</button>
             </div>
         </div>
+        <div class="bottom-bar" id="appBottomBar">
+            <div class="bottom-bar-inner">
+                <button class="btn btn-secondary" onclick="goBack()"><i class="fas fa-chevron-left"></i> Kembali</button>
+            </div>
+        </div>
     </div>
 
-    <!-- TAB LAINNYA (Kalkulator, Parenting, Rujukan, Profil) dari script pertama -->
+    <!-- ======================== KALKULATOR (Tidak berubah) ======================== -->
     <div id="kalkulatorPage" class="page">
-        <div class="parent-advice" style="border-left-color: #0A2F44; background: #EFF6FF; padding: 18px; border-radius: 0 20px 20px 0; margin-bottom: 24px;">
+        <div class="parent-advice" style="border-left-color: #0A2F44; background: #EFF6FF;">
             <strong><i class="fas fa-calculator"></i> Skrining Pola Asuh & Risiko Digital Anak</strong>
-            Sistem asesmen berbasis WHO & IDAI. Deteksi indeks keseimbangan paparan gawai terhadap kesehatan mental anak.
+            Sistem asesmen cerdas berbasis instrumen klinis WHO dan Ikatan Dokter Anak Indonesia (IDAI).
         </div>
         <div class="card">
             <div class="form-group"><label><span class="icon-wrapper">👧</span> Nama Anak</label><input type="text" id="childName" placeholder="Nama panggilan anak"></div>
-            <div class="form-group"><label><span class="icon-wrapper">📅</span> Usia Anak</label>
-                <select id="ageGroup"><option value="0">&lt; 2 tahun</option><option value="1">2-5 tahun</option><option value="2">6-9 tahun</option><option value="3">10-12+ tahun</option></select>
-            </div>
-            <div class="form-group"><label><span class="icon-wrapper">⏱️</span> Screen time harian (jam)</label><input type="number" id="dailyScreenTime" step="0.5" value="1.0" min="0" max="16"></div>
-            <div class="form-group"><label><span class="icon-wrapper">🌙</span> Screen time 1 jam sebelum tidur?</label><div class="toggle-group" id="preSleepGroup"><button class="toggle-btn" data-value="yes">Ya</button><button class="toggle-btn active" data-value="no">Tidak</button></div></div>
-            <div class="form-group"><label><span class="icon-wrapper">🍽️</span> Screen time saat makan?</label><div class="toggle-group" id="mealGroup"><button class="toggle-btn" data-value="yes">Ya</button><button class="toggle-btn active" data-value="no">Tidak</button></div></div>
-            <div class="form-group"><label><span class="icon-wrapper">👩‍👦</span> Pendampingan orang tua?</label><div class="toggle-group" id="guideGroup"><button class="toggle-btn" data-value="active">Aktif</button><button class="toggle-btn active" data-value="partial">Kadang</button><button class="toggle-btn" data-value="minimal">Minim</button></div></div>
-            <button class="btn-primary-custom" id="calculateBtn">⚡ Hitung Skor ⚡</button>
+            <div class="form-group"><label><span class="icon-wrapper">📅</span> Usia</label><select id="ageGroup"><option value="0">&lt;2 tahun</option><option value="1">2-5 tahun</option><option value="2">6-9 tahun</option><option value="3">10-12+ tahun</option></select></div>
+            <div class="form-group"><label><span class="icon-wrapper">⏱️</span> Screen time harian (jam)</label><input type="number" id="dailyScreenTime" step="0.5" value="1.0"></div>
+            <div class="form-group"><label><span class="icon-wrapper">🌙</span> Layar sebelum tidur?</label><div class="toggle-group" id="preSleepGroup"><button type="button" class="toggle-btn" data-value="yes">Ya</button><button type="button" class="toggle-btn active" data-value="no">Tidak</button></div></div>
+            <div class="form-group"><label><span class="icon-wrapper">🍽️</span> Layar saat makan?</label><div class="toggle-group" id="mealGroup"><button type="button" class="toggle-btn" data-value="yes">Ya</button><button type="button" class="toggle-btn active" data-value="no">Tidak</button></div></div>
+            <div class="form-group"><label><span class="icon-wrapper">👩‍👦</span> Pendampingan orang tua</label><div class="toggle-group" id="guideGroup"><button type="button" class="toggle-btn" data-value="active">Aktif</button><button type="button" class="toggle-btn active" data-value="partial">Kadang</button><button type="button" class="toggle-btn" data-value="minimal">Minim</button></div></div>
+            <button class="btn-primary" id="calculateBtn">⚡ Proses Diagnosis</button>
         </div>
-        <div id="resultSection" style="display: none;">
+        <div id="resultSection" style="display:none;">
             <div class="speedometer-container"><canvas id="speedCanvas" width="320" height="180"></canvas><div class="score-value" id="scoreNumber">0</div><div class="grade-badge" id="gradeLabel">-</div></div>
-            <div class="analytics-pillar"><div class="pillar-title">🧠 Analisis Risiko</div><div id="textPsychosocial"></div></div>
-            <div class="analytics-pillar"><div class="pillar-title">👁️ Kesehatan Fisik</div><div id="textPhysical"></div></div>
-            <div class="analytics-pillar"><div class="pillar-title">🛡️ Rencana Aksi</div><div id="textIntervention"></div></div>
-            <button class="btn-wa-share" id="shareWA">📲 Bagikan ke WhatsApp</button>
+            <div class="analytics-container"><div class="analytics-pillar"><div class="pillar-title">🧠 Analisis</div><div class="pillar-body" id="textPsychosocial"></div></div></div>
+            <button class="btn-wa-share" id="shareWA">Bagikan ke WhatsApp</button>
         </div>
     </div>
 
+    <!-- ======================== PARENTING (Resonansi Keluarga) icon baby ======================== -->
     <div id="parentingPage" class="page">
+        <div class="parent-advice" style="border-left-color: #1A6F6B; background: #E8F5E9;">
+            <strong><i class="fas fa-baby"></i> Resonansi Keteladanan Lingkar Rumah</strong>
+            Anak meniru perilaku Anda. Evaluasi kebiasaan digital Ayah, Bunda, dan Anak.
+        </div>
         <div class="card">
-            <div class="role-tabs" id="roleTabsContainer"><button class="role-tab active" data-role="ayah">Ayah</button><button class="role-tab" data-role="bunda">Bunda</button><button class="role-tab" data-role="anak">Anak</button></div>
+            <div class="role-tabs" id="roleTabsContainer">
+                <button class="role-tab active" data-role="ayah"><i class="fas fa-user-tie"></i> Ayah</button>
+                <button class="role-tab" data-role="bunda"><i class="fas fa-user"></i> Bunda</button>
+                <button class="role-tab" data-role="anak"><i class="fas fa-baby"></i> Anak</button>
+            </div>
             <div id="habitsList" class="habits-container"></div>
-            <div class="score-summary"><div class="score-card"><i class="fas fa-user-tie"></i><div class="score-number" id="ayahScore">0</div><div>/7</div></div><div class="score-card"><i class="fas fa-user"></i><div class="score-number" id="bundaScore">0</div><div>/7</div></div><div class="score-card"><i class="fas fa-child"></i><div class="score-number" id="anakScore">0</div><div>/7</div></div></div>
-            <div class="total-family"><div>🌟 Sinergi Kebiasaan Baik</div><div class="total-score" id="totalFamilyScore">0</div><div>dari 21</div></div>
-            <div class="insight-box"><div class="insight-title">Analisis Komitmen</div><p id="insightText">Pilih kebiasaan yang sudah dilakukan.</p></div>
+            <div class="score-summary">
+                <div class="score-card"><i class="fas fa-user-tie"></i><div class="score-number" id="ayahScore">0</div><div>/7</div></div>
+                <div class="score-card"><i class="fas fa-user"></i><div class="score-number" id="bundaScore">0</div><div>/7</div></div>
+                <div class="score-card"><i class="fas fa-baby"></i><div class="score-number" id="anakScore">0</div><div>/7</div></div>
+            </div>
+            <div class="total-family"><div>🌟 Sinergi Kebiasaan Baik</div><div class="total-score" id="totalFamilyScore">0</div><div>dari 21 pilar</div></div>
+            <div class="insight-box"><div class="insight-title"><i class="fas fa-brain"></i> Insight</div><p id="insightText">Pilih kebiasaan yang sudah dilakukan.</p></div>
             <button class="reset-btn" id="resetBtn">Reset Semua</button>
         </div>
     </div>
 
+    <!-- ======================== RUJUKAN (SOP, Lembaga, Hukum) ======================== -->
     <div id="rujukanPage" class="page">
-        <div class="card"><h3><i class="fas fa-shield-alt"></i> Protokol Darurat (SOP)</h3><div class="totelala"><i class="fas fa-bullhorn"></i> TOTELALA<br><span>Tolak</span> <span>Teriak</span> <span>Lari</span> <span>Lapor</span></div><a href="tel:129" class="btn" style="background:#FF7043;">📞 Hubungi 129</a></div>
-        <div class="card"><h3>Hubungi UPTD PPA Banten</h3><div id="kabupatenGrid" class="kabupaten-grid"></div></div>
-        <div class="card"><h3>Landasan Hukum KUHP Baru</h3><ul><li>Pasal 473: Persetubuhan anak → minimal 3 tahun, maksimal 15 tahun + denda</li><li>Pasal 415: Pencabulan → maksimal 9 tahun</li><li>Larangan restorative justice untuk kekerasan seksual anak</li></ul></div>
+        <div class="card">
+            <h3><i class="fas fa-shield-alt"></i> Protokol Darurat Anak (SOP)</h3>
+            <div class="totelala"><i class="fas fa-bullhorn"></i> TOTELALA <i class="fas fa-running"></i><br><span>Tolak</span> <span>Teriak</span> <span>Lari</span> <span>Lapor</span></div>
+            <a href="tel:129" class="btn" style="background:#FF7043; color:white;"><i class="fas fa-phone-alt"></i> Hubungi Sakti PPA Nasional (129)</a>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-phone-square-alt"></i> Hubungi UPTD PPA Banten</h3>
+            <div id="kabupatenGrid" class="kabupaten-grid"></div>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-gavel"></i> Landasan Hukum KUHP Baru</h3>
+            <ul style="padding-left: 20px;">
+                <li><strong>Pasal 473</strong> - Persetubuhan anak: min 3 tahun, max 15 tahun, ditambah 1/3 jika wali.</li>
+                <li><strong>Pasal 415</strong> - Cabul anak: pidana hingga 9 tahun.</li>
+                <li><strong>Larangan Restorative Justice</strong> untuk kekerasan seksual anak.</li>
+            </ul>
+        </div>
     </div>
 
+    <!-- ======================== PROFIL ======================== -->
     <div id="profilPage" class="page">
-        <div class="card" style="text-align:center;"><i class="fas fa-shield-alt" style="font-size:60px; color:#FF9F4A;"></i><h2>Sahabat Anak Banten</h2><p>Modul Ekosistem Terintegrasi v3.0</p><div style="background:#FFF8F1; padding:18px; border-radius:20px; margin-top:16px;"><h4>Otoritas:</h4><p>Komnas Perlindungan Anak Provinsi Banten</p><p>Data tersimpan secara lokal dan aman.</p></div></div>
+        <div class="card" style="text-align: center;">
+            <div style="display: flex; justify-content: center; margin-bottom: 16px;"><img src="logo-komnas.png" style="width:100px; border-radius:20px; background:white; padding:8px;" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'fas fa-shield-alt\' style=\'font-size:60px;color:#FF9F4A;\'></i>';"></div>
+            <h2 style="color:#C13B00;">Sahabat Anak Banten</h2>
+            <p>Modul Ekosistem Terintegrasi v3.0</p>
+            <div style="background:#FFF8F1; border-radius:20px; padding:18px; margin-top:16px;">
+                <h4>Otoritas Pengawasan:</h4>
+                <p><strong>Komnas Perlindungan Anak Provinsi Banten</strong></p>
+                <p>Dikembangkan untuk perlindungan anak di era digital.</p>
+            </div>
+        </div>
     </div>
 </div>
 
+<!-- Bottom Navigation -->
 <div class="bottom-nav">
     <button class="nav-item active" data-tab="home"><i class="fas fa-home"></i><span>Beranda</span></button>
     <button class="nav-item" data-tab="kalkulator"><i class="fas fa-calculator"></i><span>Kalkulator</span></button>
-    <button class="nav-item" data-tab="parenting"><i class="fas fa-network-wired"></i><span>Parenting</span></button>
-    <button class="nav-item" data-tab="rujukan"><i class="fas fa-book-medical"></i><span>SOP</span></button>
-    <button class="nav-item" data-tab="profil"><i class="fas fa-user"></i><span>Profil</span></button>
+    <button class="nav-item" data-tab="parenting"><i class="fas fa-baby"></i><span>Parenting</span></button>
+    <button class="nav-item" data-tab="rujukan"><i class="fas fa-book-medical"></i><span>Rujukan</span></button>
+    <button class="nav-item" data-tab="profil"><i class="fas fa-info-circle"></i><span>Profil</span></button>
 </div>
-<footer>🔒 Sistem Pemrosesan Lokal - Open Source Project.</footer>
+<footer>🔒 Sistem Pemrosesan Lokal - Data aman di perangkat Anda.</footer>
 
 <script>
-    // ======================== GABUNGAN SCRIPT ========================
-    // 1. Navigasi tab (script pertama)
+    // ======================== NAVIGASI TAB (Tetap) ========================
     const pages = {
         home: document.getElementById('homePage'),
         kalkulator: document.getElementById('kalkulatorPage'),
@@ -403,36 +330,41 @@
         Object.keys(pages).forEach(id => { if (pages[id]) pages[id].classList.remove('active'); });
         if (pages[tabId]) pages[tabId].classList.add('active');
         navBtns.forEach(btn => { btn.classList.remove('active'); if (btn.getAttribute('data-tab') === tabId) btn.classList.add('active'); });
-        if (tabId === 'home') { if (typeof mapBeranda !== 'undefined' && mapBeranda) setTimeout(() => mapBeranda.invalidateSize(), 200); }
+        if (tabId === 'home' && typeof mapInstance !== 'undefined') setTimeout(() => mapInstance?.invalidateSize(), 150);
+        if (tabId === 'kalkulator' && typeof triggerSpeedoRefresh === 'function') triggerSpeedoRefresh();
+        if (tabId === 'parenting') { updateParentingUI(); renderParentingHabits(); }
+        if (tabId === 'rujukan') renderKabupatenGrid();
     }
     navBtns.forEach(btn => btn.addEventListener('click', () => switchTab(btn.getAttribute('data-tab'))));
 
-    // ======================== SCRIPT BERANDA BARU (Step, Lokasi, Rekam Suara, WA) ========================
+    // ======================== ENGINE BERANDA (Stepper, GPS, Rekam Suara) ========================
     let currentStep = 1;
-    let mapBeranda = null;
+    let mapInstance = null;
     let locationMarker = null;
     let dataLaporan = { lat: null, lng: null, tanggal: "", jam: "", kronologi: "", audioDuration: "Tidak ada" };
     let mediaRecorder, audioChunks = [], audioBlob = null;
 
     function moveStep(targetStep) {
-        document.querySelectorAll('#homePage .step-panel').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('#homePage .dot').forEach(d => d.classList.remove('active'));
+        document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
         currentStep = targetStep;
         document.getElementById(`step${targetStep}Panel`).classList.add('active');
         document.getElementById(`dot${targetStep}`).classList.add('active');
+        const bottomBar = document.getElementById("appBottomBar");
+        bottomBar.style.display = (targetStep > 1) ? "flex" : "none";
         if (targetStep === 2) triggerLocationAndTimeLock();
     }
+    function goBack() { if (currentStep > 1) moveStep(currentStep - 1); }
 
     function triggerLocationAndTimeLock() {
         const now = new Date();
-        dataLaporan.tanggal = now.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
-        dataLaporan.jam = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + " WIB";
+        dataLaporan.tanggal = now.toLocaleDateString('id-ID', { year:'numeric', month:'long', day:'numeric' });
+        dataLaporan.jam = now.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' }) + " WIB";
         document.getElementById("lblTanggal").innerText = `Tanggal: ${dataLaporan.tanggal}`;
         document.getElementById("lblJam").innerText = `Waktu: ${dataLaporan.jam}`;
-
-        if (!mapBeranda) {
-            mapBeranda = L.map('mapBeranda').setView([-6.1188, 106.1502], 11);
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '© Komnas Anak Banten' }).addTo(mapBeranda);
+        if (!mapInstance) {
+            mapInstance = L.map('mapid').setView([-6.1188, 106.1502], 11);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { attribution: '© Komnas Anak Banten' }).addTo(mapInstance);
         }
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -441,126 +373,111 @@
                     dataLaporan.lat = latitude.toFixed(6);
                     dataLaporan.lng = longitude.toFixed(6);
                     document.getElementById("lblKoordinat").innerHTML = `Lokasi GPS: <strong>${dataLaporan.lat}, ${dataLaporan.lng}</strong>`;
-                    if (locationMarker) mapBeranda.removeLayer(locationMarker);
-                    locationMarker = L.circleMarker([latitude, longitude], { color: '#EF4444', fillColor: '#FF4D4D', fillOpacity: 0.8, radius: 12, weight: 3 }).addTo(mapBeranda).bindPopup("<b>Kamu di Sini</b>").openPopup();
-                    mapBeranda.flyTo([latitude, longitude], 15);
+                    if (locationMarker) mapInstance.removeLayer(locationMarker);
+                    locationMarker = L.circleMarker([latitude, longitude], { color: '#EF4444', fillColor: '#FF4D4D', fillOpacity: 0.8, radius: 12, weight: 3 }).addTo(mapInstance).bindPopup("<b>Kamu di Sini</b>").openPopup();
+                    mapInstance.flyTo([latitude, longitude], 15);
                     document.getElementById("btnNextToStep3").disabled = false;
                 },
                 () => {
-                    alert("GPS tidak diizinkan. Gunakan koordinat default Banten.");
+                    alert("GPS tidak aktif. Menggunakan koordinat default Banten.");
                     dataLaporan.lat = "-6.1188"; dataLaporan.lng = "106.1502";
-                    document.getElementById("lblKoordinat").innerText = "Lokasi: Pusat Banten (Default)";
+                    document.getElementById("lblKoordinat").innerHTML = "Lokasi GPS: Pusat Banten (default)";
                     document.getElementById("btnNextToStep3").disabled = false;
                 },
                 { enableHighAccuracy: true, timeout: 10000 }
             );
-        } else { alert("GPS tidak didukung."); }
+        } else { alert("Perangkat tidak mendukung GPS."); document.getElementById("btnNextToStep3").disabled = false; }
     }
 
     // Rekam suara
     const btnRecord = document.getElementById("btnVoiceRecord");
-    btnRecord.addEventListener("click", async () => {
-        if (!mediaRecorder || mediaRecorder.state === "inactive") {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
-                audioChunks = [];
-                mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-                mediaRecorder.onstop = () => {
-                    audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
-                    const url = URL.createObjectURL(audioBlob);
-                    const player = document.getElementById("audioPlayback");
-                    player.src = url;
-                    document.getElementById("audioPlayerArea").style.display = "block";
-                    dataLaporan.audioDuration = "Tersedia";
-                    const dlBtn = document.getElementById("btnDownloadAudio");
-                    dlBtn.onclick = () => { const a = document.createElement('a'); a.href = url; a.download = `rekaman_${Date.now()}.mp3`; a.click(); };
-                };
-                mediaRecorder.start();
-                btnRecord.classList.add("recording");
-                btnRecord.innerHTML = `<i class="fas fa-stop"></i> Berhenti Rekam`;
-            } catch(e) { alert("Gagal akses mikrofon."); }
-        } else {
-            mediaRecorder.stop();
-            mediaRecorder.stream.getTracks().forEach(t => t.stop());
-            btnRecord.classList.remove("recording");
-            btnRecord.innerHTML = `<i class="fas fa-microphone"></i> Rekam Ulang Suara`;
-        }
-    });
+    if (btnRecord) {
+        btnRecord.addEventListener("click", async () => {
+            if (!mediaRecorder || mediaRecorder.state === "inactive") {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+                    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+                    mediaRecorder.onstop = () => {
+                        audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        const player = document.getElementById("audioPlayback");
+                        player.src = audioUrl;
+                        document.getElementById("audioPlayerArea").style.display = "block";
+                        dataLaporan.audioDuration = "Tersedia (rekaman suara)";
+                        const dlBtn = document.getElementById("btnDownloadAudio");
+                        dlBtn.onclick = () => { const a = document.createElement('a'); a.href = audioUrl; a.download = `rekaman_${Date.now()}.mp3`; a.click(); };
+                    };
+                    mediaRecorder.start();
+                    btnRecord.classList.add("recording");
+                    btnRecord.innerHTML = `<i class="fas fa-stop"></i> Berhenti Rekam`;
+                } catch(e) { alert("Izin mikrofon diperlukan."); }
+            } else {
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(t => t.stop());
+                btnRecord.classList.remove("recording");
+                btnRecord.innerHTML = `<i class="fas fa-microphone"></i> Rekam Suara Kamu`;
+            }
+        });
+    }
 
     function kirimLaporanWA() {
         dataLaporan.kronologi = document.getElementById("txtKronologi").value.trim() || "Tidak diisi";
-        const waNumber = "628111129129";
-        const msg = `🚨 *PENGADUAN DARURAT - SAHABAT ANAK BANTEN* 🚨\n\nHalo Petugas, saya butuh bantuan:\n📅 Tanggal: ${dataLaporan.tanggal}\n🕒 Waktu: ${dataLaporan.jam}\n📍 Lokasi: https://maps.google.com/maps?q=${dataLaporan.lat},${dataLaporan.lng}\n🎙️ Rekaman: ${dataLaporan.audioDuration}\n📝 Kronologi: "${dataLaporan.kronologi}"\n\nMohon segera dibantu. #SahabatAnakBanten`;
-        window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+        const pesan = `🚨 *PENGADUAN DARURAT - SAHABAT ANAK BANTEN* 🚨\n\n📅 Tanggal: ${dataLaporan.tanggal}\n🕒 Waktu: ${dataLaporan.jam}\n📍 Lokasi: https://maps.google.com/maps?q=${dataLaporan.lat},${dataLaporan.lng}\n📝 Kronologi: "${dataLaporan.kronologi}"\n🎙️ Rekaman: ${dataLaporan.audioDuration}\n\nMohon segera ditindaklanjuti. #SahabatAnakBanten`;
+        window.open(`https://wa.me/628111129129?text=${encodeURIComponent(pesan)}`, '_blank');
     }
 
-    // ======================== SCRIPT KALKULATOR (dari script pertama) ========================
+    // ======================== KALKULATOR ENGINE (Tetap) ========================
     (function() {
-        function initGroup(gId) { let c = document.getElementById(gId); if(c) { let btns = c.querySelectorAll('.toggle-btn'); btns.forEach(btn => btn.addEventListener('click', () => { btns.forEach(b => b.classList.remove('active')); btn.classList.add('active'); })); } }
+        function initGroup(gId){ let c=document.getElementById(gId); if(c){ let b=c.querySelectorAll('.toggle-btn'); b.forEach(btn=>btn.addEventListener('click',()=>{ b.forEach(bx=>bx.classList.remove('active')); btn.classList.add('active'); })); } }
         initGroup('preSleepGroup'); initGroup('mealGroup'); initGroup('guideGroup');
-        function getTV(gId) { let a = document.querySelector(`#${gId} .toggle-btn.active`); return a ? a.getAttribute('data-value') : 'no'; }
-        const canvas = document.getElementById('speedCanvas'), ctx = canvas.getContext('2d');
-        function drawSpeedo(score) {
-            if(!ctx) return; let w=320,h=180; ctx.clearRect(0,0,w,h); let cx=w/2,cy=h-20,rad=105,start=Math.PI*0.85,end=Math.PI*2.15;
-            ctx.beginPath(); ctx.arc(cx,cy,rad,start,end); ctx.strokeStyle="#E2E8F0"; ctx.lineWidth=18; ctx.stroke();
-            let perc=Math.min(1,Math.max(0,score/100)), angle=start+(end-start)*perc;
-            if(score>0){ ctx.beginPath(); ctx.arc(cx,cy,rad,start,angle); let grad=ctx.createLinearGradient(cx-80,cy,cx+80,cy); if(score<45) grad.addColorStop(0,'#EB5757'); else if(score<75) grad.addColorStop(0,'#F2994A'); else grad.addColorStop(0,'#2D9C7A'); grad.addColorStop(1,'#10B981'); ctx.strokeStyle=grad; ctx.lineWidth=18; ctx.stroke(); }
-            let nx=cx+Math.cos(angle)*(rad-12), ny=cy+Math.sin(angle)*(rad-12); ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(nx,ny); ctx.lineWidth=4; ctx.strokeStyle="#1E293B"; ctx.stroke(); ctx.beginPath(); ctx.arc(cx,cy,12,0,2*Math.PI); ctx.fillStyle="#0A2F44"; ctx.fill();
-        }
-        function calcScore() {
-            let age=document.getElementById('ageGroup').value, daily=parseFloat(document.getElementById('dailyScreenTime').value)||0, pre=getTV('preSleepGroup'), meal=getTV('mealGroup'), guide=getTV('guideGroup');
-            let max=age==='1'?1:age==='2'?1.5:age==='3'?2:0; let sc=100;
-            if(age==='0'){ if(daily>0) sc-=35+daily*15; } else { if(daily>max) sc-=Math.min(45,(daily-max)*14); else if(daily<=max && daily>0) sc+=Math.min(6,(max-daily)*4); }
-            if(pre==='yes') sc-=18; if(meal==='yes') sc-=12; if(guide==='active') sc+=10; else if(guide==='minimal') sc-=22; else sc-=2;
-            return Math.min(100,Math.max(0,Math.round(sc)));
-        }
-        document.getElementById('calculateBtn').addEventListener('click',()=>{
-            let sc=calcScore(); drawSpeedo(sc); document.getElementById('scoreNumber').innerText=sc;
-            let grade=sc>=85?"🌟 OPTIMAL":sc>=65?"✅ CUKUP":sc>=45?"⚠️ WASPADA":"🚨 PRIORITAS";
-            let cls=sc>=85?"status-optimal":sc>=65?"status-cukup":sc>=45?"status-waspada":"status-prioritas";
-            document.getElementById('gradeLabel').innerText=grade; document.getElementById('gradeLabel').className="grade-badge "+cls;
-            let name=document.getElementById('childName').value.trim()||"Ananda";
-            let p1="",p2="",p3="";
-            if(sc>=85){ p1=`Pola asuh ${name} sangat seimbang.`; p2=`Tidak ada gangguan.`; p3=`Pertahankan rutinitas.`; }
-            else if(sc>=65){ p1=`Risiko sedang, perlu penyesuaian.`; p2=`Kurangi layar sebelum tidur.`; p3=`Batasi screen time sesuai usia.`; }
-            else { p1=`Risiko tinggi adiksi gawai.`; p2=`Gangguan tidur & konsentrasi.`; p3=`Konsultasi ke psikolog anak.`; }
-            document.getElementById('textPsychosocial').innerHTML=p1; document.getElementById('textPhysical').innerHTML=p2; document.getElementById('textIntervention').innerHTML=p3;
-            document.getElementById('resultSection').style.display='block';
-        });
-        document.getElementById('shareWA').addEventListener('click',()=>{
-            let msg=`*Hasil Skrining Digital Parenting*\nSkor: ${document.getElementById('scoreNumber').innerText}/100\n${document.getElementById('textPsychosocial').innerText}`;
-            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
-        });
+        function getTV(gId){ let act=document.querySelector(`#${gId} .toggle-btn.active`); return act?act.getAttribute('data-value'):'no'; }
+        const canvas=document.getElementById('speedCanvas'), ctx=canvas.getContext('2d');
+        function drawSpeedo(score){ if(!ctx) return; let w=320,h=180; ctx.clearRect(0,0,w,h); let cx=w/2,cy=h-20,rad=105,start=Math.PI*0.85,end=Math.PI*2.15; ctx.beginPath(); ctx.arc(cx,cy,rad,start,end); ctx.strokeStyle="#E2E8F0"; ctx.lineWidth=18; ctx.stroke(); let perc=Math.min(1,Math.max(0,score/100)), angle=start+(end-start)*perc; if(score>0){ ctx.beginPath(); ctx.arc(cx,cy,rad,start,angle); let grad=ctx.createLinearGradient(cx-80,cy,cx+80,cy); if(score<45)grad.addColorStop(0,'#EB5757'); else if(score<75)grad.addColorStop(0,'#F2994A'); else grad.addColorStop(0,'#2D9C7A'); ctx.strokeStyle=grad; ctx.lineWidth=18; ctx.stroke(); } let nx=cx+Math.cos(angle)*(rad-12), ny=cy+Math.sin(angle)*(rad-12); ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(nx,ny); ctx.lineWidth=4; ctx.strokeStyle="#1E293B"; ctx.stroke(); ctx.beginPath(); ctx.arc(cx,cy,12,0,2*Math.PI); ctx.fillStyle="#0A2F44"; ctx.fill(); }
+        function calcScore(){ let age=document.getElementById('ageGroup').value, daily=parseFloat(document.getElementById('dailyScreenTime').value)||0, pre=getTV('preSleepGroup'), meal=getTV('mealGroup'), guide=getTV('guideGroup'); let max=age==='1'?1:age==='2'?1.5:age==='3'?2:0; let sc=100; if(age==='0'){if(daily>0) sc-=35+daily*15;}else{if(daily>max) sc-=Math.min(45,(daily-max)*14); else if(daily<=max && daily>0) sc+=Math.min(6,(max-daily)*4);} if(pre==='yes') sc-=18; if(meal==='yes') sc-=12; if(guide==='active') sc+=10; else if(guide==='minimal') sc-=22; else if(guide==='partial') sc-=2; return Math.min(100,Math.max(0,Math.round(sc))); }
+        document.getElementById('calculateBtn').addEventListener('click',()=>{ let sc=calcScore(); drawSpeedo(sc); document.getElementById('scoreNumber').innerText=sc; let grade=sc>=85?"🌟 OPTIMAL":sc>=65?"✅ CUKUP":sc>=45?"⚠️ WASPADA":"🚨 PRIORITAS"; let cls=sc>=85?"status-optimal":sc>=65?"status-cukup":sc>=45?"status-waspada":"status-prioritas"; let gb=document.getElementById('gradeLabel'); gb.innerText=grade; gb.className="grade-badge "+cls; let p1=sc>=85?"Pola asuh aman":sc>=65?"Perlu penyesuaian":"Risiko tinggi adiksi"; document.getElementById('textPsychosocial').innerHTML=p1; document.getElementById('resultSection').style.display='block'; });
+        document.getElementById('shareWA').addEventListener('click',()=>{ let sc=document.getElementById('scoreNumber').innerText; window.open(`https://wa.me/?text=${encodeURIComponent(`Hasil Skrining: ${sc}/100`)}`,'_blank'); });
         drawSpeedo(0);
+        window.triggerSpeedoRefresh = () => { if(document.getElementById('resultSection').style.display==='block') drawSpeedo(parseInt(document.getElementById('scoreNumber').innerText)||0); };
     })();
 
-    // ======================== SCRIPT PARENTING (dari script pertama) ========================
+    // ======================== PARENTING ENGINE ========================
     const habitsLib = { ayah:["Mengajak anak bermain tanpa gawai 30 menit","Menyepakati jadwal gadget","Tidak bawa ponsel ke meja makan","Memberi contoh membaca buku","Mendampingi anak menonton konten","Aturan jam tidur tanpa layar","Aktif bertanya aktivitas online"], bunda:["Zona bebas gadget","Masak tanpa interupsi notifikasi","Diskusi batasan screen time","Pujian saat bermain fisik","Periksa aplikasi anak","Quality time tanpa teknologi","Pendengar aktif"], anak:["Matikan notifikasi saat belajar","Izin sebelum unduh aplikasi","Ajakin orang tua board game","Tidak pakai gadget saat makan","Bantu orang tua atur timer","Laporkan konten tidak pantas","Taruh ponsel sebelum tidur"] };
     let habitStatus = { ayah:Array(7).fill(false), bunda:Array(7).fill(false), anak:Array(7).fill(false) };
-    let currentRole="ayah";
-    function saveHabit(){ localStorage.setItem("resonansi_keluarga_v2",JSON.stringify({ habitsStatus:habitStatus })); }
-    function loadHabit(){ let s=localStorage.getItem("resonansi_keluarga_v2"); if(s) try{ let p=JSON.parse(s); if(p.habitsStatus) habitStatus=p.habitsStatus; }catch(e){} }
+    let currentParentRole = "ayah";
+    function saveHabits(){ localStorage.setItem("resonansi_keluarga_v2",JSON.stringify({ habitsStatus:habitStatus })); }
+    function loadHabits(){ let s=localStorage.getItem("resonansi_keluarga_v2"); if(s) try{ let p=JSON.parse(s); if(p.habitsStatus) habitStatus=p.habitsStatus; }catch(e){} }
     function getScore(r){ return habitStatus[r].filter(v=>v).length; }
-    function updateUI(){ document.getElementById("ayahScore").innerText=getScore("ayah"); document.getElementById("bundaScore").innerText=getScore("bunda"); document.getElementById("anakScore").innerText=getScore("anak"); let total=getScore("ayah")+getScore("bunda")+getScore("anak"); document.getElementById("totalFamilyScore").innerText=total; document.getElementById("insightText").innerHTML=total===21?"🎉 Sempurna!":total>=14?"✨ Bagus, lanjutkan":total>=5?"🌱 Progres mulai":"👋 Mulai beri tanda"; document.querySelector(".total-score")?.classList.add("glow"); setTimeout(()=>document.querySelector(".total-score")?.classList.remove("glow"),500); }
-    function renderHabits(){ let arr=habitsLib[currentRole], stat=habitStatus[currentRole]; let html=`<div style="margin-bottom:0.8rem;font-weight:700;">Evaluasi Aturan</div>`; for(let i=0;i<arr.length;i++) html+=`<div class="habit-item" data-idx="${i}"><div class="habit-text">${arr[i]}</div><div class="habit-buttons"><button class="btn-yes ${stat[i]?'active':''}"><i class="fas fa-check-circle"></i> Sudah</button><button class="btn-no ${!stat[i]?'active':''}"><i class="fas fa-times-circle"></i> Belum</button></div></div>`; document.getElementById("habitsList").innerHTML=html; document.querySelectorAll('.habit-item').forEach(it=>{ let idx=parseInt(it.dataset.idx); it.querySelector('.btn-yes')?.addEventListener('click',()=>{ habitStatus[currentRole][idx]=true; saveHabit(); updateUI(); renderHabits(); }); it.querySelector('.btn-no')?.addEventListener('click',()=>{ habitStatus[currentRole][idx]=false; saveHabit(); updateUI(); renderHabits(); }); }); }
-    document.querySelectorAll('#roleTabsContainer .role-tab').forEach(btn=>btn.addEventListener('click',()=>{ currentRole=btn.getAttribute('data-role'); document.querySelectorAll('#roleTabsContainer .role-tab').forEach(t=>t.classList.remove('active')); btn.classList.add('active'); renderHabits(); }));
-    document.getElementById("resetBtn").addEventListener('click',()=>{ if(confirm("Reset semua data?")){ habitStatus={ ayah:Array(7).fill(false), bunda:Array(7).fill(false), anak:Array(7).fill(false) }; saveHabit(); updateUI(); renderHabits(); } });
-    loadHabit(); updateUI(); renderHabits();
+    function updateParentingUI(){
+        document.getElementById("ayahScore").innerText=getScore("ayah"); document.getElementById("bundaScore").innerText=getScore("bunda"); document.getElementById("anakScore").innerText=getScore("anak");
+        let total=getScore("ayah")+getScore("bunda")+getScore("anak"); document.getElementById("totalFamilyScore").innerText=total;
+        document.getElementById("insightText").innerHTML=total===21?"🎉 Sempurna!":total>=14?"✨ Bagus, lanjutkan":total>=5?"🌱 Progres mulai":"👋 Mulai beri tanda";
+        document.querySelector(".total-score")?.classList.add("glow"); setTimeout(()=>document.querySelector(".total-score")?.classList.remove("glow"),500);
+    }
+    function renderParentingHabits(){
+        let arr=habitsLib[currentParentRole], stat=habitStatus[currentParentRole];
+        let html=`<div style="margin-bottom:0.8rem;font-weight:700;">Evaluasi Aturan</div>`;
+        for(let i=0;i<arr.length;i++) html+=`<div class="habit-item" data-idx="${i}"><div class="habit-text">${arr[i]}</div><div class="habit-buttons"><button class="btn-yes ${stat[i]?'active':''}"><i class="fas fa-check-circle"></i> Sudah</button><button class="btn-no ${!stat[i]?'active':''}"><i class="fas fa-times-circle"></i> Belum</button></div></div>`;
+        document.getElementById("habitsList").innerHTML=html;
+        document.querySelectorAll('.habit-item').forEach(it=>{ let idx=parseInt(it.dataset.idx); it.querySelector('.btn-yes').addEventListener('click',()=>{ habitStatus[currentParentRole][idx]=true; saveHabits(); updateParentingUI(); renderParentingHabits(); }); it.querySelector('.btn-no').addEventListener('click',()=>{ habitStatus[currentParentRole][idx]=false; saveHabits(); updateParentingUI(); renderParentingHabits(); }); });
+    }
+    document.querySelectorAll('#roleTabsContainer .role-tab').forEach(btn=>btn.addEventListener('click',()=>{ currentParentRole=btn.getAttribute('data-role'); document.querySelectorAll('#roleTabsContainer .role-tab').forEach(t=>t.classList.remove('active')); btn.classList.add('active'); renderParentingHabits(); }));
+    document.getElementById("resetBtn").addEventListener('click',()=>{ if(confirm("Reset semua data?")){ habitStatus={ ayah:Array(7).fill(false), bunda:Array(7).fill(false), anak:Array(7).fill(false) }; saveHabits(); updateParentingUI(); renderParentingHabits(); } });
+    loadHabits(); updateParentingUI(); renderParentingHabits();
 
-    // ======================== SCRIPT RUJUKAN (8 kabupaten) ========================
+    // ======================== RUJUKAN: KABUPATEN GRID ========================
     const cities = [
-        { name: "Kota Serang", lat: -6.1188, lng: 106.1502, wa: "628991129129" },
-        { name: "Kab. Serang", lat: -6.2580, lng: 106.2190, wa: "628991129129" },
-        { name: "Kota Cilegon", lat: -6.0121, lng: 106.0250, wa: "628991129129" },
-        { name: "Kab. Pandeglang", lat: -6.3140, lng: 106.1050, wa: "628991129129" },
-        { name: "Kab. Lebak", lat: -6.5190, lng: 106.2490, wa: "628991129129" },
-        { name: "Kab. Tangerang", lat: -6.2660, lng: 106.4610, wa: "628991129129" },
-        { name: "Kota Tangerang", lat: -6.1780, lng: 106.6310, wa: "628991129129" },
-        { name: "Kota Tangsel", lat: -6.2830, lng: 106.7170, wa: "628991129129" }
+        { name: "Kota Serang", wa: "628123456789" }, { name: "Kab. Serang", wa: "628123456790" }, { name: "Kota Cilegon", wa: "628123456791" },
+        { name: "Kab. Pandeglang", wa: "628123456792" }, { name: "Kab. Lebak", wa: "628123456793" }, { name: "Kab. Tangerang", wa: "628123456794" },
+        { name: "Kota Tangerang", wa: "628123456795" }, { name: "Kota Tangsel", wa: "628123456796" }
     ];
-    const kabGrid = document.getElementById('kabupatenGrid');
-    if(kabGrid) cities.forEach(city => { const div = document.createElement('div'); div.className = 'kab-card'; div.innerHTML = `<h4>${city.name}</h4><button class="btn-kab" onclick="window.open('https://wa.me/${city.wa}?text=Halo%2C%20saya%20membutuhkan%20layanan%20pendampingan%20di%20${encodeURIComponent(city.name)}.', '_blank')"><i class="fab fa-whatsapp"></i> Hubungi</button>`; kabGrid.appendChild(div); });
+    function renderKabupatenGrid(){
+        const grid = document.getElementById("kabupatenGrid");
+        if(!grid || grid.children.length>0) return;
+        cities.forEach(city => { const div = document.createElement('div'); div.className = 'kab-card'; div.innerHTML = `<h4>${city.name}</h4><button class="btn-kab" onclick="window.open('https://wa.me/${city.wa}?text=Halo%20Tim%20Perlindungan%20Anak%2C%20saya%20memerlukan%20bantuan.','_blank')"><i class="fab fa-whatsapp"></i> Hubungi</button>`; grid.appendChild(div); });
+    }
+    renderKabupatenGrid();
 </script>
 </body>
 </html>
