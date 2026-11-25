@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#6C4DF4">
+<title>Peta Perlindungan Anak Banten — Komnas PA Banten</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%236C4DF4'/%3E%3Cpath d='M32 12l16 6v12c0 11-7 19-16 22-9-3-16-11-16-22V18z' fill='%23fff'/%3E%3Cpath d='M32 40s-8-5-8-10a4.5 4.5 0 018-2.5A4.5 4.5 0 0140 30c0 5-8 10-8 10z' fill='%23FF6B9D'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<!--
+══════════════════════════════════════════════════════════════════
+ PETA PERLINDUNGAN ANAK BANTEN · Dikembangkan oleh Komnas Perlindungan Anak Provinsi Banten
+ DEPLOY GITHUB PAGES: unggah file ini sebagai index.html → Settings › Pages › Deploy from branch (main /root).
+ MODE: CONFIG.firebase = null → SIMULASI (data fiktif). Isi config Firebase → MODE LIVE (Firestore + Auth).
+ SKEMA koleksi "reports" (ditulis oleh aplikasi mobile / formulir intake):
+   {kategori:'Kekerasan'|'AMPK', jenis, prioritas, korbanInisial, usia, gender, pelapor, waPelapor,
+    wilayah, lokasi, lat, lng, kronologi, channel, status:'baru', createdAt, riwayat:[]}
+ ATURAN FIRESTORE (disarankan; beri custom claim petugas:true pada akun admin):
+   match /reports/{id}{ allow create: if request.resource.data.keys().hasAll(['jenis','kronologi','wilayah']);
+                        allow read,update,delete: if request.auth!=null && request.auth.token.petugas==true; }
+   match /{c}/{id}{ allow read,write: if request.auth!=null && request.auth.token.petugas==true; }
+══════════════════════════════════════════════════════════════════
+-->
+<style>
+:root{--p:#7C5CFC;--pd:#5B3FD6;--pl:#F1ECFF;--pk:#FF6B9D;--pkl:#FFEAF2;--red:#E5484D;--rl:#FFEEEE;--am:#F5841F;--aml:#FFF3E6;--tl:#1FAF9F;--tll:#E6F8F5;--ink:#241B46;--mid:#5A5080;--soft:#9A92BD;--bg:#F6F3FF;--bd:rgba(124,92,252,.14);--sh:0 8px 28px rgba(108,77,244,.10)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Inter,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+h1,h2,h3,button,th{font-family:Poppins,sans-serif}
+button{cursor:pointer;border:0;background:none;font:inherit;color:inherit}a{color:inherit;text-decoration:none}
+.hide{display:none!important}
+aside{width:250px;background:linear-gradient(170deg,#8B6DFF 0%,#6C4DF4 55%,#4F34C9 100%);color:#fff;padding:18px 12px;position:fixed;inset:0 auto 0 0;z-index:100;display:flex;flex-direction:column;transition:transform .3s;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:10px;padding:0 6px 16px;border-bottom:1px solid rgba(255,255,255,.2);margin-bottom:12px}
+.brand svg{width:42px;height:42px;flex:none}.brand h1{font-size:.92rem;line-height:1.15}.brand span{font-size:.64rem;opacity:.8}
+.nl{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:14px;color:rgba(255,255,255,.8);font-size:.82rem;font-weight:600;width:100%;text-align:left;margin-bottom:3px}
+.nl i{width:18px;text-align:center}.nl:hover{background:rgba(255,255,255,.12)}.nl.on{background:#fff;color:var(--pd);box-shadow:0 4px 14px rgba(0,0,0,.15)}
+.nl b{margin-left:auto;background:var(--pk);color:#fff;font-size:.62rem;padding:1px 8px;border-radius:50px}
+main{margin-left:250px;padding:20px 26px 40px;max-width:1360px}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.top .t{flex:1;min-width:180px}.top h2{font-size:1.4rem}.top p{font-size:.8rem;color:var(--soft)}
+.ham{display:none;width:40px;height:40px;border-radius:12px;background:#fff;border:1.5px solid var(--bd)}
+.mode{font-size:.68rem;font-weight:700;padding:5px 12px;border-radius:50px}.mode.sim{background:var(--aml);color:#C45F00;border:1px dashed rgba(196,95,0,.4)}.mode.live{background:var(--tll);color:var(--tl)}
+.hero{background:linear-gradient(120deg,#7C5CFC,#B07BFF 60%,#FF8DB8);color:#fff;border-radius:24px;padding:22px 26px;margin-bottom:18px;box-shadow:var(--sh);display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.hero div{flex:1;min-width:220px}.hero h3{font-size:1.15rem}.hero p{font-size:.8rem;opacity:.92;margin-top:4px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:18px}
+.sc{background:#fff;border:1.5px solid var(--bd);border-radius:20px;padding:16px;box-shadow:var(--sh)}
+.sc i{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.sc h3{font-size:1.65rem;line-height:1.1}.sc p{font-size:.72rem;color:var(--soft);font-weight:600}.sc small{font-size:.68rem;color:var(--pd);font-weight:600}
+.panel{background:#fff;border:1.5px solid var(--bd);border-radius:22px;margin-bottom:16px;overflow:hidden;box-shadow:var(--sh)}
+.ph{padding:14px 18px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;gap:10px;flex-wrap:wrap}.ph h3{font-size:.95rem;flex:1}
+.pb{padding:16px 18px}.cw{position:relative;height:250px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:12px 14px}.bar input{flex:1;min-width:170px;margin:0}.bar select{width:auto;margin:0}.bar small{color:var(--soft);font-size:.72rem}
+input,select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--bd);border-radius:12px;font:inherit;font-size:.85rem;background:#fff;outline:0;margin-bottom:10px;color:var(--ink)}
+input:focus,select:focus,textarea:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(124,92,252,.15)}
+label{font-size:.68rem;font-weight:700;color:var(--soft);text-transform:uppercase;display:block;margin-bottom:3px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:.8rem}
+th{text-align:left;font-size:.67rem;text-transform:uppercase;letter-spacing:.04em;color:var(--soft);padding:10px 14px;background:var(--bg);white-space:nowrap}
+td{padding:11px 14px;border-top:1px solid var(--bd);color:var(--mid)}tbody tr{cursor:pointer}tbody tr:hover{background:var(--pl)}
+.empty{text-align:center;color:var(--soft);padding:40px!important;cursor:default}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:9px 16px;border-radius:50px;font-size:.76rem;font-weight:700;white-space:nowrap}
+.btn:active{transform:scale(.96)}.btn:disabled{opacity:.5}
+.b1{background:var(--p);color:#fff;box-shadow:0 4px 14px rgba(124,92,252,.35)}.b2{background:var(--tl);color:#fff}.b3{background:var(--am);color:#fff}.b4{background:#fff;border:1.5px solid var(--bd);color:var(--mid)}.b5{background:var(--red);color:#fff}.b6{background:#fff;color:var(--pd)}
+.pill{display:inline-block;padding:2px 10px;border-radius:50px;font-size:.68rem;font-weight:700;white-space:nowrap}
+.pill.red{background:var(--rl);color:var(--red)}.pill.green{background:var(--tll);color:var(--tl)}.pill.amber{background:var(--aml);color:#C45F00}.pill.blue{background:var(--pl);color:var(--pd)}.pill.pink{background:var(--pkl);color:#D6336C}.pill.gray{background:#EFEDF7;color:var(--soft)}
+.ov{position:fixed;inset:0;background:rgba(36,27,70,.55);backdrop-filter:blur(3px);z-index:1000;display:none;align-items:center;justify-content:center;padding:16px}.ov.on{display:flex}
+.md{background:#fff;border-radius:26px;width:100%;max-width:620px;max-height:92vh;overflow-y:auto}
+.mh{padding:16px 20px;border-bottom:1.5px solid var(--bd);display:flex;align-items:center;gap:8px;position:sticky;top:0;background:#fff;z-index:2}.mh h3{flex:1;font-size:1rem}
+.dr{padding:9px 20px;border-bottom:1px solid var(--bd);font-size:.84rem}.dr small{display:block;font-size:.66rem;font-weight:700;color:var(--soft);text-transform:uppercase}.dr span{word-break:break-word}
+.mf{padding:14px 20px 20px;display:flex;gap:8px;flex-wrap:wrap}.fm{padding:16px 20px 4px}.fg{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;padding:12px 20px 0}.chip{padding:6px 12px;border-radius:50px;font-size:.7rem;font-weight:700;border:1.5px solid var(--bd);color:var(--mid)}.chip.on{background:var(--p);color:#fff;border-color:var(--p)}
+.tl{padding:10px 20px;font-size:.78rem;color:var(--mid)}.tl div{padding-left:14px;border-left:2px solid var(--p);margin-bottom:6px}.tl small{color:var(--soft)}
+.warn{margin:12px 20px 0;padding:10px 12px;background:var(--pkl);border-radius:12px;font-size:.72rem;color:#9C2B57}
+#toast{position:fixed;top:16px;right:16px;background:var(--ink);color:#fff;font-size:.8rem;padding:11px 18px;border-radius:50px;z-index:9999;opacity:0;transition:.3s;pointer-events:none;max-width:90vw}#toast.on{opacity:1}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}.grid2 .panel{margin-bottom:0;min-width:0}
+#map{height:430px;width:100%;border-radius:16px;position:relative;z-index:0;background:#e9e4fa}
+.leaflet-container{font-family:Inter,sans-serif;border-radius:16px}.leaflet-popup-content{font-size:.78rem;line-height:1.5;margin:10px 12px}
+.map-dot{position:relative;display:block;width:20px;height:20px}
+.map-dot .ring{position:absolute;inset:0;border-radius:50%;background:var(--c);opacity:.5;animation:ping 1.7s cubic-bezier(0,0,.2,1) infinite}
+.map-dot .core{position:absolute;inset:4px;border-radius:50%;background:var(--c);border:2px solid #fff;box-shadow:0 1px 6px rgba(0,0,0,.4)}
+@keyframes ping{0%{transform:scale(.35);opacity:.95}80%,100%{transform:scale(2.2);opacity:0}}
+.lg{display:flex;gap:12px;flex-wrap:wrap;font-size:.7rem;color:var(--mid);padding:0 4px 8px}.lg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+#login{position:fixed;inset:0;z-index:2000;background:linear-gradient(140deg,#8B6DFF,#5B3FD6 60%,#FF8DB8);display:flex;align-items:center;justify-content:center;padding:16px}
+#login form{background:#fff;border-radius:26px;padding:28px;width:100%;max-width:380px;text-align:center}
+@media(max-width:900px){.grid2{grid-template-columns:1fr}}
+@media(max-width:820px){aside{transform:translateX(-100%)}aside.on{transform:none}main{margin-left:0;padding:14px}.ham{display:block}#map{height:340px}.fg{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="login" class="hide"><form id="lf"><h2 style="color:var(--pd)">Peta Perlindungan Anak Banten</h2><p style="font-size:.78rem;color:var(--soft);margin:6px 0 18px">Khusus petugas Komnas PA Banten</p><input id="le" type="email" placeholder="Email petugas" required><input id="lp" type="password" placeholder="Kata sandi" required><button class="btn b1" style="width:100%">Masuk</button><p id="lerr" style="color:var(--red);font-size:.75rem;margin-top:10px"></p></form></div>
+
+<div id="app">
+  <aside id="side">
+    <div class="brand"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="32" fill="#fff"/><path d="M32 12l16 6v12c0 11-7 19-16 22-9-3-16-11-16-22V18z" fill="#7C5CFC"/><path d="M32 40s-8-5-8-10a4.5 4.5 0 018-2.5A4.5 4.5 0 0140 30c0 5-8 10-8 10z" fill="#FF6B9D"/></svg><div><h1>Peta Perlindungan Anak Banten</h1><span>Komnas PA Provinsi Banten</span></div></div>
+    <nav id="nav"></nav>
+    <div style="margin-top:auto;padding-top:14px">
+      <div id="who" style="font-size:.68rem;opacity:.8;word-break:break-all;margin-bottom:8px">Mode simulasi</div>
+      <button class="nl" id="pv"><i class="fas fa-user-lock"></i> Mode Privasi: <span id="pvs">ON</span></button>
+      <button class="nl" id="reset"><i class="fas fa-rotate"></i> Reset Data Simulasi</button>
+      <button class="nl hide" id="logout"><i class="fas fa-right-from-bracket"></i> Keluar</button>
+    </div>
+  </aside>
+  <main>
+    <div class="top">
+      <button class="ham" id="ham" aria-label="Menu"><i class="fas fa-bars"></i></button>
+      <div class="t"><h2 id="title">Dashboard</h2><p id="sub"></p></div>
+      <span class="mode sim" id="conn"><i class="fas fa-flask"></i> Simulasi</span>
+      <button class="btn b1" id="add"><i class="fas fa-plus"></i> Input Laporan</button>
+      <button class="btn b4" id="exp"><i class="fas fa-file-csv"></i> Export CSV</button>
+    </div>
+    <div id="view"></div>
+  </main>
+</div>
+<div class="ov" id="ov"><div class="md" id="md"></div></div>
+<div id="toast" role="status"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+'use strict';
+/* ═══ KONFIGURASI ═══ */
+const CONFIG = {
+  firebase: null, /* ← tempel objek firebaseConfig dari Firebase Console agar MODE LIVE aktif */
+  hotlineWA: '',  /* nomor WA hotline/pengaduan, contoh '6281234567890' */
+  fbVer: '10.12.2'
+};
+const SLA = { Darurat:1, Tinggi:6, Sedang:24, Rendah:72 }; /* jam batas respons pertama */
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let tt; const toast = (m, ms = 3500) => { const t = $('toast'); t.textContent = m; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), ms); };
+const dt = ts => ts && ts.toDate ? ts.toDate() : ts ? new Date(ts) : null;
+const tm = ts => { const d = dt(ts); return d ? d.toLocaleString('id-ID', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '—'; };
+const ago = ts => { const d = dt(ts); if (!d) return '—'; const s = (Date.now() - d.getTime()) / 1000; if (s < 60) return 'baru saja'; if (s < 3600) return Math.floor(s/60) + ' mnt lalu'; if (s < 86400) return Math.floor(s/3600) + ' jam lalu'; return Math.floor(s/86400) + ' hari lalu'; };
+const pill = (t, c = 'blue') => `<span class="pill ${c}">${esc(t || '—')}</span>`;
+const PC = { Darurat:'#E5484D', Tinggi:'#F5841F', Sedang:'#7C5CFC', Rendah:'#1FAF9F' };
+const PCL = { Darurat:'red', Tinggi:'amber', Sedang:'blue', Rendah:'green' };
+const STL = { baru:'Baru', verifikasi:'Verifikasi', pendampingan:'Pendampingan', rujukan:'Rujukan', diproses:'Diproses', selesai:'Selesai' };
+const STC = { baru:'red', verifikasi:'amber', pendampingan:'blue', rujukan:'pink', diproses:'amber', selesai:'green' };
+const stPill = s => pill(STL[s || 'baru'], STC[s || 'baru'] || 'gray');
+const prPill = p => pill(p, PCL[p] || 'gray');
+let priv = true; /* Mode Privasi: identitas anak & pelapor disamarkan di layar */
+const mask = n => !n ? 'Anonim' : priv ? n.split(/\s+/).map(x => x[0].toUpperCase() + '.').join('') : n;
+const waLink = (n, t) => 'https://wa.me/' + String(n).replace(/\D/g, '').replace(/^0/, '62') + (t ? '?text=' + encodeURIComponent(t) : '');
+const gmap = r => `https://www.google.com/maps?q=${encodeURIComponent(r.lat + ',' + r.lng)}`;
+const isOpen = r => (r.status || 'baru') !== 'selesai';
+const overdue = r => (r.status || 'baru') === 'baru' && dt(r.createdAt) && (Date.now() - dt(r.createdAt)) / 36e5 > (SLA[r.prioritas] || 24);
+
+/* ═══ REFERENSI (UU 35/2014, PP 78/2021 tentang AMPK) ═══ */
+const WIL = [['Kab. Lebak',-6.55,106.25],['Kab. Pandeglang',-6.45,105.9],['Kab. Serang',-6.15,106.2],['Kab. Tangerang',-6.17,106.5],['Kota Cilegon',-6.0,106.03],['Kota Serang',-6.12,106.15],['Kota Tangerang',-6.17,106.64],['Kota Tangerang Selatan',-6.29,106.7]];
+const JK = ['Kekerasan Fisik','Kekerasan Psikis','Kekerasan Seksual','Penelantaran','Eksploitasi Anak','Perundungan (Bullying)','Kekerasan Daring','Perdagangan Anak (TPPO)','Perkawinan Anak'];
+const JA = ['Anak Berhadapan dengan Hukum','Anak Penyandang Disabilitas','Anak Terlantar','Anak Jalanan','Anak Korban Eksploitasi','Anak Korban Bencana','Anak dalam Situasi Darurat','Anak Korban Pornografi/NAPZA','Anak dengan HIV/AIDS'];
+const STAGES = ['baru','verifikasi','pendampingan','rujukan','selesai'];
+const CHANNEL = ['Aplikasi Mobile','WhatsApp','Hotline','Datang Langsung','Rujukan Instansi'];
+const LAYANAN = ['Pendampingan Psikologis','Bantuan Hukum','Visum & Layanan Medis','Rumah Aman','Pendidikan / Sekolah','Bantuan Sosial'];
+const ROLE = ['Pendamping Hukum','Psikolog Klinis','Konselor Anak','Paralegal','Pekerja Sosial','Relawan Lapangan'];
+
+const COL = {
+  reports:{ t:'Laporan Kasus', i:'fa-file-shield', sub:'Kekerasan terhadap anak & AMPK dari aplikasi mobile, WA, dan hotline', sts:STAGES, cols:[
+    ['Tiket',r=>`<b>${esc(r.tiket)}</b>`],['Masuk',r=>tm(r.createdAt) + (overdue(r) ? ' <span class="pill red">Lewat SLA</span>' : '')],
+    ['Kasus',r=>pill(r.kategori, r.kategori === 'AMPK' ? 'pink' : 'blue') + ' ' + esc(r.jenis)],['Anak',r=>esc(mask(r.korbanInisial)) + (r.usia ? ` (${esc(r.usia)} th)` : '')],
+    ['Wilayah',r=>esc(r.wilayah)],['Prioritas',r=>prPill(r.prioritas)],['Status',r=>stPill(r.status)]] },
+  rujukan:{ t:'Rujukan & Layanan', i:'fa-hand-holding-heart', sub:'Permintaan layanan: psikolog, hukum, medis, rumah aman', sts:['baru','diproses','selesai'], cols:[
+    ['Waktu',r=>tm(r.createdAt)],['Tiket',r=>`<b>${esc(r.tiket)}</b>`],['Layanan',r=>pill(r.layanan,'amber')],['Wilayah',r=>esc(r.wilayah)],['Status',r=>stPill(r.status)]] },
+  petugas:{ t:'Petugas & Relawan', i:'fa-user-shield', sub:'Tim pendamping, paralegal, psikolog, relawan', cols:[
+    ['Nama',r=>`<b>${esc(r.nama)}</b>`],['Peran',r=>pill(r.peran)],['Wilayah',r=>esc(r.wilayah)],['WhatsApp',r=>r.wa ? `<a href="${waLink(r.wa)}" target="_blank" rel="noopener" style="color:var(--tl)">${esc(r.wa)}</a>` : '—']] }
+};
+const D = {}; Object.keys(COL).forEach(k => D[k] = []);
+let cur = 'dashboard', F = { q:'', s:'' }, map = null, markerLayer = null, charts = {}, fdb = null, fauth = null, seq = 0;
+
+/* ═══ LAPISAN DATA (Simulasi ⇄ Firestore) ═══ */
+function put(coll, o) {
+  if (fdb) return fdb.collection(coll).doc(o.id).set(o, { merge:true }).catch(e => toast('⚠️ Gagal menyimpan: ' + e.message));
+  const a = D[coll], i = a.findIndex(x => x.id === o.id); i > -1 ? a[i] = o : a.unshift(o);
+}
+function del(coll, id) {
+  if (fdb) return fdb.collection(coll).doc(id).delete().catch(e => toast('⚠️ ' + e.message));
+  const a = D[coll], i = a.findIndex(x => x.id === id); if (i > -1) a.splice(i, 1);
+}
+function loadScript(src) { return new Promise((ok, no) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = no; document.head.appendChild(s); }); }
+async function initFirebase() {
+  const v = CONFIG.fbVer, b = `https://www.gstatic.com/firebasejs/${v}/firebase-`;
+  await loadScript(b + 'app-compat.js'); await Promise.all([loadScript(b + 'auth-compat.js'), loadScript(b + 'firestore-compat.js')]);
+  firebase.initializeApp(CONFIG.firebase); fauth = firebase.auth(); const db = firebase.firestore();
+  $('login').classList.remove('hide');
+  $('lf').onsubmit = e => { e.preventDefault(); $('lerr').textContent = ''; fauth.signInWithEmailAndPassword($('le').value, $('lp').value).catch(() => $('lerr').textContent = 'Email atau kata sandi salah.'); };
+  fauth.onAuthStateChanged(u => {
+    if (!u) { $('login').classList.remove('hide'); return; }
+    $('login').classList.add('hide'); fdb = db; $('who').textContent = u.email; $('logout').classList.remove('hide');
+    $('reset').classList.add('hide'); $('conn').className = 'mode live'; $('conn').innerHTML = '<i class="fas fa-circle-check"></i> Live · Firestore';
+    Object.keys(COL).forEach(k => db.collection(k).orderBy(k === 'petugas' ? 'nama' : 'createdAt', k === 'petugas' ? 'asc' : 'desc').limit(1000).onSnapshot(s => {
+      D[k] = s.docs.map(d => ({ id:d.id, ...d.data() })); badges(); render();
+    }, e => toast('⚠️ ' + e.message, 6000)));
+  });
+  $('logout').onclick = () => fauth.signOut().then(() => location.reload());
+}
+
+/* ═══ SIMULASI DATA FIKTIF (tanpa data nyata anak) ═══ */
+const SIM_INTERVAL = 20000;
+const NAMA = ['Ahmad Fauzi','Siti Aminah','Budi Santoso','Rina Marlina','Dedi Kurniawan','Nur Aisyah','Agus Salim','Yanti Suryani','Wulan Sari','Rizki Ramadhan','Fitri Handayani','Maya Lestari','Ujang Solihin','Dewi Anggraeni'];
+const rnd = a => a[Math.floor(Math.random() * a.length)];
+const rint = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+const KR = { Kekerasan:'Laporan dugaan kekerasan terhadap anak. Rincian digali saat verifikasi oleh petugas terlatih.', AMPK:'Anak teridentifikasi memerlukan perlindungan khusus; butuh asesmen kebutuhan dan rujukan layanan.' };
+const tiket = () => 'KPA-BTN-' + new Date().getFullYear() + '-' + String(D.reports.length + 1 + (++seq % 1)).padStart(4, '0');
+
+function makeReport(minsAgo, forceNew) {
+  const w = rnd(WIL), kat = Math.random() < .35 ? 'AMPK' : 'Kekerasan', t = new Date(Date.now() - minsAgo * 60000);
+  const pr = rnd(['Darurat','Tinggi','Tinggi','Sedang','Sedang','Rendah']);
+  const st = forceNew || minsAgo < 60 ? 'baru' : rnd(['baru','verifikasi','pendampingan','rujukan','selesai','selesai']);
+  const nm = rnd(NAMA);
+  return { id:'rep' + Date.now() + rint(100, 999), tiket:tiket(), createdAt:t, updatedAt:st === 'baru' ? null : new Date(t.getTime() + rint(10, 200) * 60000),
+    kategori:kat, jenis:rnd(kat === 'AMPK' ? JA : JK), prioritas:pr, korbanInisial:rnd(NAMA), usia:rint(3, 17), gender:rnd(['L','P']),
+    pelapor:Math.random() < .3 ? '' : nm, waPelapor:'08' + rint(1000000000, 9999999999), wilayah:w[0], lokasi:'Kec. (simulasi)',
+    lat:+(w[1] + (Math.random() - .5) * .12).toFixed(4), lng:+(w[2] + (Math.random() - .5) * .12).toFixed(4),
+    kronologi:KR[kat], channel:rnd(CHANNEL), status:st, petugas:st === 'baru' ? '' : rnd(NAMA),
+    riwayat:[{ t, s:'baru', by:'Sistem' }] };
+}
+function seed() {
+  seq = 0; D.reports = [];
+  Array.from({ length:18 }, () => rint(5, 7 * 1440)).sort((a, b) => b - a).forEach(m => D.reports.unshift(makeReport(m)));
+  D.rujukan = Array.from({ length:8 }, () => { const r = rnd(D.reports); return { id:'rjk' + rint(1000, 9999) + seq++, createdAt:new Date(Date.now() - rint(10, 4 * 1440) * 60000), tiket:r.tiket, layanan:rnd(LAYANAN), wilayah:r.wilayah, status:rnd(['baru','diproses','selesai']) }; }).sort((a, b) => b.createdAt - a.createdAt);
+  D.petugas = Array.from({ length:8 }, (_, i) => ({ id:'ptg' + i, nama:NAMA[i], peran:ROLE[i % ROLE.length], wilayah:WIL[i][0], wa:'08' + rint(1000000000, 9999999999), createdAt:new Date() }));
+}
+function simTick() {
+  if (fdb) return;
+  const r = makeReport(0, true); r.createdAt = new Date(); r.riwayat = [{ t:r.createdAt, s:'baru', by:'Sistem' }]; put('reports', r);
+  badges(); render(); toast(`🚨 Laporan baru (${r.prioritas}): ${r.jenis} — ${r.wilayah}`, 6000);
+}
+
+/* ═══ NAVIGASI ═══ */
+function buildNav() {
+  $('nav').innerHTML = `<button class="nl on" data-s="dashboard"><i class="fas fa-chart-pie"></i> Dashboard</button>` +
+    Object.entries(COL).map(([k, c]) => `<button class="nl" data-s="${k}"><i class="fas ${c.i}"></i> ${c.t}<b class="hide" id="bd-${k}">0</b></button>`).join('');
+}
+function badges() {
+  const n = D.reports.filter(r => !r.status || r.status === 'baru').length, b = $('bd-reports');
+  if (b) { b.textContent = n; b.classList.toggle('hide', !n); }
+}
+$('nav').onclick = e => { const b = e.target.closest('[data-s]'); if (b) show(b.dataset.s); };
+$('ham').onclick = () => $('side').classList.toggle('on');
+$('pv').onclick = () => { priv = !priv; $('pvs').textContent = priv ? 'ON' : 'OFF'; toast(priv ? '🔒 Identitas disamarkan' : '⚠️ Identitas ditampilkan — pastikan layar tidak terlihat orang lain'); render(); };
+
+function show(s) {
+  cur = s; F = { q:'', s:'' }; $('side').classList.remove('on');
+  document.querySelectorAll('.nl[data-s]').forEach(b => b.classList.toggle('on', b.dataset.s === s));
+  if (s === 'dashboard') return dashBuild(), dashRefresh();
+  const c = COL[s]; $('title').textContent = c.t; $('sub').textContent = c.sub;
+  $('view').innerHTML = `<div class="panel"><div class="bar"><input id="fq" type="search" placeholder="🔍 Cari tiket, wilayah, jenis…">${c.sts ? `<select id="fs"><option value="">Semua status</option>${c.sts.map(x => `<option value="${x}">${STL[x]}</option>`).join('')}</select>` : ''}${s === 'reports' ? `<select id="fp"><option value="">Semua prioritas</option>${Object.keys(PC).map(x => `<option>${x}</option>`).join('')}</select>` : ''}<small id="cnt"></small></div>
+  <div class="tw"><table><thead><tr>${c.cols.map(k => `<th>${k[0]}</th>`).join('')}</tr></thead><tbody id="tb"></tbody></table></div></div>`;
+  $('fq').oninput = e => { F.q = e.target.value.toLowerCase(); fill(); };
+  if ($('fs')) $('fs').onchange = e => { F.s = e.target.value; fill(); };
+  if ($('fp')) $('fp').onchange = e => { F.p = e.target.value; fill(); };
+  fill();
+}
+function rows() {
+  let a = D[cur];
+  if (F.q) a = a.filter(r => [r.tiket, r.wilayah, r.jenis, r.kategori, r.layanan, r.nama, r.peran, r.channel].join(' ').toLowerCase().includes(F.q));
+  if (F.s) a = a.filter(r => (r.status || 'baru') === F.s);
+  if (F.p) a = a.filter(r => r.prioritas === F.p);
+  return a;
+}
+function fill() {
+  if (!COL[cur] || !$('tb')) return;
+  const c = COL[cur], a = rows(); $('cnt').textContent = a.length + ' data';
+  $('tb').innerHTML = a.length ? a.map(r => `<tr data-id="${esc(r.id)}">${c.cols.map(k => `<td>${k[1](r)}</td>`).join('')}</tr>`).join('')
+    : `<tr><td class="empty" colspan="9"><i class="fas fa-inbox" style="font-size:2rem;opacity:.4"></i><br>Tidak ada data</td></tr>`;
+}
+$('view').addEventListener('click', e => {
+  const tr = e.target.closest('tr[data-id]'); if (tr && !e.target.closest('a')) detail(tr.dataset.id, tr.dataset.coll || cur);
+});
+function render() { cur === 'dashboard' ? dashRefresh() : fill(); }
+
+/* ═══ DASHBOARD ═══ */
+function dashBuild() {
+  $('title').textContent = 'Dashboard'; $('sub').textContent = 'Monitoring pelaporan kekerasan terhadap anak & AMPK · Provinsi Banten';
+  $('view').innerHTML = `
+  <div class="hero"><div><h3>🛡️ Setiap laporan adalah anak yang menunggu perlindungan</h3><p>Prioritaskan kasus Darurat, jaga kerahasiaan identitas anak, dan pastikan respons pertama sesuai batas SLA.</p></div>${CONFIG.hotlineWA ? `<a class="btn b6" href="${waLink(CONFIG.hotlineWA)}" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Hotline WhatsApp</a>` : ''}</div>
+  <div class="stats" id="stats"></div>
+  <div class="panel"><div class="ph"><h3><i class="fas fa-map-location-dot" style="color:var(--p)"></i> Peta Sebaran Kasus — Provinsi Banten</h3><span class="pill blue" id="mapCount">0 titik</span><button class="btn b4" id="recenter"><i class="fas fa-crosshairs"></i> Fokus Banten</button></div>
+  <div class="pb" style="padding:10px"><div class="lg">${Object.entries(PC).map(([k, v]) => `<span><i style="background:${v}"></i>${k}</span>`).join('')}<span style="color:var(--soft)">Titik bersifat perkiraan (tingkat kecamatan) demi keselamatan anak</span></div><div id="map"></div></div></div>
+  <div class="grid2"><div class="panel"><div class="ph"><h3>📈 Tren Laporan 7 Hari</h3></div><div class="pb"><div class="cw"><canvas id="c1"></canvas></div></div></div>
+  <div class="panel"><div class="ph"><h3>🧩 Jenis Kasus</h3></div><div class="pb"><div class="cw"><canvas id="c2"></canvas></div></div></div></div>
+  <div class="panel"><div class="ph"><h3>🏙️ Kasus per Kabupaten/Kota</h3></div><div class="pb"><div class="cw"><canvas id="c3"></canvas></div></div></div>
+  <div class="panel"><div class="ph"><h3>⚡ Laporan Terbaru</h3><button class="btn b4" id="allrep">Lihat semua →</button></div>
+  <div class="tw"><table><thead><tr><th>Tiket</th><th>Masuk</th><th>Kasus</th><th>Wilayah</th><th>Prioritas</th><th>Status</th></tr></thead><tbody id="rc"></tbody></table></div></div>`;
+  $('recenter').onclick = () => map && map.setView([-6.35, 106.15], 9); $('allrep').onclick = () => show('reports'); initMap();
+}
+function initMap() {
+  if (map) { try { map.remove(); } catch (e) {} map = null; }
+  if (!$('map')) return;
+  map = L.map('map').setView([-6.35, 106.15], 9);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom:19, attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>' }).addTo(map);
+  markerLayer = L.layerGroup().addTo(map); L.control.scale({ imperial:false, position:'bottomleft' }).addTo(map);
+  refreshMarkers(); setTimeout(() => { try { map.invalidateSize(); } catch (e) {} }, 250);
+}
+const dotIcon = (c, ring) => L.divIcon({ className:'', html:`<span class="map-dot" style="--c:${c}">${ring ? '<span class="ring"></span>' : ''}<span class="core"></span></span>`, iconSize:[20, 20], iconAnchor:[10, 10], popupAnchor:[0, -12] });
+function refreshMarkers() {
+  if (!map || !markerLayer) return; markerLayer.clearLayers();
+  const l = D.reports.filter(r => r.lat && r.lng && isOpen(r));
+  l.forEach(r => L.marker([r.lat, r.lng], { icon:dotIcon(PC[r.prioritas] || PC.Sedang, r.prioritas === 'Darurat' && (r.status || 'baru') === 'baru'), title:r.jenis }).addTo(markerLayer)
+    .bindPopup(`<div style="min-width:200px"><b>${esc(r.jenis)}</b><div style="color:#5A5080">${esc(r.wilayah)} · ${esc(r.tiket)}</div><div style="color:#9A92BD;font-size:.72rem;margin:3px 0 6px">${ago(r.createdAt)}</div><div style="margin-bottom:8px">${prPill(r.prioritas)} ${stPill(r.status)}</div><a href="#" class="pop-link" data-id="${esc(r.id)}" style="color:#5B3FD6;font-weight:700">Lihat detail →</a></div>`, { maxWidth:260 }));
+  if ($('mapCount')) $('mapCount').textContent = l.length + ' kasus aktif';
+}
+document.addEventListener('click', e => { const a = e.target.closest('.pop-link'); if (a) { e.preventDefault(); detail(a.dataset.id, 'reports'); map && map.closePopup(); } });
+function dashRefresh() { if (cur !== 'dashboard' || !$('stats')) return; updateStats(); updateRecent(); refreshMarkers(); updateCharts(); }
+function updateStats() {
+  const R = D.reports, today = ts => { const d = dt(ts); return d && d.toDateString() === new Date().toDateString(); };
+  const baru = R.filter(x => (x.status || 'baru') === 'baru').length, dar = R.filter(x => x.prioritas === 'Darurat' && isOpen(x)).length, sel = R.filter(x => x.status === 'selesai').length;
+  const card = (ic, col, bg, n, l, sm) => `<div class="sc"><i class="fas ${ic}" style="background:${bg};color:${col}"></i><h3>${n}</h3><p>${l}</p><small>${sm}</small></div>`;
+  $('stats').innerHTML =
+    card('fa-file-shield','#7C5CFC','#F1ECFF', R.length, 'Total Laporan', R.filter(x => today(x.createdAt)).length + ' masuk hari ini') +
+    card('fa-bell','#D6336C','#FFEAF2', baru, 'Belum Ditangani', R.filter(overdue).length + ' lewat SLA') +
+    card('fa-triangle-exclamation','#E5484D','#FFEEEE', dar, 'Kasus Darurat Aktif', 'respons ≤ 1 jam') +
+    card('fa-child-reaching','#C45F00','#FFF3E6', R.filter(x => x.kategori === 'AMPK').length, 'Kasus AMPK', 'perlindungan khusus') +
+    card('fa-circle-check','#1FAF9F','#E6F8F5', R.length ? Math.round(sel / R.length * 100) + '%' : '0%', 'Kasus Selesai', sel + ' dari ' + R.length);
+}
+function updateRecent() {
+  const tb = $('rc'); if (!tb) return;
+  tb.innerHTML = D.reports.slice(0, 8).map(x => `<tr data-id="${esc(x.id)}" data-coll="reports"><td><b>${esc(x.tiket)}</b></td><td>${tm(x.createdAt)}</td><td>${esc(x.jenis)}</td><td>${esc(x.wilayah)}</td><td>${prPill(x.prioritas)}</td><td>${stPill(x.status)}</td></tr>`).join('') || '<tr><td class="empty" colspan="6">Belum ada laporan</td></tr>';
+}
+function updateCharts() {
+  if (typeof Chart === 'undefined' || !$('c1')) return;
+  Object.values(charts).forEach(c => { try { c.destroy(); } catch (e) {} }); charts = {};
+  const r = D.reports, lab = [], cnt = [];
+  for (let i = 6; i >= 0; i--) { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - i); lab.push(d.toLocaleDateString('id-ID', { day:'numeric', month:'short' })); cnt.push(r.filter(x => { const t = dt(x.createdAt); return t && t.toDateString() === d.toDateString(); }).length); }
+  const o = { responsive:true, maintainAspectRatio:false };
+  charts.a = new Chart($('c1'), { type:'line', data:{ labels:lab, datasets:[{ data:cnt, borderColor:'#7C5CFC', backgroundColor:'rgba(124,92,252,.15)', fill:true, tension:.4, borderWidth:3, pointBackgroundColor:'#FF6B9D', pointRadius:4 }] }, options:{ ...o, plugins:{ legend:{ display:false } }, scales:{ y:{ beginAtZero:true, ticks:{ precision:0 } } } } });
+  const cn = (f) => { const m = {}; r.forEach(x => { const j = f(x) || 'Lainnya'; m[j] = (m[j] || 0) + 1; }); return m; };
+  const jm = cn(x => x.jenis), k = Object.keys(jm);
+  charts.b = new Chart($('c2'), { type:'doughnut', data:{ labels:k.length ? k : ['Belum ada'], datasets:[{ data:k.length ? Object.values(jm) : [1], backgroundColor:['#7C5CFC','#FF6B9D','#B07BFF','#F5841F','#1FAF9F','#5B3FD6','#FFB454','#E5484D','#9A92BD','#FF9EC4','#4FC3F7','#A5D6A7','#CE93D8'], borderColor:'#fff', borderWidth:2 }] }, options:{ ...o, cutout:'60%', plugins:{ legend:{ position:'right', labels:{ boxWidth:10, font:{ size:10 } } } } } });
+  const wm = cn(x => x.wilayah);
+  charts.c = new Chart($('c3'), { type:'bar', data:{ labels:WIL.map(w => w[0]), datasets:[{ data:WIL.map(w => wm[w[0]] || 0), backgroundColor:'#7C5CFC', borderRadius:8 }] }, options:{ ...o, plugins:{ legend:{ display:false } }, scales:{ y:{ beginAtZero:true, ticks:{ precision:0 } } } } });
+}
+
+/* ═══ DETAIL & AKSI ═══ */
+const LBL = { createdAt:'Diterima', updatedAt:'Diperbarui', tiket:'Tiket', layanan:'Layanan', wilayah:'Wilayah', status:'Status', nama:'Nama', peran:'Peran', wa:'WhatsApp' };
+const closeM = () => $('ov').classList.remove('on');
+$('ov').onclick = e => { if (e.target.id === 'ov') closeM(); };
+addEventListener('keydown', e => { if (e.key === 'Escape') closeM(); });
+const head = t => `<div class="mh"><h3>${t}</h3><button class="btn b4" id="mx" aria-label="Tutup"><i class="fas fa-times"></i></button></div>`;
+const row = (k, v) => `<div class="dr"><small>${k}</small><span>${v}</span></div>`;
+
+function detail(id, coll) {
+  const r = (D[coll] || []).find(x => x.id === id); if (!r) return;
+  coll === 'reports' ? detailReport(r) : detailGeneric(r, coll);
+  $('ov').classList.add('on'); $('mx').onclick = closeM;
+}
+function detailReport(r) {
+  const st = r.status || 'baru';
+  $('md').innerHTML = head(`${esc(r.tiket)} ${prPill(r.prioritas)}`) +
+    `<div class="warn"><i class="fas fa-lock"></i> Data sensitif anak. Jangan dibagikan di luar jalur penanganan resmi (UU 35/2014; UU 12/2022 TPKS).</div>
+    <div class="chips" id="chips">${STAGES.map(s => `<button class="chip ${s === st ? 'on' : ''}" data-st="${s}">${STL[s]}</button>`).join('')}</div>` +
+    row('Kategori / Jenis', `${pill(r.kategori, r.kategori === 'AMPK' ? 'pink' : 'blue')} ${esc(r.jenis)}`) +
+    row('Anak', `${esc(mask(r.korbanInisial))} · ${esc(r.usia || '—')} th · ${esc(r.gender || '—')}`) +
+    row('Wilayah', esc(r.wilayah) + ' — ' + esc(r.lokasi || '')) + row('Diterima', `${tm(r.createdAt)} (${ago(r.createdAt)}) · via ${esc(r.channel || '—')}${overdue(r) ? ' <span class="pill red">Lewat SLA</span>' : ''}`) +
+    row('Kronologi', esc(r.kronologi)) + row('Pelapor', esc(mask(r.pelapor))) +
+    `<div class="fm" style="padding-bottom:0"><label>Petugas penanggung jawab</label><select id="dp"><option value="">— belum ditugaskan —</option>${D.petugas.map(p => `<option ${p.nama === r.petugas ? 'selected' : ''}>${esc(p.nama)}</option>`).join('')}</select>
+    <label>Catatan penanganan</label><textarea id="dc" rows="2" placeholder="Tindak lanjut, hasil asesmen, rujukan…">${esc(r.catatan || '')}</textarea></div>
+    <div class="tl"><label>Riwayat penanganan</label>${(r.riwayat || []).slice().reverse().map(h => `<div><b>${esc(STL[h.s] || h.s)}</b> <small>${tm(h.t)} · ${esc(h.by || '')}</small></div>`).join('')}</div>
+    <div class="mf"><button class="btn b1" id="sv"><i class="fas fa-floppy-disk"></i> Simpan</button>
+    ${r.waPelapor ? `<a class="btn b2" target="_blank" rel="noopener" href="${waLink(r.waPelapor, 'Salam, kami Komnas PA Banten menindaklanjuti laporan Anda (tiket ' + r.tiket + ').')}"><i class="fab fa-whatsapp"></i> Hubungi Pelapor</a>` : ''}
+    ${r.lat ? `<a class="btn b4" target="_blank" rel="noopener" href="${gmap(r)}"><i class="fas fa-location-dot"></i> Peta</a>` : ''}
+    <button class="btn b5" id="dl"><i class="fas fa-trash"></i> Hapus</button></div>`;
+  let ns = st;
+  $('chips').onclick = e => { const b = e.target.closest('[data-st]'); if (!b) return; ns = b.dataset.st; document.querySelectorAll('#chips .chip').forEach(c => c.classList.toggle('on', c === b)); };
+  $('sv').onclick = () => {
+    const u = { ...r, status:ns, petugas:$('dp').value, catatan:$('dc').value.trim(), updatedAt:new Date() };
+    u.riwayat = [...(r.riwayat || [])]; if (ns !== st) u.riwayat.push({ t:new Date(), s:ns, by:fauth && fauth.currentUser ? fauth.currentUser.email : 'Admin' });
+    put('reports', u); toast('✅ Tersimpan · ' + STL[ns]); closeM(); badges(); render();
+  };
+  $('dl').onclick = () => { if (!confirm('Hapus laporan ini permanen? Tindakan tidak dapat dibatalkan.')) return; del('reports', r.id); closeM(); badges(); render(); toast('🗑️ Dihapus'); };
+}
+function detailGeneric(r, coll) {
+  const c = COL[coll];
+  $('md').innerHTML = head(esc(c.t)) + Object.entries(r).filter(([k]) => !['id', 'lat', 'lng'].includes(k)).map(([k, v]) => row(esc(LBL[k] || k), /At$/.test(k) ? tm(v) : k === 'status' ? stPill(v) : esc(v))).join('') +
+    `<div class="mf">${(c.sts || []).filter(s => s !== r.status).map(s => `<button class="btn b1" data-a="${s}">${STL[s]}</button>`).join('')}<button class="btn b5" data-a="del"><i class="fas fa-trash"></i> Hapus</button></div>`;
+  $('md').querySelector('.mf').onclick = e => {
+    const b = e.target.closest('[data-a]'); if (!b) return;
+    if (b.dataset.a === 'del') { if (!confirm('Hapus data ini permanen?')) return; del(coll, r.id); toast('🗑️ Dihapus'); }
+    else { put(coll, { ...r, status:b.dataset.a, updatedAt:new Date() }); toast('✅ Status: ' + STL[b.dataset.a]); }
+    closeM(); badges(); render();
+  };
+}
+
+/* ═══ INPUT LAPORAN MANUAL (hotline / WA / datang langsung) ═══ */
+const opt = (a, sel) => a.map(x => `<option ${x === sel ? 'selected' : ''}>${esc(x)}</option>`).join('');
+$('add').onclick = () => {
+  $('md').innerHTML = head('Input Laporan Baru') + `<div class="fm"><div class="fg">
+    <div><label>Kategori</label><select id="fk"><option>Kekerasan</option><option>AMPK</option></select></div>
+    <div><label>Jenis</label><select id="fj">${opt(JK)}</select></div>
+    <div><label>Prioritas</label><select id="fpr">${opt(Object.keys(PC), 'Sedang')}</select></div>
+    <div><label>Kanal</label><select id="fch">${opt(CHANNEL, 'Hotline')}</select></div>
+    <div><label>Nama / inisial anak</label><input id="fn" placeholder="mis. A. F."></div>
+    <div><label>Usia</label><input id="fu" type="number" min="0" max="17"></div>
+    <div><label>Kabupaten/Kota</label><select id="fw">${opt(WIL.map(w => w[0]))}</select></div>
+    <div><label>Kecamatan / Desa</label><input id="fl"></div>
+    <div><label>Nama pelapor (opsional)</label><input id="fpl"></div>
+    <div><label>WhatsApp pelapor</label><input id="fwa" inputmode="tel"></div></div>
+    <label>Kronologi singkat</label><textarea id="fkr" rows="3" placeholder="Fakta pokok saja; detail digali oleh petugas terlatih."></textarea></div>
+    <div class="mf"><button class="btn b1" id="fsv"><i class="fas fa-paper-plane"></i> Simpan Laporan</button></div>`;
+  $('ov').classList.add('on'); $('mx').onclick = closeM;
+  $('fk').onchange = e => $('fj').innerHTML = opt(e.target.value === 'AMPK' ? JA : JK);
+  $('fsv').onclick = () => {
+    const kr = $('fkr').value.trim(); if (!kr) return toast('⚠️ Kronologi wajib diisi');
+    const w = WIL.find(x => x[0] === $('fw').value), now = new Date();
+    put('reports', { id:'rep' + Date.now(), tiket:tiket(), createdAt:now, updatedAt:null, kategori:$('fk').value, jenis:$('fj').value, prioritas:$('fpr').value, korbanInisial:$('fn').value.trim(), usia:$('fu').value, gender:'',
+      pelapor:$('fpl').value.trim(), waPelapor:$('fwa').value.trim(), wilayah:w[0], lokasi:$('fl').value.trim(), lat:+(w[1] + (Math.random() - .5) * .08).toFixed(4), lng:+(w[2] + (Math.random() - .5) * .08).toFixed(4),
+      kronologi:kr, channel:$('fch').value, status:'baru', petugas:'', riwayat:[{ t:now, s:'baru', by:fauth && fauth.currentUser ? fauth.currentUser.email : 'Admin' }] });
+    closeM(); badges(); render(); toast('✅ Laporan tercatat');
+  };
+};
+
+/* ═══ EXPORT CSV (aman dari CSV-injection) ═══ */
+$('exp').onclick = () => {
+  const name = cur === 'dashboard' ? 'reports' : cur, a = D[name] || []; if (!a.length) return toast('⚠️ Tidak ada data');
+  if (!confirm('Berkas CSV berisi data sensitif anak. Simpan hanya di perangkat aman dan gunakan sesuai kewenangan. Lanjutkan?')) return;
+  const keys = [...new Set(a.flatMap(o => Object.keys(o)))].filter(k => k !== 'riwayat');
+  const cell = v => { if (v && v.toDate) v = v.toDate().toISOString(); else if (v instanceof Date) v = v.toISOString(); else if (v && typeof v === 'object') v = JSON.stringify(v); v = String(v ?? ''); if (/^[=+\-@\t\r]/.test(v)) v = "'" + v; return '"' + v.replace(/"/g, '""') + '"'; };
+  const csv = [keys.join(','), ...a.map(r => keys.map(k => cell(r[k])).join(','))].join('\n');
+  const l = document.createElement('a'); l.href = URL.createObjectURL(new Blob(['\ufeff' + csv], { type:'text/csv;charset=utf-8' }));
+  l.download = 'peta_pa_banten_' + name + '_' + new Date().toISOString().slice(0, 10) + '.csv'; l.click(); toast('📥 CSV terunduh');
+};
+$('reset').onclick = () => { if (!confirm('Reset seluruh data simulasi?')) return; seed(); badges(); show('dashboard'); toast('🔄 Data simulasi direset'); };
+
+/* ═══ START ═══ */
+buildNav();
+if (CONFIG.firebase) { show('dashboard'); initFirebase().catch(() => { toast('⚠️ Firebase gagal dimuat — beralih ke simulasi', 6000); CONFIG.firebase = null; $('login').classList.add('hide'); seed(); show('dashboard'); badges(); }); }
+else { seed(); show('dashboard'); badges(); setInterval(simTick, SIM_INTERVAL); }
+</script>
+</body>
+</html>
